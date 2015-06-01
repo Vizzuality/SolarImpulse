@@ -4,11 +4,15 @@ var source       = require('vinyl-source-stream');
 var sixtofiveify = require('6to5ify');
 var reactify     = require('reactify');
 var watchify     = require('watchify');
+var stringify    = require('stringify');
 var browserify   = require('browserify');
 var browserSync  = require('browser-sync');
 
 // Input file.
-var bundler     = watchify(browserify('./app/js/app.jsx', watchify.args));
+var bundler = watchify(browserify('./app/js/app.jsx', watchify.args));
+
+// Stringify some template files
+bundler.transform(stringify(['.cartocss']));
 
 // React JSX transform
 bundler.transform(reactify);

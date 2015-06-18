@@ -9,6 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "browser-sync": "^2.1.6",
+    "colorbrewer": "0.0.2",
     "d3": "^3.5.5",
     "leaflet": "^0.7.3",
     "react": "^0.13.3",

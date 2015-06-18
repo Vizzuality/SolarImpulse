@@ -3,7 +3,7 @@
 Map {
 -torque-frame-count:171;
 -torque-animation-duration:5;
--torque-time-attribute:"epoch";
+-torque-time-attribute:"cartodb_id";
 -torque-aggregation-function:"count(cartodb_id)";
 -torque-resolution:2;
 -torque-data-aggregation:linear;

@@ -8,9 +8,9 @@ var cartoCSS = require('../../cartocss/tweets.cartocss');
 
 var LAYER_OPTIONS = {
   user: 'simbiotica',
-  table: 'tw_si_out',
+  table: 'tw_si_out_3',
   cartocss: cartoCSS,
-  sql: "SELECT * FROM tw_si_out"
+  sql: "SELECT * FROM tw_si_out_3"
 };
 
 var TorqueLayer = function(map, options) {
@@ -49,19 +49,9 @@ var TorqueLayer = function(map, options) {
     window.layer.addTo(this.map);
 
     layer.on('change:time', function(changes) {
-      window.layer.pause();
-      return;
       if (changes.time.toString() === 'Invalid Date') { return; }
       g.selectAll('path:nth-child('+(changes.step-1)+')').style('display', 'block');
-      //console.log(changes.step)
     });
-
-    var i = 0;
-    setInterval(function() {
-      window.layer.setStep(i);
-      g.selectAll('path:nth-child('+i+')').style('display', 'block');
-      i++;
-    }, 500);
 
     map.on("viewreset", reset);
     reset();

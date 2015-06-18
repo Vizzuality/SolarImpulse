@@ -10,3 +10,7 @@ body {
   right: 0;
   bottom: 0;
 }
+
+path {
+  display: none;
+}

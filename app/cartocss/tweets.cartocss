@@ -1,46 +1,29 @@
 /** torque visualization */
 
 Map {
--torque-frame-count:512;
--torque-animation-duration:20;
--torque-time-attribute:"postedtime";
+-torque-frame-count:171;
+-torque-animation-duration:5;
+-torque-time-attribute:"epoch";
 -torque-aggregation-function:"count(cartodb_id)";
 -torque-resolution:2;
 -torque-data-aggregation:linear;
 }
 
-#twitter_solarimpulse_solarimpulse{
+#layer{
   comp-op: lighter;
   marker-fill-opacity: 0.9;
-  marker-line-color: #FFCC00;
-  marker-line-width: 0.5;
-  marker-line-opacity: 0.3;
+  marker-line-color: #FFF;
+  marker-line-width: 0;
+  marker-line-opacity: 0;
   marker-type: ellipse;
-  marker-width: 6;
-  marker-fill: #000000;
+  marker-width: 0.1;
+  marker-fill: #5CA2D1;
 }
-
-#twitter_solarimpulse_solarimpulse[frame-offset=1] {
- marker-width:8;
+#layer[frame-offset=1] {
+ marker-width:4;
  marker-fill-opacity:0.45;
 }
-
-#twitter_solarimpulse_solarimpulse[frame-offset=2] {
- marker-width:10;
+#layer[frame-offset=2] {
+ marker-width:4;
  marker-fill-opacity:0.225;
-}
-
-#twitter_solarimpulse_solarimpulse[frame-offset=3] {
- marker-width:12;
- marker-fill-opacity:0.15;
-}
-
-#twitter_solarimpulse_solarimpulse[frame-offset=4] {
- marker-width:14;
- marker-fill-opacity:0.1125;
-}
-
-#twitter_solarimpulse_solarimpulse[frame-offset=5] {
- marker-width:16;
- marker-fill-opacity:0.09;
 }

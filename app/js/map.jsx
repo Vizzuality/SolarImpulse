@@ -8,8 +8,8 @@ var Map = React.createClass({
   createMap: function (element) {
     var map = L.map(element);
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+      attribution: ''
     }).addTo(map);
 
     new TorqueLayer(map);

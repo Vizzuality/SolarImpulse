@@ -166,8 +166,8 @@ var TorqueLayer = function (map, options) {
   var svg = d3.select(map.getPanes().overlayPane).append("svg"),
       g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-  d3.json("/tweets.json", _.bind(function (tweetCounts) {
-    d3.json("/path.json", _.bind(function (collection) {
+  d3.json("./tweets.json", _.bind(function (tweetCounts) {
+    d3.json("./path.json", _.bind(function (collection) {
       var flightPath = collection.features[0].geometry.coordinates;
 
       window.layer = new L.TorqueLayer(LAYER_OPTIONS);

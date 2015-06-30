@@ -8,7 +8,7 @@ var Map = React.createClass({
   createMap: function (element) {
     window.map = L.map(element, {minZoom: 1, maxZoom: 5});
 
-    L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+    L.tileLayer('https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png', {
       attribution: ''
     }).addTo(map);
 

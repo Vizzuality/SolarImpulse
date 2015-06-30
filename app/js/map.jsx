@@ -6,7 +6,7 @@ var TorqueLayer = require('./lib/torque_layer.js');
 var Map = React.createClass({
 
   createMap: function (element) {
-    var map = L.map(element, {maxZoom: 5});
+    window.map = L.map(element, {minZoom: 1, maxZoom: 5});
 
     L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
       attribution: ''

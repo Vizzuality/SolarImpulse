@@ -8,11 +8,14 @@ var Map = React.createClass({
   createMap: function (element) {
     window.map = L.map(element, {minZoom: 1, maxZoom: 5});
 
-    L.tileLayer('https://cartocdn_{s}.global.ssl.fastly.net/base-dark/{z}/{x}/{y}.png', {
-      attribution: ''
+    L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+      attribution: '',
+      subdomains: '1234'
     }).addTo(map);
 
-    new TorqueLayer(map);
+    new TorqueLayer(map, {
+      callback: this.props.onTimeChange
+    });
 
     return map;
   },

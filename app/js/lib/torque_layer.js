@@ -29,6 +29,7 @@ function getCenter(arr) {
 var paths;
 var TorqueLayer = function(map, options) {
   this.map = map;
+  this.callback = options.callback || function(){};
 
   // Use Leaflet to implement a D3 geometric transformation.
   function projectPoint(x, y) {
@@ -58,7 +59,7 @@ var TorqueLayer = function(map, options) {
     window.layer = new L.TorqueLayer(LAYER_OPTIONS);
     window.layer.addTo(this.map);
 
-    layer.on('change:time', function(changes) {
+    layer.on('change:time', _.bind(function(changes) {
       if (changes.time.toString() === 'Invalid Date') { return; }
 
       if (changes.step === 0) {
@@ -68,7 +69,9 @@ var TorqueLayer = function(map, options) {
       var timestamp = Math.round(changes.time.getTime() / 1000);
       var availablePaths = _.filter(paths, function(v, k) { return parseInt(k, 10) <= timestamp; });
       d3.selectAll(availablePaths).style('display', 'block');
-    });
+
+      this.callback(changes.time);
+    }, this));
 
     map.on("viewreset", reset);
     reset();

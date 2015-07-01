@@ -4,7 +4,7 @@
 
 Map {
 -torque-frame-count:512;
--torque-animation-duration:30;
+-torque-animation-duration:20;
 -torque-time-attribute:"timestamp";
 -torque-aggregation-function:"count(cartodb_id)";
 -torque-resolution:2;

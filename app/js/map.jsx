@@ -5,7 +5,7 @@ var TorqueLayer = require('./lib/torque_layer.js');
 
 var Map = React.createClass({
 
-  createMap: function (element) {
+  createMap(element) {
     window.map = L.map(element, {minZoom: 1, maxZoom: 5});
 
     L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
@@ -20,11 +20,15 @@ var Map = React.createClass({
     return map;
   },
 
-  setupMap: function () {
+  setupMap() {
     this.map.setView([this.props.lat, this.props.lon], this.props.zoom);
   },
 
-  componentDidMount: function () {
+  componentDidUpdate() {
+    console.log('update');
+  },
+
+  componentDidMount() {
     if (this.props.createMap) {
       this.map = this.props.createMap(this.getDOMNode());
     } else {
@@ -34,7 +38,7 @@ var Map = React.createClass({
     this.setupMap();
   },
 
-  render: function () {
+  render() {
     return (<div className="map"> </div>);
   }
 

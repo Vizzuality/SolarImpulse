@@ -1,5 +1,26 @@
-font-face("Akzidenz", "/fonts/akzidenzgrotesk-light-webfont", 300, normal)
-font-face("Akzidenz", "/fonts/akzidenzgrotesk-medium-webfont", 500, normal)
+@font-face {
+  font-family: "Akzidenz";
+  src: url('../fonts/akzidenzgrotesk-light-webfont.eot');
+  src: url('../fonts/akzidenzgrotesk-light-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/akzidenzgrotesk-light-webfont.woff2') format('woff2'),
+       url('../fonts/akzidenzgrotesk-light-webfont.woff') format('woff'),
+       url('../fonts/akzidenzgrotesk-light-webfont.ttf') format('truetype'),
+       url('../fonts/akzidenzgrotesk-light-webfont.svg#Akzidenz') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Akzidenz";
+  src: url('../fonts/akzidenzgrotesk-medium-webfont.eot');
+  src: url('../fonts/akzidenzgrotesk-medium-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../fonts/akzidenzgrotesk-medium-webfont.woff2') format('woff2'),
+       url('../fonts/akzidenzgrotesk-medium-webfont.woff') format('woff'),
+       url('../fonts/akzidenzgrotesk-medium-webfont.ttf') format('truetype'),
+       url('../fonts/akzidenzgrotesk-medium-webfont.svg#Akzidenz') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
 
 body {
 	background: white;

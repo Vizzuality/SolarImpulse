@@ -37,7 +37,8 @@ var TweetTicker = React.createClass({
       swipe: false,
       autoplaySpeed: speed,
       arrows: false,
-      infinite: false
+      infinite: false,
+      pauseOnHover: false
     });
 
     el.on('afterChange', function(event, slick, currentSlide){

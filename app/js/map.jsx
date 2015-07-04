@@ -21,7 +21,10 @@ var Map = React.createClass({
   },
 
   setupMap() {
-    this.map.setView([this.props.lat, this.props.lon], this.props.zoom);
+    var southWest = L.latLng(-37.020098201368114, -7.91015625),
+        northEast = L.latLng(64.01449619484472, 184.74609375),
+        bounds    = L.latLngBounds(southWest, northEast);
+    this.map.fitBounds(bounds, {paddingBottomRight: [0,200]});
   },
 
   componentDidMount() {

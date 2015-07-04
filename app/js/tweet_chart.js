@@ -6,7 +6,6 @@ var d3TweetChart = require('./lib/d3_tweet_chart.js');
 var TweetChart = React.createClass({
 
   componentDidMount() {
-    console.log('moooooount');
     $.get('/tweet_counts.json', function(result) {
       if (this.isMounted()) {
         d3TweetChart.render(result);

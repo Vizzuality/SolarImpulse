@@ -3,8 +3,6 @@ var d3 = require('d3'),
 
 var d3TimeSlider = {};
 
-var TimeActions = require('../actions/TimeActions.js');
-
 var x,
     brush,
     handle;
@@ -14,7 +12,6 @@ d3TimeSlider.create = function(startTime, endTime, brushCallback) {
       width = $('.timeline--chart').width() - margin.right - margin.left,
       height = 60;
 
-console.log(width);
   x = d3.scale.linear()
       .domain([startTime, endTime])
       .range([0, width])

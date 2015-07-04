@@ -5,7 +5,8 @@ var Map = require('./map.jsx'),
     TweetTicker = require('./tweet_ticker.jsx');
 
 var STARTING_DATE = new Date(2015, 2, 9),
-    END_DATE = new Date(2015, 5, 6);
+    END_DATE = new Date(2015, 5, 6),
+    TOTAL_TIME = END_DATE.getTime() - STARTING_DATE.getTime();
 
 var L           = require('leaflet'),
     Torque      = require('torque.js');
@@ -35,8 +36,6 @@ var App = React.createClass({
         <Map
           leafletTorqueLayer={torqueLayer}
           onTimeChange={this.handleTimeChange}
-          lat="21.53484700204879"
-          lon="88.41796875"
           zoom="3" />
 
         <Timeline
@@ -45,7 +44,7 @@ var App = React.createClass({
           startTime={STARTING_DATE}
           endTime={END_DATE} />
 
-        <TweetTicker />
+        <TweetTicker totalTime={20000} />
 
         <div className="info">
           <div className="info--left">
@@ -54,8 +53,8 @@ var App = React.createClass({
 
           <div className="info--right">
             powered by
-            <img src="images/logo-vizzuality.png" className="info--vizzuality-logo" />
-            <img src="images/logo-cartodb.png" className="info--cartodb-logo" />
+            <a href="http://vizzuality.com"><img src="images/logo-vizzuality.png" className="info--vizzuality-logo" /></a>
+            <a href="http://cartodb.com"><img src="images/logo-cartodb.png" className="info--cartodb-logo" /></a>
           </div>
         </div>
       </div>

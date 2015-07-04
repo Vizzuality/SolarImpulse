@@ -7,15 +7,16 @@ var tweets = require("./tweets.js");
 var Tweet = React.createClass({
   render() {
     var content = this.props.children.toString();
+    var user_link = "http://twitter.com/" + this.props.username.substring(1);
 
     return (
       <li>
-        <p>
+        <p className="tweet--content">
           {content}
         </p>
 
         <p className="tweet--metadata">
-          {this.props.username}, {this.props.date}
+          <a href={user_link}>{this.props.username}</a>, <a href={this.props.link}>{this.props.date}</a>
         </p>
       </li>
     );
@@ -24,15 +25,16 @@ var Tweet = React.createClass({
 
 var TweetTicker = React.createClass({
   componentDidMount() {
-    var slidesToShow = 5;
-    var maxPosition = tweets.length - slidesToShow;
+    var slidesToShow = 5,
+        maxPosition = tweets.length - slidesToShow,
+        speed = this.props.totalTime / tweets.length;
 
     var el = $(this.getDOMNode());
     el.slick({
       slidesToShow: slidesToShow,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 1000,
+      autoplaySpeed: speed,
       arrows: false,
       infinite: false
     });
@@ -47,7 +49,7 @@ var TweetTicker = React.createClass({
   render() {
     var tweetNodes = tweets.map(function(tweet, index) {
       return (
-        <Tweet username={tweet.username} date={tweet.date} key={index}>
+        <Tweet username={tweet.username} date={tweet.date} link={tweet.link} key={index}>
           {tweet.text}
         </Tweet>
       );

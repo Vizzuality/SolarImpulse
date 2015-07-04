@@ -40,7 +40,17 @@ var Timeline = React.createClass({
   },
 
   _formattedDate() {
-    return moment(this.props.currentTime).format("MMMM D HH:mm:ss");
+    var month = moment(this.props.currentTime).format("MMMM"),
+        day   = moment(this.props.currentTime).format("D"),
+        time  = moment(this.props.currentTime).format("HH:mm");
+
+    return (
+      <div>
+        <span className="timeline--date-month">{month}</span>
+        <span className="timeline--date-day">{day}</span>
+        <span className="timeline--date-time">{time}</span>
+      </div>
+    );
   },
 
   render() {
@@ -50,7 +60,7 @@ var Timeline = React.createClass({
 
         <div className="timeline--top-container">
           <div className="timeline--date">
-            <span>{this._formattedDate()}</span>
+            {this._formattedDate()}
           </div>
 
           <div className="timeline--chart-container">

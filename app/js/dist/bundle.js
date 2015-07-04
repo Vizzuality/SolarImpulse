@@ -597,6 +597,7 @@ var TweetTicker = React.createClass({ displayName: "TweetTicker",
       slidesToShow: slidesToShow,
       slidesToScroll: 1,
       autoplay: true,
+      swipe: false,
       autoplaySpeed: speed,
       arrows: false,
       infinite: false

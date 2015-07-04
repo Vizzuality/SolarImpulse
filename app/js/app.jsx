@@ -2,7 +2,8 @@ var React = require("react");
 
 var Map = require('./map.jsx'),
     Timeline = require('./timeline.jsx'),
-    TweetTicker = require('./tweet_ticker.jsx');
+    TweetTicker = require('./tweet_ticker.jsx'),
+    Modal = require('./modal.jsx');
 
 var STARTING_DATE = new Date(2015, 2, 9),
     END_DATE = new Date(2015, 5, 6),
@@ -10,6 +11,8 @@ var STARTING_DATE = new Date(2015, 2, 9),
 
 var L           = require('leaflet'),
     Torque      = require('torque.js');
+
+var EventBus = require('./lib/event_bus.js');
 
 var cartoCSS = require('../cartocss/tweets.cartocss');
 var LAYER_OPTIONS = {
@@ -23,16 +26,34 @@ var torqueLayer = new L.TorqueLayer(LAYER_OPTIONS);
 
 var App = React.createClass({
   getInitialState() {
-    return {currentTime: STARTING_DATE};
+    return {
+      currentTime: STARTING_DATE,
+      modal: {open: true}
+    };
   },
 
   handleTimeChange(time) {
     this.setState({currentTime: time});
   },
 
+  _showModal(event) {
+    event.preventDefault();
+    this.setState({modal: {open: true}});
+  },
+
+  _hideModal() {
+    this.setState({modal: {open: false}});
+    torqueLayer.play();
+    EventBus.dispatch("torque:play");
+  },
+
   render() {
     return (
       <div>
+        <Modal
+          isOpen={this.state.modal.open}
+          onClose={this._hideModal} />
+
         <Map
           leafletTorqueLayer={torqueLayer}
           onTimeChange={this.handleTimeChange}
@@ -48,7 +69,7 @@ var App = React.createClass({
 
         <div className="info">
           <div className="info--left">
-            <a href="#">What is this?</a>
+            <a href="#" onClick={this._showModal}>What is this?</a>
           </div>
 
           <div className="info--right">

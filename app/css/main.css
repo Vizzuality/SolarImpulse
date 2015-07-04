@@ -276,3 +276,81 @@ path {
   width: 90px;
   height: 16px;
 }
+
+.modal--window {
+  display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 15;
+}
+
+.modal--background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+
+  background: #000;
+  opacity: .5;
+}
+
+.modal--wrapper {
+  box-sizing: border-box;
+  position: relative;
+  margin: auto;
+  z-index: 14;
+  width: 670px;
+  height: 512px;
+}
+
+.modal--container {
+  position: relative;
+  border-radius: 4px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: 4px solid #64D1B8;
+  padding: 50px;
+  background-color: #fff;
+  color: #111;
+}
+
+.modal--container h2 {
+  font-size: 37px;
+  margin: 0;
+  margin-bottom: 40px;
+}
+
+.modal--container p {
+  margin-top: 0;
+  margin-bottom: 1.5em;
+}
+
+.modal--action-buttons {
+  margin-top: 40px;
+}
+
+.modal--btn-continue {
+  background: #64D1B8;
+  border-radius: 4px;
+  font-size: 15px;
+  color: #FFFFFF;
+  letter-spacing: 2px;
+  line-height: 17px;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 500;
+  width: 195px;
+  height: 50px;
+  display: inline-block;
+  text-align: center;
+  padding: 17px 0;
+}
+
+.modal--btn-continue:hover {
+  cursor: pointer;
+}

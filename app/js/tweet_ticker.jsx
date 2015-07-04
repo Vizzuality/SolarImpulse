@@ -2,6 +2,8 @@ var React = require("react"),
     $     = require("jquery"),
     slick = require("slick-carousel");
 
+var EventBus = require('./lib/event_bus.js');
+
 var tweets = require("./tweets.js");
 
 var Tweet = React.createClass({
@@ -24,7 +26,20 @@ var Tweet = React.createClass({
 });
 
 var TweetTicker = React.createClass({
+  _pause() {
+    var el = $(this.getDOMNode());
+    el.slick('slickPause');
+  },
+
+  _play() {
+    var el = $(this.getDOMNode());
+    el.slick('slickPlay');
+  },
+
   componentDidMount() {
+    EventBus.addEventListener("torque:pause", this._pause);
+    EventBus.addEventListener("torque:play", this._play);
+
     var slidesToShow = 5,
         maxPosition = tweets.length - slidesToShow,
         speed = this.props.totalTime / tweets.length;
@@ -33,12 +48,11 @@ var TweetTicker = React.createClass({
     el.slick({
       slidesToShow: slidesToShow,
       slidesToScroll: 1,
-      autoplay: true,
+      autoplay: false,
       swipe: false,
       autoplaySpeed: speed,
       arrows: false,
-      infinite: false,
-      pauseOnHover: false
+      infinite: false
     });
 
     el.on('afterChange', function(event, slick, currentSlide){

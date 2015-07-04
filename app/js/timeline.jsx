@@ -5,9 +5,24 @@ var moment = require('moment');
 var TimeSlider = require('./time_slider.js'),
     TweetChart = require('./tweet_chart.js');
 
+var EventBus = require('./lib/event_bus.js');
+
 var StateButton = React.createClass({
   getInitialState() {
     return {playing: true};
+  },
+
+  componentDidMount() {
+    EventBus.addEventListener("torque:pause", this._pause);
+    EventBus.addEventListener("torque:play", this._play);
+  },
+
+  _pause() {
+    this.setState({playing: false});
+  },
+
+  _play() {
+    this.setState({playing: true});
   },
 
   _onClick(event) {
@@ -37,6 +52,12 @@ var Timeline = React.createClass({
 
   _onPausePlay(event) {
     this.props.leafletTorqueLayer.toggle();
+
+    if (this.props.leafletTorqueLayer.isRunning() === true) {
+      EventBus.dispatch("torque:play");
+    } else {
+      EventBus.dispatch("torque:pause");
+    }
   },
 
   _formattedDate() {

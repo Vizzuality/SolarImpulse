@@ -50,9 +50,17 @@ var TorqueLayer = function(map, options) {
 
     this.torqueLayer.addTo(this.map);
 
+    var alreadyBeenStarted = false;
     var previousStep = 0;
     this.torqueLayer.on('change:time', _.bind(function(changes) {
       if (changes.time.toString() === 'Invalid Date') { return; }
+
+      // Pause for modal
+      if (!alreadyBeenStarted) {
+        alreadyBeenStarted = true;
+        this.torqueLayer.pause();
+        this.torqueLayer.setStep(0);
+      }
 
       if (changes.step === 0 || changes.step < previousStep) {
         svg.selectAll('path').style('display', 'none');

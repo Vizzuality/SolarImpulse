@@ -1,6 +1,8 @@
 var d3 = require('d3'),
     $  = require('jquery');
 
+var EventBus = require('./event_bus.js');
+
 var d3TimeSlider = {};
 
 var x,
@@ -62,6 +64,8 @@ d3TimeSlider.create = function(startTime, endTime, brushCallback) {
     brushCallback(value);
     brush.extent([value, value]);
     handle.attr("cx", x(value));
+
+    EventBus.dispatch("torque:pause");
   }
 }
 

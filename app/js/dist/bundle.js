@@ -619,7 +619,8 @@ module.exports = Modal;
 },{"jquery":25,"react":182}],10:[function(require,module,exports){
 "use strict";
 
-var React = require("react");
+var React = require("react"),
+    $ = require("jquery");
 
 var d3TimeSlider = require("./lib/d3_time_slider.js");
 
@@ -631,8 +632,18 @@ var TimeSlider = React.createClass({ displayName: "TimeSlider",
     this.props.leafletTorqueLayer.setStep(step);
   },
 
-  componentDidMount: function componentDidMount() {
+  handleResize: function handleResize() {
+    $(".time-slider").remove();
     d3TimeSlider.create(this.props.startTime, this.props.endTime, this._onBrush);
+  },
+
+  componentDidMount: function componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+    d3TimeSlider.create(this.props.startTime, this.props.endTime, this._onBrush);
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
   },
 
   componentDidUpdate: function componentDidUpdate() {
@@ -648,7 +659,7 @@ module.exports = TimeSlider;
 
 
 
-},{"./lib/d3_time_slider.js":3,"react":182}],11:[function(require,module,exports){
+},{"./lib/d3_time_slider.js":3,"jquery":25,"react":182}],11:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -737,12 +748,33 @@ var d3TweetChart = require("./lib/d3_tweet_chart.js");
 
 var TweetChart = React.createClass({ displayName: "TweetChart",
 
+  getInitialState: function getInitialState() {
+    return { data: [] };
+  },
+
+  _renderChart: function _renderChart() {
+    d3TweetChart.render(this.state.data);
+  },
+
+  _handleResize: function _handleResize() {
+    $(".tweet-chart").remove();
+    this._renderChart();
+  },
+
   componentDidMount: function componentDidMount() {
+    window.addEventListener("resize", this._handleResize);
+
     $.get("/tweet_counts.json", (function (result) {
-      if (this.isMounted()) {
-        d3TweetChart.render(result);
-      }
+      this.setState({ data: result });
     }).bind(this));
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    this._renderChart();
   },
 
   render: function render() {

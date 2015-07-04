@@ -1,4 +1,5 @@
-var React = require("react");
+var React = require("react"),
+    $     = require("jquery");
 
 var d3TimeSlider = require('./lib/d3_time_slider.js');
 
@@ -10,9 +11,20 @@ var TimeSlider = React.createClass({
     this.props.leafletTorqueLayer.setStep(step);
   },
 
-  componentDidMount() {
+  handleResize() {
+    $('.time-slider').remove();
     d3TimeSlider.create(
       this.props.startTime, this.props.endTime, this._onBrush);
+  },
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize);
+    d3TimeSlider.create(
+      this.props.startTime, this.props.endTime, this._onBrush);
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
   },
 
   componentDidUpdate() {

@@ -1,16 +1,20 @@
-var d3 = require('d3');
+var d3 = require('d3'),
+    $  = require('jquery');
 
 var d3TimeSlider = {};
+
+var TimeActions = require('../actions/TimeActions.js');
 
 var x,
     brush,
     handle;
 
-d3TimeSlider.create = function(startTime, endTime) {
-  var margin = {top: 200, right: 50, bottom: 200, left: 50},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.bottom - margin.top;
+d3TimeSlider.create = function(startTime, endTime, brushCallback) {
+  var margin = {top: 0, right: 5, bottom: 0, left: 10},
+      width = $('.timeline--chart').width() - margin.right - margin.left,
+      height = 60;
 
+console.log(width);
   x = d3.scale.linear()
       .domain([startTime, endTime])
       .range([0, width])
@@ -21,26 +25,35 @@ d3TimeSlider.create = function(startTime, endTime) {
       .extent([0, 0])
       .on("brush", brushed);
 
-  var svg = d3.select(".timeline").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+  var svg = d3.select(".timeline--chart").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("class", "time-slider")
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  svg.append("g")
+    .append("rect")
+    .attr("rx", 2)
+    .attr("ry", 2)
+    .attr("x", 0)
+    .attr("y", height / 2)
+    .attr("width", "100%")
+    .attr("height", 2)
+    .style("fill", 'white');
 
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height / 2 + ")")
     .select(".domain")
+    .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+        .attr("class", "halo");
 
   var slider = svg.append("g")
       .attr("class", "slider")
       .call(brush);
 
-  slider.selectAll(".extent,.resize")
-      .remove();
-
-  slider.select(".background")
-      .attr("height", height);
+  slider.selectAll(".extent,.resize").remove();
 
   handle = slider.append("circle")
       .attr("class", "handle")
@@ -48,16 +61,10 @@ d3TimeSlider.create = function(startTime, endTime) {
       .attr("r", 9);
 
   function brushed() {
-    console.log('brushed');
-    var value = brush.extent()[0];
-
-    if (d3.event.sourceEvent) { // not a programmatic event
-      value = x.invert(d3.mouse(this)[0]);
-      brush.extent([value, value]);
-    }
-
+    var value = x.invert(d3.mouse(this)[0]);
+    brushCallback(value);
+    brush.extent([value, value]);
     handle.attr("cx", x(value));
-    d3.select("body").style("background-color", d3.hsl(value, .8, .8));
   }
 }
 

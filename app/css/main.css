@@ -1,3 +1,6 @@
+font-face("Akzidenz", "/fonts/akzidenzgrotesk-light-webfont", 300, normal)
+font-face("Akzidenz", "/fonts/akzidenzgrotesk-medium-webfont", 500, normal)
+
 body {
 	background: white;
 	color: black;
@@ -5,6 +8,8 @@ body {
 
 * {
   box-sizing: border-box;
+  font-family: "Akzidenz", Helvetica, sans-serif;
+  font-weight: 300;
 }
 
 .map {
@@ -22,25 +27,27 @@ path {
 .timeline {
   width: 100%;
   height: 250px;
-  padding: 20px;
 
   position: absolute;
   bottom: 0;
   left: 0;
 
-  background: rgba(0,0,0, 0.6);
+  background: rgba(0,0,0, 0.4);
   color: white;
 }
 
 .timeline h1 {
   font-size: 44px;
+  font-weight: 500;
   color: #64D1B8;
   line-height: 52px;
   text-shadow: 0px -1px 6px rgba(0,0,0,0.35);
 
   margin: 0;
   position: relative;
-  top: -50px;
+  top: -30px;
+  left: 20px;
+  display: inline-block;
 }
 
 .timeline ul {
@@ -85,4 +92,127 @@ path {
   stroke-opacity: .5;
   stroke-width: 1.25px;
   cursor: crosshair;
+}
+
+.line {
+  display: block;
+  fill: none;
+  stroke: url(#line-gradient);
+  stroke-width: 2px;
+}
+
+.timeline--chart-container,
+.timeline--chart,
+.timeline--date {
+  display: inline-block;
+}
+
+.timeline--chart-container,
+.timeline--chart {
+  position: absolute;
+  left: 150px;
+  right: 0;
+}
+
+.timeline--chart svg {
+  position: absolute;
+}
+
+.timeline--toggle {
+  position: absolute;
+  left: 120px;
+  top: 18px;
+}
+
+.timeline--toggle img {
+  width: 26px;
+  height: 26px;
+}
+
+.time-slider {
+  z-index: 2;
+}
+
+.tweet-chart {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.timeline--top-container {
+  height: 75px;
+  position: relative;
+  top: -30px;
+  padding: 0 20px 10px 20px;
+  border-bottom: 1px solid rgba(255,255,255, 0.2);
+}
+
+.timeline--date {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  height: 100%;
+}
+
+.tweets {
+  position: absolute;
+  height: 100px;
+  bottom: 37px;
+  left: 0;
+  right: 0;
+  background: rgba(white, 0);
+  white-space: nowrap;
+  overflow-x: hidden;
+  color: white;
+  padding-left: 20px;
+  border-bottom: 1px solid rgba(255,255,255, 0.2);
+}
+
+.tweets li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.tweet--metadata {
+  color: #A6A6A6;
+}
+
+.info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 53px;
+  padding: 0 20px;
+
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info--left a {
+  color: #64D1B8;
+  text-decoration: none;
+}
+
+.info--right {
+  color: #A6A6A6;
+}
+
+.info--right img {
+  margin-left: 10px;
+}
+
+.info--vizzuality-logo {
+  width: 90px;
+  height: 22px;
+  top: 5px;
+  position: relative;
+}
+
+.info--cartodb-logo {
+  width: 90px;
+  height: 16px;
 }

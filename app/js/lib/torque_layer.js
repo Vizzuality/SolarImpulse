@@ -5,16 +5,7 @@ var L           = require('leaflet'),
     colorbrewer = require('colorbrewer'),
     $           = require('jquery');
 
-var cartoCSS = require('../../cartocss/tweets.cartocss');
-
 var LineUtils = require('./line_utils.js');
-
-var LAYER_OPTIONS = {
-  user: 'simbiotica',
-  table: 'tw_si_out',
-  cartocss: cartoCSS,
-  sql: "SELECT * FROM tw_si_out"
-};
 
 function getCenter(arr) {
     var x = arr.map(function(a){ return a[0] });
@@ -29,6 +20,7 @@ function getCenter(arr) {
 var paths;
 var TorqueLayer = function(map, options) {
   this.map = map;
+  this.torqueLayer = options.torqueLayer;
   this.callback = options.callback || function(){};
 
   // Use Leaflet to implement a D3 geometric transformation.
@@ -56,20 +48,21 @@ var TorqueLayer = function(map, options) {
   d3.json("./path.json", _.bind(function(collection) {
     var flightPath = collection.features[0].geometry.coordinates;
 
-    window.layer = new L.TorqueLayer(LAYER_OPTIONS);
-    window.layer.addTo(this.map);
+    this.torqueLayer.addTo(this.map);
 
-    layer.on('change:time', _.bind(function(changes) {
+    var previousStep = 0;
+    this.torqueLayer.on('change:time', _.bind(function(changes) {
       if (changes.time.toString() === 'Invalid Date') { return; }
 
-      if (changes.step === 0) {
-        d3.selectAll('path').style('display', 'none');
+      if (changes.step === 0 || changes.step < previousStep) {
+        svg.selectAll('path').style('display', 'none');
       }
 
       var timestamp = Math.round(changes.time.getTime() / 1000);
       var availablePaths = _.filter(paths, function(v, k) { return parseInt(k, 10) <= timestamp; });
       d3.selectAll(availablePaths).style('display', 'block');
 
+      previousStep = changes.step;
       this.callback(changes.time);
     }, this));
 

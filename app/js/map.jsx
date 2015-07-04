@@ -6,14 +6,14 @@ var TorqueLayer = require('./lib/torque_layer.js');
 var Map = React.createClass({
 
   createMap(element) {
-    window.map = L.map(element, {minZoom: 1, maxZoom: 5});
+    window.map = L.map(element, {minZoom: 1, maxZoom: 5, attributionControl: false});
 
-    L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-      attribution: '',
-      subdomains: '1234'
+    L.tileLayer('http://{s}.tiles.mapbox.com/v4/smbtc.7d2e3bf9/{z}/{x}/{y}@2x.png?access_token={access_token}', {
+      access_token: 'pk.eyJ1Ijoic21idGMiLCJhIjoiVXM4REppNCJ9.pjaLujYj-fcCPv5evG_0uA'
     }).addTo(map);
 
     new TorqueLayer(map, {
+      torqueLayer: this.props.leafletTorqueLayer,
       callback: this.props.onTimeChange
     });
 
@@ -22,10 +22,6 @@ var Map = React.createClass({
 
   setupMap() {
     this.map.setView([this.props.lat, this.props.lon], this.props.zoom);
-  },
-
-  componentDidUpdate() {
-    console.log('update');
   },
 
   componentDidMount() {

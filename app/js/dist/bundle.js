@@ -764,7 +764,7 @@ var TweetChart = React.createClass({ displayName: "TweetChart",
   componentDidMount: function componentDidMount() {
     window.addEventListener("resize", this._handleResize);
 
-    $.get("/tweet_counts.json", (function (result) {
+    $.get("tweet_counts.json", (function (result) {
       this.setState({ data: result });
     }).bind(this));
   },

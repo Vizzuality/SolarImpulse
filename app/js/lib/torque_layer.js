@@ -90,7 +90,7 @@ var TorqueLayer = function(map, options) {
           topLeft = bounds[0],
           bottomRight = bounds[1];
 
-      var lineWidth = 8;
+      var lineWidth = 4;
       svg.attr("width", bottomRight[0] - topLeft[0] + lineWidth*2)
           .attr("height", bottomRight[1] - topLeft[1] + lineWidth*2)
           .style("left", topLeft[0] + "px")

@@ -2,6 +2,7 @@ var React = require("react"),
     $     = require("jquery");
 
 var d3TimeSlider = require('./lib/d3_time_slider.js');
+var EventBus = require('./lib/event_bus.js');
 
 var TimeSlider = React.createClass({
   _onBrush(time) {
@@ -21,6 +22,10 @@ var TimeSlider = React.createClass({
     window.addEventListener('resize', this.handleResize);
     d3TimeSlider.create(
       this.props.startTime, this.props.endTime, this._onBrush);
+
+    EventBus.addEventListener('torque:time', function(event, time) {
+      d3TimeSlider.update(time);
+    }, this);
   },
 
   componentWillUnmount() {

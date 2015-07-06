@@ -69,7 +69,7 @@ React.render(React.createElement(App, null), document.getElementById("container"
 
 
 },{"../cartocss/tweets.cartocss":2,"./lib/event_bus.js":5,"./map.jsx":8,"./modal.jsx":9,"./timeline.jsx":11,"./tweet_ticker.jsx":13,"leaflet":26,"react":182,"torque.js":193}],2:[function(require,module,exports){
-module.exports = "/** torque visualization */\n\n/** torque visualization */\n\nMap {\n-torque-frame-count:512;\n-torque-animation-duration:20;\n-torque-time-attribute:\"timestamp\";\n-torque-aggregation-function:\"count(cartodb_id)\";\n-torque-resolution:2;\n-torque-data-aggregation:linear;\n}\n\n#layer{\n  comp-op: lighter;\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 0;\n  marker-line-opacity: 1;\n  marker-type: ellipse;\n  marker-width: 1.5;\n  marker-fill: #5CA2D1;\n}\n#layer[frame-offset=1] {\n marker-width:3.5;\n marker-fill-opacity:0.45;\n}\n#layer[frame-offset=2] {\n marker-width:5.5;\n marker-fill-opacity:0.225;\n}\n";
+module.exports = "/** torque visualization */\n\n/** torque visualization */\n\nMap {\n-torque-frame-count:534;\n-torque-animation-duration:20;\n-torque-time-attribute:\"timestamp\";\n-torque-aggregation-function:\"count(cartodb_id)\";\n-torque-resolution:2;\n-torque-data-aggregation:linear;\n}\n\n#layer{\n  comp-op: lighter;\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 0;\n  marker-line-opacity: 1;\n  marker-type: ellipse;\n  marker-width: 1.5;\n  marker-fill: #5CA2D1;\n}\n#layer[frame-offset=1] {\n marker-width:3.5;\n marker-fill-opacity:0.45;\n}\n#layer[frame-offset=2] {\n marker-width:5.5;\n marker-fill-opacity:0.225;\n}\n";
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -371,6 +371,8 @@ var L = require("leaflet"),
 
 var LineUtils = require("./line_utils.js");
 
+var EventBus = require("./event_bus.js");
+
 function getCenter(arr) {
   var x = arr.map(function (a) {
     return a[0];
@@ -444,7 +446,7 @@ var TorqueLayer = function (map, options) {
         d3.selectAll(availablePaths).style("display", "block");
 
         previousStep = changes.step;
-        this.callback(changes.time);
+        EventBus.dispatch("torque:time", this, changes.time);
       }, this));
 
       map.on("viewreset", reset);
@@ -502,12 +504,11 @@ var TorqueLayer = function (map, options) {
           var colors = [colorScale(tweetCounts[zoom][i]), colorScale(tweetCounts[zoom][i + 1])];
           var color = d3.interpolateLab(colors[0], colors[1]);
           return color(d.t);
-        }).attr("d", function (d) {
+        }).attr("d", function (d, i) {
           var path = LineUtils.lineJoin(d[0], d[1], d[2], d[3], lineWidth),
               centroid = getCenterForPath(path),
               centroidAsCoords = map.containerPointToLatLng(centroid),
-              percentage = (centroid[0] - startingPath[0]) / lineLength,
-              timeFromStart = percentage * (end_time - start_time),
+              timeFromStart = i * ((end_time - start_time) / lineData.length),
               timestamp = Math.round(start_time + timeFromStart);
           paths[timestamp] = this;
 
@@ -522,7 +523,7 @@ module.exports = TorqueLayer;
 
 
 
-},{"./line_utils.js":6,"colorbrewer":23,"d3":24,"jquery":25,"leaflet":26,"torque.js":193,"underscore":249}],8:[function(require,module,exports){
+},{"./event_bus.js":5,"./line_utils.js":6,"colorbrewer":23,"d3":24,"jquery":25,"leaflet":26,"torque.js":193,"underscore":249}],8:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -623,6 +624,7 @@ var React = require("react"),
     $ = require("jquery");
 
 var d3TimeSlider = require("./lib/d3_time_slider.js");
+var EventBus = require("./lib/event_bus.js");
 
 var TimeSlider = React.createClass({ displayName: "TimeSlider",
   _onBrush: function _onBrush(time) {
@@ -640,6 +642,10 @@ var TimeSlider = React.createClass({ displayName: "TimeSlider",
   componentDidMount: function componentDidMount() {
     window.addEventListener("resize", this.handleResize);
     d3TimeSlider.create(this.props.startTime, this.props.endTime, this._onBrush);
+
+    EventBus.addEventListener("torque:time", function (event, time) {
+      d3TimeSlider.update(time);
+    }, this);
   },
 
   componentWillUnmount: function componentWillUnmount() {
@@ -659,7 +665,7 @@ module.exports = TimeSlider;
 
 
 
-},{"./lib/d3_time_slider.js":3,"jquery":25,"react":182}],11:[function(require,module,exports){
+},{"./lib/d3_time_slider.js":3,"./lib/event_bus.js":5,"jquery":25,"react":182}],11:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -704,6 +710,31 @@ var StateButton = React.createClass({ displayName: "StateButton",
   }
 });
 
+var STARTING_DATE = new Date(2015, 2, 9);
+var CurrentTime = React.createClass({ displayName: "CurrentTime",
+  getInitialState: function getInitialState() {
+    return { time: STARTING_DATE };
+  },
+
+  componentDidMount: function componentDidMount() {
+    EventBus.addEventListener("torque:time", function (event, time) {
+      this.setState({ time: time });
+    }, this);
+  },
+
+  _formattedDate: function _formattedDate() {
+    var month = moment(this.state.time).format("MMMM"),
+        day = moment(this.state.time).format("D"),
+        time = moment(this.state.time).format("HH:mm");
+
+    return React.createElement("div", null, React.createElement("span", { className: "timeline--date-month" }, month), React.createElement("span", { className: "timeline--date-day" }, day), React.createElement("span", { className: "timeline--date-time" }, time));
+  },
+
+  render: function render() {
+    return React.createElement("div", { className: "timeline--date" }, this._formattedDate());
+  }
+});
+
 var Timeline = React.createClass({ displayName: "Timeline",
 
   _onPausePlay: function _onPausePlay(event) {
@@ -716,16 +747,8 @@ var Timeline = React.createClass({ displayName: "Timeline",
     }
   },
 
-  _formattedDate: function _formattedDate() {
-    var month = moment(this.props.currentTime).format("MMMM"),
-        day = moment(this.props.currentTime).format("D"),
-        time = moment(this.props.currentTime).format("HH:mm");
-
-    return React.createElement("div", null, React.createElement("span", { className: "timeline--date-month" }, month), React.createElement("span", { className: "timeline--date-day" }, day), React.createElement("span", { className: "timeline--date-time" }, time));
-  },
-
   render: function render() {
-    return React.createElement("div", { className: "timeline" }, React.createElement("h1", null, "Solar Impulse"), React.createElement("div", { className: "timeline--top-container" }, React.createElement("div", { className: "timeline--date" }, this._formattedDate()), React.createElement("div", { className: "timeline--chart-container" }, React.createElement(StateButton, { callback: this._onPausePlay }), React.createElement("div", { className: "timeline--chart" }, React.createElement(TimeSlider, {
+    return React.createElement("div", { className: "timeline" }, React.createElement("h1", null, "Solar Impulse"), React.createElement("div", { className: "timeline--top-container" }, React.createElement(CurrentTime, null), React.createElement("div", { className: "timeline--chart-container" }, React.createElement(StateButton, { callback: this._onPausePlay }), React.createElement("div", { className: "timeline--chart" }, React.createElement(TimeSlider, {
       leafletTorqueLayer: this.props.leafletTorqueLayer,
       time: this.props.currentTime,
       startTime: this.props.startTime,

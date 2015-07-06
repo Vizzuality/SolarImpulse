@@ -48,22 +48,22 @@ var StateButton = React.createClass({
   }
 });
 
-var Timeline = React.createClass({
+var STARTING_DATE = new Date(2015, 2, 9);
+var CurrentTime = React.createClass({
+  getInitialState() {
+    return {time: STARTING_DATE}
+  },
 
-  _onPausePlay(event) {
-    this.props.leafletTorqueLayer.toggle();
-
-    if (this.props.leafletTorqueLayer.isRunning() === true) {
-      EventBus.dispatch("torque:play");
-    } else {
-      EventBus.dispatch("torque:pause");
-    }
+  componentDidMount() {
+    EventBus.addEventListener('torque:time', function(event, time) {
+      this.setState({time: time});
+    }, this);
   },
 
   _formattedDate() {
-    var month = moment(this.props.currentTime).format("MMMM"),
-        day   = moment(this.props.currentTime).format("D"),
-        time  = moment(this.props.currentTime).format("HH:mm");
+    var month = moment(this.state.time).format("MMMM"),
+        day   = moment(this.state.time).format("D"),
+        time  = moment(this.state.time).format("HH:mm");
 
     return (
       <div>
@@ -76,13 +76,32 @@ var Timeline = React.createClass({
 
   render() {
     return (
+      <div className="timeline--date">
+        {this._formattedDate()}
+      </div>
+    );
+  }
+});
+
+var Timeline = React.createClass({
+
+  _onPausePlay(event) {
+    this.props.leafletTorqueLayer.toggle();
+
+    if (this.props.leafletTorqueLayer.isRunning() === true) {
+      EventBus.dispatch("torque:play");
+    } else {
+      EventBus.dispatch("torque:pause");
+    }
+  },
+
+  render() {
+    return (
       <div className="timeline">
         <h1>Solar Impulse</h1>
 
         <div className="timeline--top-container">
-          <div className="timeline--date">
-            {this._formattedDate()}
-          </div>
+          <CurrentTime />
 
           <div className="timeline--chart-container">
             <StateButton callback={this._onPausePlay} />

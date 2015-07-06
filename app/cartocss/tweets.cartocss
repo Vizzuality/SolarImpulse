@@ -3,7 +3,7 @@
 /** torque visualization */
 
 Map {
--torque-frame-count:512;
+-torque-frame-count:534;
 -torque-animation-duration:20;
 -torque-time-attribute:"timestamp";
 -torque-aggregation-function:"count(cartodb_id)";

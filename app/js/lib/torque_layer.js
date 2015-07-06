@@ -7,6 +7,8 @@ var L           = require('leaflet'),
 
 var LineUtils = require('./line_utils.js');
 
+var EventBus = require('./event_bus.js');
+
 function getCenter(arr) {
     var x = arr.map(function(a){ return a[0] });
     var y = arr.map(function(a){ return a[1] });
@@ -71,7 +73,7 @@ var TorqueLayer = function(map, options) {
       d3.selectAll(availablePaths).style('display', 'block');
 
       previousStep = changes.step;
-      this.callback(changes.time);
+      EventBus.dispatch('torque:time', this, changes.time);
     }, this));
 
     map.on("viewreset", reset);
@@ -145,12 +147,11 @@ var TorqueLayer = function(map, options) {
             var color = d3.interpolateLab(colors[0], colors[1]);
             return color(d.t);
           })
-          .attr("d", function(d) {
+          .attr("d", function(d, i) {
             var path = LineUtils.lineJoin(d[0], d[1], d[2], d[3], lineWidth),
               centroid = getCenterForPath(path),
               centroidAsCoords = map.containerPointToLatLng(centroid),
-              percentage = (centroid[0] - startingPath[0]) / lineLength,
-              timeFromStart = percentage * (end_time - start_time),
+              timeFromStart = i * ((end_time - start_time)/lineData.length),
               timestamp = Math.round(start_time + timeFromStart);
             paths[timestamp] = this;
 

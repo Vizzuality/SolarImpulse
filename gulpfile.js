@@ -49,7 +49,8 @@ gulp.task('bundle', function () {
  * First bundle, then serve from the ./app directory
  */
 gulp.task('default', ['bundle'], function () {
-    browserSync({
-        server: "./app"
-    });
+  browserSync({
+    server: "./app",
+    open: false
+  });
 });

@@ -84,7 +84,7 @@ var TorqueLayer = function(map, options) {
       var zoom = map.getZoom();
       var colorScale = d3.scale.quantile()
         .domain(tweetCounts[zoom])
-        .range(colorbrewer.YlOrRd[5]);
+        .range(["#d2fafa", "#b2e2e2", "#66c2a4", "#2ca25f", "#006d2c"]);
 
       var bounds = path.bounds(collection),
           topLeft = bounds[0],

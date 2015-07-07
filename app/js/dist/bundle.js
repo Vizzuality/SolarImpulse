@@ -69,7 +69,7 @@ React.render(React.createElement(App, null), document.getElementById("container"
 
 
 },{"../cartocss/tweets.cartocss":2,"./lib/event_bus.js":5,"./map.jsx":8,"./modal.jsx":9,"./timeline.jsx":11,"./tweet_ticker.jsx":13,"leaflet":26,"react":182,"torque.js":193}],2:[function(require,module,exports){
-module.exports = "/** torque visualization */\n\n/** torque visualization */\n\nMap {\n-torque-frame-count:534;\n-torque-animation-duration:20;\n-torque-time-attribute:\"timestamp\";\n-torque-aggregation-function:\"count(cartodb_id)\";\n-torque-resolution:2;\n-torque-data-aggregation:linear;\n}\n\n#layer{\n  comp-op: lighter;\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 0;\n  marker-line-opacity: 1;\n  marker-type: ellipse;\n  marker-width: 1.5;\n  marker-fill: #5CA2D1;\n}\n#layer[frame-offset=1] {\n marker-width:3.5;\n marker-fill-opacity:0.45;\n}\n#layer[frame-offset=2] {\n marker-width:5.5;\n marker-fill-opacity:0.225;\n}\n";
+module.exports = "/** torque visualization */\n\n/** torque visualization */\n\nMap {\n-torque-frame-count:534;\n-torque-animation-duration:20;\n-torque-time-attribute:\"timestamp\";\n-torque-aggregation-function:\"count(cartodb_id)\";\n-torque-resolution:2;\n-torque-data-aggregation:linear;\n}\n\n#layer{\n  comp-op: lighter;\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 0;\n  marker-line-opacity: 1;\n  marker-type: ellipse;\n  marker-width: 1.5;\n  marker-fill: #7FD0BD;\n}\n#layer[frame-offset=1] {\n marker-width:3.5;\n marker-fill-opacity:0.45;\n}\n#layer[frame-offset=2] {\n marker-width:5.5;\n marker-fill-opacity:0.225;\n}\n";
 
 },{}],3:[function(require,module,exports){
 "use strict";
@@ -455,7 +455,7 @@ var TorqueLayer = function (map, options) {
       // Reposition the SVG to cover the features.
       function reset() {
         var zoom = map.getZoom();
-        var colorScale = d3.scale.quantile().domain(tweetCounts[zoom]).range(colorbrewer.YlOrRd[5]);
+        var colorScale = d3.scale.quantile().domain(tweetCounts[zoom]).range(["#d2fafa", "#b2e2e2", "#66c2a4", "#2ca25f", "#006d2c"]);
 
         var bounds = path.bounds(collection),
             topLeft = bounds[0],

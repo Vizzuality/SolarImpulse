@@ -19,7 +19,7 @@ Map {
   marker-line-opacity: 1;
   marker-type: ellipse;
   marker-width: 1.5;
-  marker-fill: #5CA2D1;
+  marker-fill: #7FD0BD;
 }
 #layer[frame-offset=1] {
  marker-width:3.5;

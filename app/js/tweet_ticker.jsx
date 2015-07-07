@@ -42,13 +42,15 @@ var TweetTicker = React.createClass({
 
     var slidesToShow = 5,
         maxPosition = tweets.length - slidesToShow,
-        speed = this.props.totalTime / tweets.length;
+        //speed = this.props.totalTime / tweets.length;
+        speed = 3000;
 
     var el = $(this.getDOMNode());
     el.slick({
       slidesToShow: slidesToShow,
       slidesToScroll: 1,
-      autoplay: false,
+      autoplay: true,
+      pauseOnHover: true,
       swipe: false,
       autoplaySpeed: speed,
       arrows: false,

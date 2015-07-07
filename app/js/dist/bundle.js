@@ -455,7 +455,7 @@ var TorqueLayer = function (map, options) {
       // Reposition the SVG to cover the features.
       function reset() {
         var zoom = map.getZoom();
-        var colorScale = d3.scale.quantile().domain(tweetCounts[zoom]).range(["#d2fafa", "#b2e2e2", "#66c2a4", "#2ca25f", "#006d2c"]);
+        var colorScale = d3.scale.quantile().domain(tweetCounts[zoom]).range(colorbrewer.YlOrRd[5]);
 
         var bounds = path.bounds(collection),
             topLeft = bounds[0],
@@ -847,13 +847,16 @@ var TweetTicker = React.createClass({ displayName: "TweetTicker",
 
     var slidesToShow = 5,
         maxPosition = tweets.length - slidesToShow,
-        speed = this.props.totalTime / tweets.length;
+
+    //speed = this.props.totalTime / tweets.length;
+    speed = 3000;
 
     var el = $(this.getDOMNode());
     el.slick({
       slidesToShow: slidesToShow,
       slidesToScroll: 1,
-      autoplay: false,
+      autoplay: true,
+      pauseOnHover: true,
       swipe: false,
       autoplaySpeed: speed,
       arrows: false,

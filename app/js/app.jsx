@@ -2,11 +2,10 @@ var React = require("react");
 
 var Map = require('./map.jsx'),
     Timeline = require('./timeline.jsx'),
-    TweetTicker = require('./tweet_ticker.jsx'),
     Modal = require('./modal.jsx');
 
 var STARTING_DATE = new Date(2015, 2, 9),
-    END_DATE = new Date(2015, 5, 6),
+    END_DATE = new Date(2015, 5, 12),
     TOTAL_TIME = END_DATE.getTime() - STARTING_DATE.getTime();
 
 var L           = require('leaflet'),
@@ -65,16 +64,18 @@ var App = React.createClass({
           startTime={STARTING_DATE}
           endTime={END_DATE} />
 
-        <TweetTicker totalTime={20000} />
-
         <div className="info">
+          <h1>Solar Impulse</h1>
+
           <div className="info--left">
             <a href="#" onClick={this._showModal}>What is this?</a>
           </div>
 
           <div className="info--right">
-            powered by
+            created by
             <a href="http://vizzuality.com"><img src="images/logo-vizzuality.png" className="info--vizzuality-logo" /></a>
+
+            powered by
             <a href="http://cartodb.com"><img src="images/logo-cartodb.png" className="info--cartodb-logo" /></a>
           </div>
         </div>

@@ -19,12 +19,20 @@ var Modal = React.createClass({
     $(node).hide();
   },
 
-  componentDidUpdate() {
+  updateVisibility() {
     if (this.props.isOpen === true) {
       this.show();
     } else {
       this.hide();
     }
+  },
+
+  componentDidMount() {
+    this.updateVisibility()
+  },
+
+  componentDidUpdate() {
+    this.updateVisibility()
   },
 
   render() {
@@ -59,7 +67,7 @@ var Modal = React.createClass({
           </div>
         </div>
 
-        <div className="modal--background"></div>
+        <div className="modal--background" onClick={this.handleClick}></div>
       </div>
     );
   }

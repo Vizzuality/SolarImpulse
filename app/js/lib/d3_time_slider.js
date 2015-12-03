@@ -10,8 +10,8 @@ var x,
     handle;
 
 d3TimeSlider.create = function(startTime, endTime, brushCallback) {
-  var margin = {top: 0, right: 5, bottom: 0, left: 10},
-      width = $('.timeline--chart').width() - margin.right - margin.left,
+  var margin = {top: 0, right: 0, bottom: 0, left: 0},
+      width = $('.timeline--chart').width(),
       height = 60;
 
   x = d3.scale.linear()
@@ -29,12 +29,11 @@ d3TimeSlider.create = function(startTime, endTime, brushCallback) {
       .attr("height", height)
       .attr("class", "time-slider")
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   svg.append("g")
     .append("rect")
-    .attr("rx", 2)
-    .attr("ry", 2)
+    .attr("rx", 0)
+    .attr("ry", 0)
     .attr("x", 0)
     .attr("y", height / 2)
     .attr("width", "100%")

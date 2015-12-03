@@ -9,7 +9,7 @@ var EventBus = require('./lib/event_bus.js');
 
 var StateButton = React.createClass({
   getInitialState() {
-    return {playing: true};
+    return {playing: false};
   },
 
   componentDidMount() {
@@ -98,8 +98,6 @@ var Timeline = React.createClass({
   render() {
     return (
       <div className="timeline">
-        <h1>Solar Impulse</h1>
-
         <div className="timeline--top-container">
           <CurrentTime />
 
@@ -112,7 +110,6 @@ var Timeline = React.createClass({
                 time={this.props.currentTime}
                 startTime={this.props.startTime}
                 endTime={this.props.endTime} />
-              <TweetChart />
             </div>
           </div>
         </div>

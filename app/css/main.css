@@ -23,8 +23,8 @@
 }
 
 body {
-	background: white;
-	color: black;
+  background: white;
+  color: black;
 }
 
 * {
@@ -47,28 +47,15 @@ path {
 
 .timeline {
   width: 100%;
-  height: 300px;
 
   position: absolute;
-  bottom: 0;
+  bottom: 60px;
   left: 0;
 
-  background: rgba(0,0,0, 0.4);
+  background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.4) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   color: white;
-}
-
-.timeline h1 {
-  font-size: 44px;
-  font-weight: 500;
-  color: #64D1B8;
-  line-height: 52px;
-  text-shadow: 0px -1px 6px rgba(0,0,0,0.35);
-
-  margin: 0;
-  position: relative;
-  top: -30px;
-  left: 20px;
-  display: inline-block;
 }
 
 .timeline ul {
@@ -150,21 +137,22 @@ path {
   text-align: left;
 }
 
-.timeline--chart-container,
+.timeline--chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .timeline--chart {
-  position: absolute;
-  left: 150px;
-  right: 0;
+  width: 750px;
 }
 
 .timeline--chart svg {
-  position: absolute;
+  overflow: visible;
 }
 
 .timeline--toggle {
-  position: absolute;
-  left: 120px;
-  top: 18px;
+  margin-right: 25px;
 }
 
 .timeline--toggle img {
@@ -176,17 +164,14 @@ path {
   z-index: 2;
 }
 
-.tweet-chart {
-  z-index: 1;
-  pointer-events: none;
-}
-
 .timeline--top-container {
   height: 75px;
   position: relative;
-  top: -30px;
-  padding: 0 20px 10px 20px;
-  border-bottom: 1px solid rgba(255,255,255, 0.2);
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .timeline--date {
@@ -198,56 +183,30 @@ path {
   height: 100%;
 }
 
-.tweets {
-  position: absolute;
-  height: 150px;
-  bottom: 37px;
-  left: 0;
-  right: 0;
-  background: rgba(white, 0);
-  white-space: nowrap;
-  overflow-x: hidden;
-  color: white;
-  padding-left: 20px;
-  border-bottom: 1px solid rgba(255,255,255, 0.2);
-}
-
-.tweets li {
-  display: inline-block;
-  margin-right: 20px;
-  font-size: 15px;
-  overflow: hidden;
-}
-
-.tweet--content {
-  width: 100%;
-  height: 85px;
-  white-space: normal;
-}
-
-.tweet--metadata,
-.tweet--metadata a {
-  text-decoration: none;
-  font-size: 13px;
-  color: #A6A6A6;
-}
-
-.tweet--metadata a:hover {
-  text-decoration: underline;
-}
-
 .info {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 53px;
+  height: 60px;
   padding: 0 20px;
+  background: rgba(0,0,0, 0.4);
+  border-top: 1px solid rgba(255,255,255, 0.2);
 
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.info h1 {
+  font-size: 44px;
+  font-weight: 500;
+  color: #64D1B8;
+  text-shadow: 0px -1px 6px rgba(0,0,0,0.35);
+
+  margin: 0;
+  display: inline-block;
 }
 
 .info--left a {
@@ -259,6 +218,9 @@ path {
 .info--right {
   color: #A6A6A6;
   font-size: 13px;
+
+  display: flex;
+  align-items: center;
 }
 
 .info--right img {
@@ -268,13 +230,17 @@ path {
 .info--vizzuality-logo {
   width: 90px;
   height: 22px;
-  top: 5px;
+  margin-right: 15px;
+  top: 2px;
   position: relative;
 }
 
 .info--cartodb-logo {
   width: 90px;
   height: 16px;
+
+  position: relative;
+  top: 1px;
 }
 
 .modal--window {

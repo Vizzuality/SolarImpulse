@@ -5,11 +5,10 @@ var React = require("react");
 
 var Map = require("./map.jsx"),
     Timeline = require("./timeline.jsx"),
-    TweetTicker = require("./tweet_ticker.jsx"),
     Modal = require("./modal.jsx");
 
 var STARTING_DATE = new Date(2015, 2, 9),
-    END_DATE = new Date(2015, 5, 6),
+    END_DATE = new Date(2015, 5, 12),
     TOTAL_TIME = END_DATE.getTime() - STARTING_DATE.getTime();
 
 var L = require("leaflet"),
@@ -60,7 +59,7 @@ var App = React.createClass({ displayName: "App",
       leafletTorqueLayer: torqueLayer,
       currentTime: this.state.currentTime,
       startTime: STARTING_DATE,
-      endTime: END_DATE }), React.createElement(TweetTicker, { totalTime: 20000 }), React.createElement("div", { className: "info" }, React.createElement("div", { className: "info--left" }, React.createElement("a", { href: "#", onClick: this._showModal }, "What is this?")), React.createElement("div", { className: "info--right" }, "powered by", React.createElement("a", { href: "http://vizzuality.com" }, React.createElement("img", { src: "images/logo-vizzuality.png", className: "info--vizzuality-logo" })), React.createElement("a", { href: "http://cartodb.com" }, React.createElement("img", { src: "images/logo-cartodb.png", className: "info--cartodb-logo" })))));
+      endTime: END_DATE }), React.createElement("div", { className: "info" }, React.createElement("h1", null, "Solar Impulse"), React.createElement("div", { className: "info--left" }, React.createElement("a", { href: "#", onClick: this._showModal }, "What is this?")), React.createElement("div", { className: "info--right" }, "created by", React.createElement("a", { href: "http://vizzuality.com" }, React.createElement("img", { src: "images/logo-vizzuality.png", className: "info--vizzuality-logo" })), "powered by", React.createElement("a", { href: "http://cartodb.com" }, React.createElement("img", { src: "images/logo-cartodb.png", className: "info--cartodb-logo" })))));
   }
 });
 
@@ -68,7 +67,7 @@ React.render(React.createElement(App, null), document.getElementById("container"
 
 
 
-},{"../cartocss/tweets.cartocss":2,"./lib/event_bus.js":5,"./map.jsx":8,"./modal.jsx":9,"./timeline.jsx":11,"./tweet_ticker.jsx":13,"leaflet":26,"react":182,"torque.js":193}],2:[function(require,module,exports){
+},{"../cartocss/tweets.cartocss":2,"./lib/event_bus.js":5,"./map.jsx":8,"./modal.jsx":9,"./timeline.jsx":11,"leaflet":24,"react":180,"torque.js":190}],2:[function(require,module,exports){
 module.exports = "/** torque visualization */\n\n/** torque visualization */\n\nMap {\n-torque-frame-count:534;\n-torque-animation-duration:20;\n-torque-time-attribute:\"timestamp\";\n-torque-aggregation-function:\"count(cartodb_id)\";\n-torque-resolution:2;\n-torque-data-aggregation:linear;\n}\n\n#layer{\n  comp-op: lighter;\n  marker-fill-opacity: 0.9;\n  marker-line-color: #FFF;\n  marker-line-width: 0;\n  marker-line-opacity: 1;\n  marker-type: ellipse;\n  marker-width: 1.5;\n  marker-fill: #7FD0BD;\n}\n#layer[frame-offset=1] {\n marker-width:3.5;\n marker-fill-opacity:0.45;\n}\n#layer[frame-offset=2] {\n marker-width:5.5;\n marker-fill-opacity:0.225;\n}\n";
 
 },{}],3:[function(require,module,exports){
@@ -84,17 +83,17 @@ var d3TimeSlider = {};
 var x, brush, handle;
 
 d3TimeSlider.create = function (startTime, endTime, brushCallback) {
-    var margin = { top: 0, right: 5, bottom: 0, left: 10 },
-        width = $(".timeline--chart").width() - margin.right - margin.left,
+    var margin = { top: 0, right: 0, bottom: 0, left: 0 },
+        width = $(".timeline--chart").width(),
         height = 60;
 
     x = d3.scale.linear().domain([startTime, endTime]).range([0, width]).clamp(true);
 
     brush = d3.svg.brush().x(x).extent([0, 0]).on("brush", brushed);
 
-    var svg = d3.select(".timeline--chart").append("svg").attr("width", width).attr("height", height).attr("class", "time-slider").append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select(".timeline--chart").append("svg").attr("width", width).attr("height", height).attr("class", "time-slider").append("g");
 
-    svg.append("g").append("rect").attr("rx", 2).attr("ry", 2).attr("x", 0).attr("y", height / 2).attr("width", "100%").attr("height", 2).style("fill", "white");
+    svg.append("g").append("rect").attr("rx", 0).attr("ry", 0).attr("x", 0).attr("y", height / 2).attr("width", "100%").attr("height", 2).style("fill", "white");
 
     svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height / 2 + ")").select(".domain").select(function () {
         return this.parentNode.appendChild(this.cloneNode(true));
@@ -126,7 +125,7 @@ module.exports = d3TimeSlider;
 
 
 
-},{"./event_bus.js":5,"d3":24,"jquery":25}],4:[function(require,module,exports){
+},{"./event_bus.js":5,"d3":22,"jquery":23}],4:[function(require,module,exports){
 "use strict";
 
 var d3 = require("d3"),
@@ -178,7 +177,7 @@ module.exports = d3TweetChart;
 
 
 
-},{"d3":24,"jquery":25}],5:[function(require,module,exports){
+},{"d3":22,"jquery":23}],5:[function(require,module,exports){
 "use strict";
 
 var EventBusClass = {};
@@ -523,7 +522,7 @@ module.exports = TorqueLayer;
 
 
 
-},{"./event_bus.js":5,"./line_utils.js":6,"colorbrewer":23,"d3":24,"jquery":25,"leaflet":26,"torque.js":193,"underscore":249}],8:[function(require,module,exports){
+},{"./event_bus.js":5,"./line_utils.js":6,"colorbrewer":21,"d3":22,"jquery":23,"leaflet":24,"torque.js":190,"underscore":246}],8:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -549,10 +548,7 @@ var Map = React.createClass({ displayName: "Map",
   },
 
   setupMap: function setupMap() {
-    var southWest = L.latLng(-37.020098201368114, -7.91015625),
-        northEast = L.latLng(64.01449619484472, 184.74609375),
-        bounds = L.latLngBounds(southWest, northEast);
-    this.map.fitBounds(bounds, { paddingBottomRight: [0, 200] });
+    this.map.setView([20.797201434307, 14.94140625], 2);
   },
 
   componentDidMount: function componentDidMount() {
@@ -575,7 +571,7 @@ module.exports = Map;
 
 
 
-},{"./lib/torque_layer.js":7,"leaflet":26,"react":182}],9:[function(require,module,exports){
+},{"./lib/torque_layer.js":7,"leaflet":24,"react":180}],9:[function(require,module,exports){
 "use strict";
 
 var React = require("react"),
@@ -599,7 +595,7 @@ var Modal = React.createClass({ displayName: "Modal",
     $(node).hide();
   },
 
-  componentDidUpdate: function componentDidUpdate() {
+  updateVisibility: function updateVisibility() {
     if (this.props.isOpen === true) {
       this.show();
     } else {
@@ -607,9 +603,17 @@ var Modal = React.createClass({ displayName: "Modal",
     }
   },
 
+  componentDidMount: function componentDidMount() {
+    this.updateVisibility();
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    this.updateVisibility();
+  },
+
   render: function render() {
     return React.createElement("div", { className: "modal--window" }, React.createElement("div", { className: "modal--wrapper" }, React.createElement("div", { className: "modal--container" }, React.createElement("h2", null, "Flying on the wings of Twitter"), React.createElement("p", null, "Since March 9th 2015, André Borschberg and Bertrand Piccard" + " " + "have been flying Solar Impulse 2.0 around the world. This is" + " " + "the world’s first round-the-world flight using only the" + " " + "sun’s energy. Millions of people around the world have been" + " " + "following the events unfold and tweeting their support for" + " " + "flight without fossil fuels."), React.createElement("p", null, "Vizzuality have built a visualisation of the flight" + " " + "‘powered by tweets’ using a number of innovative" + " " + "techniques combined with the popular ", React.createElement("a", {
-      href: "http://docs.cartodb.com/tutorials/introduction_torque.html" }, "Torque" + " " + "library"), ". Sit back and watch as the support rushes in" + " " + "from all corners of the world on Solar Impulse’s" + " " + "pioneering voyage across the world."), React.createElement("div", { className: "modal--action-buttons" }, React.createElement("a", { href: "#", className: "modal--btn-continue", onClick: this.handleClick }, "Continue")))), React.createElement("div", { className: "modal--background" }));
+      href: "http://docs.cartodb.com/tutorials/introduction_torque.html" }, "Torque" + " " + "library"), ". Sit back and watch as the support rushes in" + " " + "from all corners of the world on Solar Impulse’s" + " " + "pioneering voyage across the world."), React.createElement("div", { className: "modal--action-buttons" }, React.createElement("a", { href: "#", className: "modal--btn-continue", onClick: this.handleClick }, "Continue")))), React.createElement("div", { className: "modal--background", onClick: this.handleClick }));
   }
 });
 
@@ -617,7 +621,7 @@ module.exports = Modal;
 
 
 
-},{"jquery":25,"react":182}],10:[function(require,module,exports){
+},{"jquery":23,"react":180}],10:[function(require,module,exports){
 "use strict";
 
 var React = require("react"),
@@ -665,7 +669,7 @@ module.exports = TimeSlider;
 
 
 
-},{"./lib/d3_time_slider.js":3,"./lib/event_bus.js":5,"jquery":25,"react":182}],11:[function(require,module,exports){
+},{"./lib/d3_time_slider.js":3,"./lib/event_bus.js":5,"jquery":23,"react":180}],11:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -679,7 +683,7 @@ var EventBus = require("./lib/event_bus.js");
 
 var StateButton = React.createClass({ displayName: "StateButton",
   getInitialState: function getInitialState() {
-    return { playing: true };
+    return { playing: false };
   },
 
   componentDidMount: function componentDidMount() {
@@ -748,11 +752,11 @@ var Timeline = React.createClass({ displayName: "Timeline",
   },
 
   render: function render() {
-    return React.createElement("div", { className: "timeline" }, React.createElement("h1", null, "Solar Impulse"), React.createElement("div", { className: "timeline--top-container" }, React.createElement(CurrentTime, null), React.createElement("div", { className: "timeline--chart-container" }, React.createElement(StateButton, { callback: this._onPausePlay }), React.createElement("div", { className: "timeline--chart" }, React.createElement(TimeSlider, {
+    return React.createElement("div", { className: "timeline" }, React.createElement("div", { className: "timeline--top-container" }, React.createElement(CurrentTime, null), React.createElement("div", { className: "timeline--chart-container" }, React.createElement(StateButton, { callback: this._onPausePlay }), React.createElement("div", { className: "timeline--chart" }, React.createElement(TimeSlider, {
       leafletTorqueLayer: this.props.leafletTorqueLayer,
       time: this.props.currentTime,
       startTime: this.props.startTime,
-      endTime: this.props.endTime }), React.createElement(TweetChart, null)))));
+      endTime: this.props.endTime })))));
   }
 
 });
@@ -761,7 +765,7 @@ module.exports = Timeline;
 
 
 
-},{"./lib/event_bus.js":5,"./time_slider.js":10,"./tweet_chart.js":12,"moment":27,"react":182}],12:[function(require,module,exports){
+},{"./lib/event_bus.js":5,"./time_slider.js":10,"./tweet_chart.js":12,"moment":25,"react":180}],12:[function(require,module,exports){
 "use strict";
 
 var React = require("react"),
@@ -810,189 +814,9 @@ module.exports = TweetChart;
 
 
 
-},{"./lib/d3_tweet_chart.js":4,"jquery":25,"react":182}],13:[function(require,module,exports){
-"use strict";
+},{"./lib/d3_tweet_chart.js":4,"jquery":23,"react":180}],13:[function(require,module,exports){
 
-var React = require("react"),
-    $ = require("jquery"),
-    slick = require("slick-carousel");
-
-var EventBus = require("./lib/event_bus.js");
-
-var tweets = require("./tweets.js");
-
-var Tweet = React.createClass({ displayName: "Tweet",
-  render: function render() {
-    var content = this.props.children.toString();
-    var user_link = "http://twitter.com/" + this.props.username.substring(1);
-
-    return React.createElement("li", null, React.createElement("p", { className: "tweet--content" }, content), React.createElement("p", { className: "tweet--metadata" }, React.createElement("a", { href: user_link }, this.props.username), ", ", React.createElement("a", { href: this.props.link }, this.props.date)));
-  }
-});
-
-var TweetTicker = React.createClass({ displayName: "TweetTicker",
-  _pause: function _pause() {
-    var el = $(this.getDOMNode());
-    el.slick("slickPause");
-  },
-
-  _play: function _play() {
-    var el = $(this.getDOMNode());
-    el.slick("slickPlay");
-  },
-
-  componentDidMount: function componentDidMount() {
-    EventBus.addEventListener("torque:pause", this._pause);
-    EventBus.addEventListener("torque:play", this._play);
-
-    var slidesToShow = 5,
-        maxPosition = tweets.length - slidesToShow,
-
-    //speed = this.props.totalTime / tweets.length;
-    speed = 3000;
-
-    var el = $(this.getDOMNode());
-    el.slick({
-      slidesToShow: slidesToShow,
-      slidesToScroll: 1,
-      autoplay: true,
-      pauseOnHover: true,
-      swipe: false,
-      autoplaySpeed: speed,
-      arrows: false,
-      infinite: false
-    });
-
-    el.on("afterChange", function (event, slick, currentSlide) {
-      if (currentSlide === maxPosition) {
-        el.slick("slickGoTo", 1);
-      }
-    });
-  },
-
-  render: function render() {
-    var tweetNodes = tweets.map(function (tweet, index) {
-      return React.createElement(Tweet, { username: tweet.username, date: tweet.date, link: tweet.link, key: index }, tweet.text);
-    });
-
-    return React.createElement("ul", { className: "tweets" }, tweetNodes);
-  }
-});
-
-module.exports = TweetTicker;
-
-
-
-},{"./lib/event_bus.js":5,"./tweets.js":14,"jquery":25,"react":182,"slick-carousel":183}],14:[function(require,module,exports){
-"use strict";
-
-module.exports = [{
-  text: "Have you followed this morning's takeoff from Abu Dhabi to Muscat by @andreborschberg? https://goo.gl/u4oskG",
-  link: "https://twitter.com/solarimpulse/status/574929079952130048",
-  date: "9 Mar 2015",
-  username: "@solarimpulse"
-}, {
-  text: "Good Luck around the world in the air@solarimpulse 2 #FlyTheFuture http://t.co/xLT09jo6wD",
-  username: "@venturi",
-  date: "9 Mar 2015",
-  link: "https://twitter.com/venturi/statuses/574824348084740096"
-}, {
-  text: "#Flight2 from Muscat to Ahmedabad could be a record-breaker. Previous records of #solarimpulse http://goo.gl/hlR4Ba",
-  link: "https://twitter.com/solarimpulse/status/575323854278672385",
-  date: "10 Mar 2015",
-  username: "@solarimpulse"
-}, {
-  text: "A lucky sighting! @solarimpulse lands in Ahmedabad as my flight gets ready to take off! #Si2 #solarimpulse",
-  link: "https://twitter.com/therealsaumil/status/575477782899097601",
-  username: "@therealsaumil",
-  date: "11 Mar 2015"
-}, {
-  text: "Amazing picture from @andreborschberg takeoff in #Ahmedabad. Follow #Flight3 #LIVE on http://goo.gl/DHPWj7",
-  link: "https://twitter.com/solarimpulse/status/578023994802188288",
-  date: "18 Mar 2015",
-  username: "@solarimpulse"
-}, {
-  text: "Successful takeoff for @bertrandpiccard in #Varanasi! #Si2 is on its way to #Mandalay #Myanmar! #RTW",
-  date: "19 Mar 2015",
-  link: "https://twitter.com/therealsaumil/status/575477782899097601",
-  username: "@therealsaumil"
-}, {
-  text: "Watch again @bertrandpiccard takeoff at 9:06PM UTC from #Mandalay in #Myanmar! https://goo.gl/CzogLn",
-  date: "30 Mar 2015",
-  link: "https://twitter.com/solarimpulse/status/582306684481191936",
-  username: "@solarimpulse"
-}, {
-  text: "Takeoff from #Chongqing is postponed due to bad weather in #China. Stay tuned for more updates in the coming days",
-  link: "https://twitter.com/solarimpulse/status/585383946931859456",
-  username: "@solarimpulse",
-  date: "7 Apr 2015"
-}, {
-  text: "@bertrandpiccard and #Si2 are ready for departure in #Chongqing. Watch the takeoff on http://solarimpulse.com",
-  link: "https://twitter.com/andreborschberg/status/590275312619036672",
-  username: "@andreborschberg",
-  date: "April 20 2015"
-}, {
-  text: "Wishing @solarimpulse lots of sun as they cross the Pacific to fly from China to Hawaii! http://t.co/yvCorldAVi",
-  link: "http://twitter.com/HaleakalaSolar/statuses/595332075374284800",
-  username: "@HaleakalaSolar",
-  date: "4 May 2015"
-}, {
-  text: "@solarimpulse You have my support 110%",
-  username: "@GeorgiaTimmy",
-  date: "8 May 2015",
-  link: "http://twitter.com/GeorgiaTimmy/statuses/596489863341408256"
-}, {
-  text: "Looking forward to the @solarimpulse crossing the #Pacific",
-  link: "http://twitter.com/garysan97/statuses/597449105229611008",
-  username: "@garysan97",
-  date: "10 May 2015"
-}, {
-  text: "Wishing you the best of fortune and stamina for the pacific crossing! Incredible innovation, inspiration. https://t.co/PMXAmZMiX9",
-  link: "http://twitter.com/JillPearson/statuses/598979553088786433",
-  username: "@JillPearson",
-  date: "14 May 2015" }, {
-  text: "Good luck to @bertrandpiccard and @andreborschberg for their 1st round the world Solar Flight @solarimpulse.",
-  username: "@KofiAnnan",
-  date: "18 May 2015",
-  link: "https://twitter.com/KofiAnnan/status/600337720498610176"
-}, {
-  text: "El Solar Impulse se prepara para la complicada misión de cruzar el Pacífico http://goo.gl/2wLPsO",
-  link: "https://twitter.com/ReporteUS/statuses/600799294388469760",
-  username: "@ReporteUS",
-  date: "May 20 2015"
-}, {
-  text: "@solarimpulse Take heart, with determination you will make it....",
-  date: "29 May 2015",
-  username: "@Alfa7Kagspat",
-  link: "https://twitter.com/Alfa7Kagspat/statuses/604251799604871169"
-}, {
-  text: "Amazing takeoff for @andreborschberg and #Si2 in #Nanjing at 2.39AM LT #China",
-  link: "https://twitter.com/solarimpulse/status/604722498685554688",
-  date: "May 30 2015",
-  username: "@solarimpulse"
-}, {
-  text: "BREAKING NEWS: Weather window toward Hawaii has deteriorated. We decided to make an intermediate landing in Nagoya!",
-  date: "1 Jun 2015",
-  link: "https://twitter.com/solarimpulse/status/605269568387350528",
-  username: "@solarimpulse"
-}, {
-  text: "UPDATE: Since the takeoff in Abu Dhabi, #Si2 flew 10,692 KM & will land tonight in Nagoya #futureisclean",
-  link: "https://twitter.com/solarimpulse/status/605310470275395584",
-  date: "11 Jun 2015",
-  username: "@solarimpulse"
-}, {
-  text: "Follow our audience's emotions about the current #Flight, go to http://goo.gl/A7LG6R",
-  date: "1 July 2015",
-  link: "https://twitter.com/solarimpulse/status/616125639423324160",
-  username: "@solarimpulse"
-}]
-
-
-;
-
-},{}],15:[function(require,module,exports){
-
-},{}],16:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //
 // THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
@@ -1353,7 +1177,7 @@ var objectKeys = Object.keys || function (obj) {
   return keys;
 };
 
-},{"util/":21}],17:[function(require,module,exports){
+},{"util/":19}],15:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1378,7 +1202,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],18:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1606,7 +1430,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":19}],19:[function(require,module,exports){
+},{"_process":17}],17:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1666,14 +1490,14 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],20:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],21:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2263,7 +2087,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":20,"_process":19,"inherits":17}],22:[function(require,module,exports){
+},{"./support/isBuffer":18,"_process":17,"inherits":15}],20:[function(require,module,exports){
 // This product includes color specifications and designs developed by Cynthia Brewer (http://colorbrewer.org/).
 // JavaScript specs as packaged in the D3 library (d3js.org). Please see license at http://colorbrewer.org/export/LICENSE.txt
 !function() {
@@ -2580,10 +2404,10 @@ if (typeof define === "function" && define.amd) {
 
 }();
 
-},{}],23:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = require('./colorbrewer.js');
 
-},{"./colorbrewer.js":22}],24:[function(require,module,exports){
+},{"./colorbrewer.js":20}],22:[function(require,module,exports){
 !function() {
   var d3 = {
     version: "3.5.5"
@@ -12088,7 +11912,7 @@ module.exports = require('./colorbrewer.js');
   if (typeof define === "function" && define.amd) define(d3); else if (typeof module === "object" && module.exports) module.exports = d3;
   this.d3 = d3;
 }();
-},{}],25:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -21300,7 +21124,7 @@ return jQuery;
 
 }));
 
-},{}],26:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
  (c) 2010-2013, Vladimir Agafonkin
@@ -30481,7 +30305,7 @@ L.Map.include({
 
 
 }(window, document));
-},{}],27:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -33593,7 +33417,7 @@ L.Map.include({
     return _moment;
 
 }));
-},{}],28:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -33620,7 +33444,7 @@ var AutoFocusMixin = {
 
 module.exports = AutoFocusMixin;
 
-},{"./focusNode":146}],29:[function(require,module,exports){
+},{"./focusNode":144}],27:[function(require,module,exports){
 /**
  * Copyright 2013-2015 Facebook, Inc.
  * All rights reserved.
@@ -34115,7 +33939,7 @@ var BeforeInputEventPlugin = {
 
 module.exports = BeforeInputEventPlugin;
 
-},{"./EventConstants":41,"./EventPropagators":46,"./ExecutionEnvironment":47,"./FallbackCompositionState":48,"./SyntheticCompositionEvent":120,"./SyntheticInputEvent":124,"./keyOf":168}],30:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPropagators":44,"./ExecutionEnvironment":45,"./FallbackCompositionState":46,"./SyntheticCompositionEvent":118,"./SyntheticInputEvent":122,"./keyOf":166}],28:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -34240,7 +34064,7 @@ var CSSProperty = {
 
 module.exports = CSSProperty;
 
-},{}],31:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -34422,7 +34246,7 @@ var CSSPropertyOperations = {
 module.exports = CSSPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./CSSProperty":30,"./ExecutionEnvironment":47,"./camelizeStyleName":135,"./dangerousStyleValue":140,"./hyphenateStyleName":160,"./memoizeStringOnly":170,"./warning":181,"_process":19}],32:[function(require,module,exports){
+},{"./CSSProperty":28,"./ExecutionEnvironment":45,"./camelizeStyleName":133,"./dangerousStyleValue":138,"./hyphenateStyleName":158,"./memoizeStringOnly":168,"./warning":179,"_process":17}],30:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -34522,7 +34346,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./PooledClass":54,"./invariant":162,"_process":19}],33:[function(require,module,exports){
+},{"./Object.assign":51,"./PooledClass":52,"./invariant":160,"_process":17}],31:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -34904,7 +34728,7 @@ var ChangeEventPlugin = {
 
 module.exports = ChangeEventPlugin;
 
-},{"./EventConstants":41,"./EventPluginHub":43,"./EventPropagators":46,"./ExecutionEnvironment":47,"./ReactUpdates":114,"./SyntheticEvent":122,"./isEventSupported":163,"./isTextInputElement":165,"./keyOf":168}],34:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPluginHub":41,"./EventPropagators":44,"./ExecutionEnvironment":45,"./ReactUpdates":112,"./SyntheticEvent":120,"./isEventSupported":161,"./isTextInputElement":163,"./keyOf":166}],32:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -34929,7 +34753,7 @@ var ClientReactRootIndex = {
 
 module.exports = ClientReactRootIndex;
 
-},{}],35:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35067,7 +34891,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 }).call(this,require('_process'))
-},{"./Danger":38,"./ReactMultiChildUpdateTypes":99,"./invariant":162,"./setTextContent":176,"_process":19}],36:[function(require,module,exports){
+},{"./Danger":36,"./ReactMultiChildUpdateTypes":97,"./invariant":160,"./setTextContent":174,"_process":17}],34:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35366,7 +35190,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],37:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],35:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35558,7 +35382,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":36,"./quoteAttributeValueForBrowser":174,"./warning":181,"_process":19}],38:[function(require,module,exports){
+},{"./DOMProperty":34,"./quoteAttributeValueForBrowser":172,"./warning":179,"_process":17}],36:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35745,7 +35569,7 @@ var Danger = {
 module.exports = Danger;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":47,"./createNodesFromMarkup":139,"./emptyFunction":141,"./getMarkupWrap":154,"./invariant":162,"_process":19}],39:[function(require,module,exports){
+},{"./ExecutionEnvironment":45,"./createNodesFromMarkup":137,"./emptyFunction":139,"./getMarkupWrap":152,"./invariant":160,"_process":17}],37:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -35784,7 +35608,7 @@ var DefaultEventPluginOrder = [
 
 module.exports = DefaultEventPluginOrder;
 
-},{"./keyOf":168}],40:[function(require,module,exports){
+},{"./keyOf":166}],38:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -35924,7 +35748,7 @@ var EnterLeaveEventPlugin = {
 
 module.exports = EnterLeaveEventPlugin;
 
-},{"./EventConstants":41,"./EventPropagators":46,"./ReactMount":97,"./SyntheticMouseEvent":126,"./keyOf":168}],41:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPropagators":44,"./ReactMount":95,"./SyntheticMouseEvent":124,"./keyOf":166}],39:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -35996,7 +35820,7 @@ var EventConstants = {
 
 module.exports = EventConstants;
 
-},{"./keyMirror":167}],42:[function(require,module,exports){
+},{"./keyMirror":165}],40:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36086,7 +35910,7 @@ var EventListener = {
 module.exports = EventListener;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":141,"_process":19}],43:[function(require,module,exports){
+},{"./emptyFunction":139,"_process":17}],41:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36364,7 +36188,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":44,"./EventPluginUtils":45,"./accumulateInto":132,"./forEachAccumulated":147,"./invariant":162,"_process":19}],44:[function(require,module,exports){
+},{"./EventPluginRegistry":42,"./EventPluginUtils":43,"./accumulateInto":130,"./forEachAccumulated":145,"./invariant":160,"_process":17}],42:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36644,7 +36468,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],45:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],43:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36865,7 +36689,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 }).call(this,require('_process'))
-},{"./EventConstants":41,"./invariant":162,"_process":19}],46:[function(require,module,exports){
+},{"./EventConstants":39,"./invariant":160,"_process":17}],44:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37007,7 +36831,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 
 }).call(this,require('_process'))
-},{"./EventConstants":41,"./EventPluginHub":43,"./accumulateInto":132,"./forEachAccumulated":147,"_process":19}],47:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPluginHub":41,"./accumulateInto":130,"./forEachAccumulated":145,"_process":17}],45:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37051,7 +36875,7 @@ var ExecutionEnvironment = {
 
 module.exports = ExecutionEnvironment;
 
-},{}],48:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37142,7 +36966,7 @@ PooledClass.addPoolingTo(FallbackCompositionState);
 
 module.exports = FallbackCompositionState;
 
-},{"./Object.assign":53,"./PooledClass":54,"./getTextContentAccessor":157}],49:[function(require,module,exports){
+},{"./Object.assign":51,"./PooledClass":52,"./getTextContentAccessor":155}],47:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37353,7 +37177,7 @@ var HTMLDOMPropertyConfig = {
 
 module.exports = HTMLDOMPropertyConfig;
 
-},{"./DOMProperty":36,"./ExecutionEnvironment":47}],50:[function(require,module,exports){
+},{"./DOMProperty":34,"./ExecutionEnvironment":45}],48:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37509,7 +37333,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 }).call(this,require('_process'))
-},{"./ReactPropTypes":105,"./invariant":162,"_process":19}],51:[function(require,module,exports){
+},{"./ReactPropTypes":103,"./invariant":160,"_process":17}],49:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -37566,7 +37390,7 @@ var LocalEventTrapMixin = {
 module.exports = LocalEventTrapMixin;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserEventEmitter":57,"./accumulateInto":132,"./forEachAccumulated":147,"./invariant":162,"_process":19}],52:[function(require,module,exports){
+},{"./ReactBrowserEventEmitter":55,"./accumulateInto":130,"./forEachAccumulated":145,"./invariant":160,"_process":17}],50:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37624,7 +37448,7 @@ var MobileSafariClickEventPlugin = {
 
 module.exports = MobileSafariClickEventPlugin;
 
-},{"./EventConstants":41,"./emptyFunction":141}],53:[function(require,module,exports){
+},{"./EventConstants":39,"./emptyFunction":139}],51:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -37673,7 +37497,7 @@ function assign(target, sources) {
 
 module.exports = assign;
 
-},{}],54:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37789,7 +37613,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],55:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],53:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -37941,7 +37765,7 @@ React.version = '0.13.3';
 module.exports = React;
 
 }).call(this,require('_process'))
-},{"./EventPluginUtils":45,"./ExecutionEnvironment":47,"./Object.assign":53,"./ReactChildren":59,"./ReactClass":60,"./ReactComponent":61,"./ReactContext":65,"./ReactCurrentOwner":66,"./ReactDOM":67,"./ReactDOMTextComponent":78,"./ReactDefaultInjection":81,"./ReactElement":84,"./ReactElementValidator":85,"./ReactInstanceHandles":93,"./ReactMount":97,"./ReactPerf":102,"./ReactPropTypes":105,"./ReactReconciler":108,"./ReactServerRendering":111,"./findDOMNode":144,"./onlyChild":171,"_process":19}],56:[function(require,module,exports){
+},{"./EventPluginUtils":43,"./ExecutionEnvironment":45,"./Object.assign":51,"./ReactChildren":57,"./ReactClass":58,"./ReactComponent":59,"./ReactContext":63,"./ReactCurrentOwner":64,"./ReactDOM":65,"./ReactDOMTextComponent":76,"./ReactDefaultInjection":79,"./ReactElement":82,"./ReactElementValidator":83,"./ReactInstanceHandles":91,"./ReactMount":95,"./ReactPerf":100,"./ReactPropTypes":103,"./ReactReconciler":106,"./ReactServerRendering":109,"./findDOMNode":142,"./onlyChild":169,"_process":17}],54:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37972,7 +37796,7 @@ var ReactBrowserComponentMixin = {
 
 module.exports = ReactBrowserComponentMixin;
 
-},{"./findDOMNode":144}],57:[function(require,module,exports){
+},{"./findDOMNode":142}],55:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38325,7 +38149,7 @@ var ReactBrowserEventEmitter = assign({}, ReactEventEmitterMixin, {
 
 module.exports = ReactBrowserEventEmitter;
 
-},{"./EventConstants":41,"./EventPluginHub":43,"./EventPluginRegistry":44,"./Object.assign":53,"./ReactEventEmitterMixin":88,"./ViewportMetrics":131,"./isEventSupported":163}],58:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPluginHub":41,"./EventPluginRegistry":42,"./Object.assign":51,"./ReactEventEmitterMixin":86,"./ViewportMetrics":129,"./isEventSupported":161}],56:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -38452,7 +38276,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 
-},{"./ReactReconciler":108,"./flattenChildren":145,"./instantiateReactComponent":161,"./shouldUpdateReactComponent":178}],59:[function(require,module,exports){
+},{"./ReactReconciler":106,"./flattenChildren":143,"./instantiateReactComponent":159,"./shouldUpdateReactComponent":176}],57:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38605,7 +38429,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 }).call(this,require('_process'))
-},{"./PooledClass":54,"./ReactFragment":90,"./traverseAllChildren":180,"./warning":181,"_process":19}],60:[function(require,module,exports){
+},{"./PooledClass":52,"./ReactFragment":88,"./traverseAllChildren":178,"./warning":179,"_process":17}],58:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39551,7 +39375,7 @@ var ReactClass = {
 module.exports = ReactClass;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./ReactComponent":61,"./ReactCurrentOwner":66,"./ReactElement":84,"./ReactErrorUtils":87,"./ReactInstanceMap":94,"./ReactLifeCycle":95,"./ReactPropTypeLocationNames":103,"./ReactPropTypeLocations":104,"./ReactUpdateQueue":113,"./invariant":162,"./keyMirror":167,"./keyOf":168,"./warning":181,"_process":19}],61:[function(require,module,exports){
+},{"./Object.assign":51,"./ReactComponent":59,"./ReactCurrentOwner":64,"./ReactElement":82,"./ReactErrorUtils":85,"./ReactInstanceMap":92,"./ReactLifeCycle":93,"./ReactPropTypeLocationNames":101,"./ReactPropTypeLocations":102,"./ReactUpdateQueue":111,"./invariant":160,"./keyMirror":165,"./keyOf":166,"./warning":179,"_process":17}],59:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39705,7 +39529,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactComponent;
 
 }).call(this,require('_process'))
-},{"./ReactUpdateQueue":113,"./invariant":162,"./warning":181,"_process":19}],62:[function(require,module,exports){
+},{"./ReactUpdateQueue":111,"./invariant":160,"./warning":179,"_process":17}],60:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -39752,7 +39576,7 @@ var ReactComponentBrowserEnvironment = {
 
 module.exports = ReactComponentBrowserEnvironment;
 
-},{"./ReactDOMIDOperations":71,"./ReactMount":97}],63:[function(require,module,exports){
+},{"./ReactDOMIDOperations":69,"./ReactMount":95}],61:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -39813,7 +39637,7 @@ var ReactComponentEnvironment = {
 module.exports = ReactComponentEnvironment;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],64:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],62:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40726,7 +40550,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./ReactComponentEnvironment":63,"./ReactContext":65,"./ReactCurrentOwner":66,"./ReactElement":84,"./ReactElementValidator":85,"./ReactInstanceMap":94,"./ReactLifeCycle":95,"./ReactNativeComponent":100,"./ReactPerf":102,"./ReactPropTypeLocationNames":103,"./ReactPropTypeLocations":104,"./ReactReconciler":108,"./ReactUpdates":114,"./emptyObject":142,"./invariant":162,"./shouldUpdateReactComponent":178,"./warning":181,"_process":19}],65:[function(require,module,exports){
+},{"./Object.assign":51,"./ReactComponentEnvironment":61,"./ReactContext":63,"./ReactCurrentOwner":64,"./ReactElement":82,"./ReactElementValidator":83,"./ReactInstanceMap":92,"./ReactLifeCycle":93,"./ReactNativeComponent":98,"./ReactPerf":100,"./ReactPropTypeLocationNames":101,"./ReactPropTypeLocations":102,"./ReactReconciler":106,"./ReactUpdates":112,"./emptyObject":140,"./invariant":160,"./shouldUpdateReactComponent":176,"./warning":179,"_process":17}],63:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40804,7 +40628,7 @@ var ReactContext = {
 module.exports = ReactContext;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./emptyObject":142,"./warning":181,"_process":19}],66:[function(require,module,exports){
+},{"./Object.assign":51,"./emptyObject":140,"./warning":179,"_process":17}],64:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -40838,7 +40662,7 @@ var ReactCurrentOwner = {
 
 module.exports = ReactCurrentOwner;
 
-},{}],67:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -41017,7 +40841,7 @@ var ReactDOM = mapObject({
 module.exports = ReactDOM;
 
 }).call(this,require('_process'))
-},{"./ReactElement":84,"./ReactElementValidator":85,"./mapObject":169,"_process":19}],68:[function(require,module,exports){
+},{"./ReactElement":82,"./ReactElementValidator":83,"./mapObject":167,"_process":17}],66:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41081,7 +40905,7 @@ var ReactDOMButton = ReactClass.createClass({
 
 module.exports = ReactDOMButton;
 
-},{"./AutoFocusMixin":28,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84,"./keyMirror":167}],69:[function(require,module,exports){
+},{"./AutoFocusMixin":26,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82,"./keyMirror":165}],67:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -41591,7 +41415,7 @@ ReactDOMComponent.injection = {
 module.exports = ReactDOMComponent;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":31,"./DOMProperty":36,"./DOMPropertyOperations":37,"./Object.assign":53,"./ReactBrowserEventEmitter":57,"./ReactComponentBrowserEnvironment":62,"./ReactMount":97,"./ReactMultiChild":98,"./ReactPerf":102,"./escapeTextContentForBrowser":143,"./invariant":162,"./isEventSupported":163,"./keyOf":168,"./warning":181,"_process":19}],70:[function(require,module,exports){
+},{"./CSSPropertyOperations":29,"./DOMProperty":34,"./DOMPropertyOperations":35,"./Object.assign":51,"./ReactBrowserEventEmitter":55,"./ReactComponentBrowserEnvironment":60,"./ReactMount":95,"./ReactMultiChild":96,"./ReactPerf":100,"./escapeTextContentForBrowser":141,"./invariant":160,"./isEventSupported":161,"./keyOf":166,"./warning":179,"_process":17}],68:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41640,7 +41464,7 @@ var ReactDOMForm = ReactClass.createClass({
 
 module.exports = ReactDOMForm;
 
-},{"./EventConstants":41,"./LocalEventTrapMixin":51,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84}],71:[function(require,module,exports){
+},{"./EventConstants":39,"./LocalEventTrapMixin":49,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82}],69:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -41808,7 +41632,7 @@ ReactPerf.measureMethods(ReactDOMIDOperations, 'ReactDOMIDOperations', {
 module.exports = ReactDOMIDOperations;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":31,"./DOMChildrenOperations":35,"./DOMPropertyOperations":37,"./ReactMount":97,"./ReactPerf":102,"./invariant":162,"./setInnerHTML":175,"_process":19}],72:[function(require,module,exports){
+},{"./CSSPropertyOperations":29,"./DOMChildrenOperations":33,"./DOMPropertyOperations":35,"./ReactMount":95,"./ReactPerf":100,"./invariant":160,"./setInnerHTML":173,"_process":17}],70:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41853,7 +41677,7 @@ var ReactDOMIframe = ReactClass.createClass({
 
 module.exports = ReactDOMIframe;
 
-},{"./EventConstants":41,"./LocalEventTrapMixin":51,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84}],73:[function(require,module,exports){
+},{"./EventConstants":39,"./LocalEventTrapMixin":49,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82}],71:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41899,7 +41723,7 @@ var ReactDOMImg = ReactClass.createClass({
 
 module.exports = ReactDOMImg;
 
-},{"./EventConstants":41,"./LocalEventTrapMixin":51,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84}],74:[function(require,module,exports){
+},{"./EventConstants":39,"./LocalEventTrapMixin":49,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82}],72:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -42076,7 +41900,7 @@ var ReactDOMInput = ReactClass.createClass({
 module.exports = ReactDOMInput;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":28,"./DOMPropertyOperations":37,"./LinkedValueUtils":50,"./Object.assign":53,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84,"./ReactMount":97,"./ReactUpdates":114,"./invariant":162,"_process":19}],75:[function(require,module,exports){
+},{"./AutoFocusMixin":26,"./DOMPropertyOperations":35,"./LinkedValueUtils":48,"./Object.assign":51,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82,"./ReactMount":95,"./ReactUpdates":112,"./invariant":160,"_process":17}],73:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -42128,7 +41952,7 @@ var ReactDOMOption = ReactClass.createClass({
 module.exports = ReactDOMOption;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84,"./warning":181,"_process":19}],76:[function(require,module,exports){
+},{"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82,"./warning":179,"_process":17}],74:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42306,7 +42130,7 @@ var ReactDOMSelect = ReactClass.createClass({
 
 module.exports = ReactDOMSelect;
 
-},{"./AutoFocusMixin":28,"./LinkedValueUtils":50,"./Object.assign":53,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84,"./ReactUpdates":114}],77:[function(require,module,exports){
+},{"./AutoFocusMixin":26,"./LinkedValueUtils":48,"./Object.assign":51,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82,"./ReactUpdates":112}],75:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42519,7 +42343,7 @@ var ReactDOMSelection = {
 
 module.exports = ReactDOMSelection;
 
-},{"./ExecutionEnvironment":47,"./getNodeForCharacterOffset":155,"./getTextContentAccessor":157}],78:[function(require,module,exports){
+},{"./ExecutionEnvironment":45,"./getNodeForCharacterOffset":153,"./getTextContentAccessor":155}],76:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42636,7 +42460,7 @@ assign(ReactDOMTextComponent.prototype, {
 
 module.exports = ReactDOMTextComponent;
 
-},{"./DOMPropertyOperations":37,"./Object.assign":53,"./ReactComponentBrowserEnvironment":62,"./ReactDOMComponent":69,"./escapeTextContentForBrowser":143}],79:[function(require,module,exports){
+},{"./DOMPropertyOperations":35,"./Object.assign":51,"./ReactComponentBrowserEnvironment":60,"./ReactDOMComponent":67,"./escapeTextContentForBrowser":141}],77:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -42776,7 +42600,7 @@ var ReactDOMTextarea = ReactClass.createClass({
 module.exports = ReactDOMTextarea;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":28,"./DOMPropertyOperations":37,"./LinkedValueUtils":50,"./Object.assign":53,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactElement":84,"./ReactUpdates":114,"./invariant":162,"./warning":181,"_process":19}],80:[function(require,module,exports){
+},{"./AutoFocusMixin":26,"./DOMPropertyOperations":35,"./LinkedValueUtils":48,"./Object.assign":51,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactElement":82,"./ReactUpdates":112,"./invariant":160,"./warning":179,"_process":17}],78:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42849,7 +42673,7 @@ var ReactDefaultBatchingStrategy = {
 
 module.exports = ReactDefaultBatchingStrategy;
 
-},{"./Object.assign":53,"./ReactUpdates":114,"./Transaction":130,"./emptyFunction":141}],81:[function(require,module,exports){
+},{"./Object.assign":51,"./ReactUpdates":112,"./Transaction":128,"./emptyFunction":139}],79:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -43008,7 +42832,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./BeforeInputEventPlugin":29,"./ChangeEventPlugin":33,"./ClientReactRootIndex":34,"./DefaultEventPluginOrder":39,"./EnterLeaveEventPlugin":40,"./ExecutionEnvironment":47,"./HTMLDOMPropertyConfig":49,"./MobileSafariClickEventPlugin":52,"./ReactBrowserComponentMixin":56,"./ReactClass":60,"./ReactComponentBrowserEnvironment":62,"./ReactDOMButton":68,"./ReactDOMComponent":69,"./ReactDOMForm":70,"./ReactDOMIDOperations":71,"./ReactDOMIframe":72,"./ReactDOMImg":73,"./ReactDOMInput":74,"./ReactDOMOption":75,"./ReactDOMSelect":76,"./ReactDOMTextComponent":78,"./ReactDOMTextarea":79,"./ReactDefaultBatchingStrategy":80,"./ReactDefaultPerf":82,"./ReactElement":84,"./ReactEventListener":89,"./ReactInjection":91,"./ReactInstanceHandles":93,"./ReactMount":97,"./ReactReconcileTransaction":107,"./SVGDOMPropertyConfig":115,"./SelectEventPlugin":116,"./ServerReactRootIndex":117,"./SimpleEventPlugin":118,"./createFullPageComponent":138,"_process":19}],82:[function(require,module,exports){
+},{"./BeforeInputEventPlugin":27,"./ChangeEventPlugin":31,"./ClientReactRootIndex":32,"./DefaultEventPluginOrder":37,"./EnterLeaveEventPlugin":38,"./ExecutionEnvironment":45,"./HTMLDOMPropertyConfig":47,"./MobileSafariClickEventPlugin":50,"./ReactBrowserComponentMixin":54,"./ReactClass":58,"./ReactComponentBrowserEnvironment":60,"./ReactDOMButton":66,"./ReactDOMComponent":67,"./ReactDOMForm":68,"./ReactDOMIDOperations":69,"./ReactDOMIframe":70,"./ReactDOMImg":71,"./ReactDOMInput":72,"./ReactDOMOption":73,"./ReactDOMSelect":74,"./ReactDOMTextComponent":76,"./ReactDOMTextarea":77,"./ReactDefaultBatchingStrategy":78,"./ReactDefaultPerf":80,"./ReactElement":82,"./ReactEventListener":87,"./ReactInjection":89,"./ReactInstanceHandles":91,"./ReactMount":95,"./ReactReconcileTransaction":105,"./SVGDOMPropertyConfig":113,"./SelectEventPlugin":114,"./ServerReactRootIndex":115,"./SimpleEventPlugin":116,"./createFullPageComponent":136,"_process":17}],80:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43274,7 +43098,7 @@ var ReactDefaultPerf = {
 
 module.exports = ReactDefaultPerf;
 
-},{"./DOMProperty":36,"./ReactDefaultPerfAnalysis":83,"./ReactMount":97,"./ReactPerf":102,"./performanceNow":173}],83:[function(require,module,exports){
+},{"./DOMProperty":34,"./ReactDefaultPerfAnalysis":81,"./ReactMount":95,"./ReactPerf":100,"./performanceNow":171}],81:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43480,7 +43304,7 @@ var ReactDefaultPerfAnalysis = {
 
 module.exports = ReactDefaultPerfAnalysis;
 
-},{"./Object.assign":53}],84:[function(require,module,exports){
+},{"./Object.assign":51}],82:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -43788,7 +43612,7 @@ ReactElement.isValidElement = function(object) {
 module.exports = ReactElement;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./ReactContext":65,"./ReactCurrentOwner":66,"./warning":181,"_process":19}],85:[function(require,module,exports){
+},{"./Object.assign":51,"./ReactContext":63,"./ReactCurrentOwner":64,"./warning":179,"_process":17}],83:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -44253,7 +44077,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":66,"./ReactElement":84,"./ReactFragment":90,"./ReactNativeComponent":100,"./ReactPropTypeLocationNames":103,"./ReactPropTypeLocations":104,"./getIteratorFn":153,"./invariant":162,"./warning":181,"_process":19}],86:[function(require,module,exports){
+},{"./ReactCurrentOwner":64,"./ReactElement":82,"./ReactFragment":88,"./ReactNativeComponent":98,"./ReactPropTypeLocationNames":101,"./ReactPropTypeLocations":102,"./getIteratorFn":151,"./invariant":160,"./warning":179,"_process":17}],84:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -44348,7 +44172,7 @@ var ReactEmptyComponent = {
 module.exports = ReactEmptyComponent;
 
 }).call(this,require('_process'))
-},{"./ReactElement":84,"./ReactInstanceMap":94,"./invariant":162,"_process":19}],87:[function(require,module,exports){
+},{"./ReactElement":82,"./ReactInstanceMap":92,"./invariant":160,"_process":17}],85:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44380,7 +44204,7 @@ var ReactErrorUtils = {
 
 module.exports = ReactErrorUtils;
 
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44430,7 +44254,7 @@ var ReactEventEmitterMixin = {
 
 module.exports = ReactEventEmitterMixin;
 
-},{"./EventPluginHub":43}],89:[function(require,module,exports){
+},{"./EventPluginHub":41}],87:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44613,7 +44437,7 @@ var ReactEventListener = {
 
 module.exports = ReactEventListener;
 
-},{"./EventListener":42,"./ExecutionEnvironment":47,"./Object.assign":53,"./PooledClass":54,"./ReactInstanceHandles":93,"./ReactMount":97,"./ReactUpdates":114,"./getEventTarget":152,"./getUnboundedScrollPosition":158}],90:[function(require,module,exports){
+},{"./EventListener":40,"./ExecutionEnvironment":45,"./Object.assign":51,"./PooledClass":52,"./ReactInstanceHandles":91,"./ReactMount":95,"./ReactUpdates":112,"./getEventTarget":150,"./getUnboundedScrollPosition":156}],88:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -44798,7 +44622,7 @@ var ReactFragment = {
 module.exports = ReactFragment;
 
 }).call(this,require('_process'))
-},{"./ReactElement":84,"./warning":181,"_process":19}],91:[function(require,module,exports){
+},{"./ReactElement":82,"./warning":179,"_process":17}],89:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44840,7 +44664,7 @@ var ReactInjection = {
 
 module.exports = ReactInjection;
 
-},{"./DOMProperty":36,"./EventPluginHub":43,"./ReactBrowserEventEmitter":57,"./ReactClass":60,"./ReactComponentEnvironment":63,"./ReactDOMComponent":69,"./ReactEmptyComponent":86,"./ReactNativeComponent":100,"./ReactPerf":102,"./ReactRootIndex":110,"./ReactUpdates":114}],92:[function(require,module,exports){
+},{"./DOMProperty":34,"./EventPluginHub":41,"./ReactBrowserEventEmitter":55,"./ReactClass":58,"./ReactComponentEnvironment":61,"./ReactDOMComponent":67,"./ReactEmptyComponent":84,"./ReactNativeComponent":98,"./ReactPerf":100,"./ReactRootIndex":108,"./ReactUpdates":112}],90:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44975,7 +44799,7 @@ var ReactInputSelection = {
 
 module.exports = ReactInputSelection;
 
-},{"./ReactDOMSelection":77,"./containsNode":136,"./focusNode":146,"./getActiveElement":148}],93:[function(require,module,exports){
+},{"./ReactDOMSelection":75,"./containsNode":134,"./focusNode":144,"./getActiveElement":146}],91:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -45311,7 +45135,7 @@ var ReactInstanceHandles = {
 module.exports = ReactInstanceHandles;
 
 }).call(this,require('_process'))
-},{"./ReactRootIndex":110,"./invariant":162,"_process":19}],94:[function(require,module,exports){
+},{"./ReactRootIndex":108,"./invariant":160,"_process":17}],92:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45360,7 +45184,7 @@ var ReactInstanceMap = {
 
 module.exports = ReactInstanceMap;
 
-},{}],95:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 /**
  * Copyright 2015, Facebook, Inc.
  * All rights reserved.
@@ -45397,7 +45221,7 @@ var ReactLifeCycle = {
 
 module.exports = ReactLifeCycle;
 
-},{}],96:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45445,7 +45269,7 @@ var ReactMarkupChecksum = {
 
 module.exports = ReactMarkupChecksum;
 
-},{"./adler32":133}],97:[function(require,module,exports){
+},{"./adler32":131}],95:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -46336,7 +46160,7 @@ ReactPerf.measureMethods(ReactMount, 'ReactMount', {
 module.exports = ReactMount;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":36,"./ReactBrowserEventEmitter":57,"./ReactCurrentOwner":66,"./ReactElement":84,"./ReactElementValidator":85,"./ReactEmptyComponent":86,"./ReactInstanceHandles":93,"./ReactInstanceMap":94,"./ReactMarkupChecksum":96,"./ReactPerf":102,"./ReactReconciler":108,"./ReactUpdateQueue":113,"./ReactUpdates":114,"./containsNode":136,"./emptyObject":142,"./getReactRootElementInContainer":156,"./instantiateReactComponent":161,"./invariant":162,"./setInnerHTML":175,"./shouldUpdateReactComponent":178,"./warning":181,"_process":19}],98:[function(require,module,exports){
+},{"./DOMProperty":34,"./ReactBrowserEventEmitter":55,"./ReactCurrentOwner":64,"./ReactElement":82,"./ReactElementValidator":83,"./ReactEmptyComponent":84,"./ReactInstanceHandles":91,"./ReactInstanceMap":92,"./ReactMarkupChecksum":94,"./ReactPerf":100,"./ReactReconciler":106,"./ReactUpdateQueue":111,"./ReactUpdates":112,"./containsNode":134,"./emptyObject":140,"./getReactRootElementInContainer":154,"./instantiateReactComponent":159,"./invariant":160,"./setInnerHTML":173,"./shouldUpdateReactComponent":176,"./warning":179,"_process":17}],96:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46766,7 +46590,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 
-},{"./ReactChildReconciler":58,"./ReactComponentEnvironment":63,"./ReactMultiChildUpdateTypes":99,"./ReactReconciler":108}],99:[function(require,module,exports){
+},{"./ReactChildReconciler":56,"./ReactComponentEnvironment":61,"./ReactMultiChildUpdateTypes":97,"./ReactReconciler":106}],97:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46799,7 +46623,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 
 module.exports = ReactMultiChildUpdateTypes;
 
-},{"./keyMirror":167}],100:[function(require,module,exports){
+},{"./keyMirror":165}],98:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -46906,7 +46730,7 @@ var ReactNativeComponent = {
 module.exports = ReactNativeComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./invariant":162,"_process":19}],101:[function(require,module,exports){
+},{"./Object.assign":51,"./invariant":160,"_process":17}],99:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47018,7 +46842,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],102:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],100:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47122,7 +46946,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 
 }).call(this,require('_process'))
-},{"_process":19}],103:[function(require,module,exports){
+},{"_process":17}],101:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47150,7 +46974,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactPropTypeLocationNames;
 
 }).call(this,require('_process'))
-},{"_process":19}],104:[function(require,module,exports){
+},{"_process":17}],102:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47174,7 +46998,7 @@ var ReactPropTypeLocations = keyMirror({
 
 module.exports = ReactPropTypeLocations;
 
-},{"./keyMirror":167}],105:[function(require,module,exports){
+},{"./keyMirror":165}],103:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47523,7 +47347,7 @@ function getPreciseType(propValue) {
 
 module.exports = ReactPropTypes;
 
-},{"./ReactElement":84,"./ReactFragment":90,"./ReactPropTypeLocationNames":103,"./emptyFunction":141}],106:[function(require,module,exports){
+},{"./ReactElement":82,"./ReactFragment":88,"./ReactPropTypeLocationNames":101,"./emptyFunction":139}],104:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47579,7 +47403,7 @@ PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 module.exports = ReactPutListenerQueue;
 
-},{"./Object.assign":53,"./PooledClass":54,"./ReactBrowserEventEmitter":57}],107:[function(require,module,exports){
+},{"./Object.assign":51,"./PooledClass":52,"./ReactBrowserEventEmitter":55}],105:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47755,7 +47579,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
 
-},{"./CallbackQueue":32,"./Object.assign":53,"./PooledClass":54,"./ReactBrowserEventEmitter":57,"./ReactInputSelection":92,"./ReactPutListenerQueue":106,"./Transaction":130}],108:[function(require,module,exports){
+},{"./CallbackQueue":30,"./Object.assign":51,"./PooledClass":52,"./ReactBrowserEventEmitter":55,"./ReactInputSelection":90,"./ReactPutListenerQueue":104,"./Transaction":128}],106:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47879,7 +47703,7 @@ var ReactReconciler = {
 module.exports = ReactReconciler;
 
 }).call(this,require('_process'))
-},{"./ReactElementValidator":85,"./ReactRef":109,"_process":19}],109:[function(require,module,exports){
+},{"./ReactElementValidator":83,"./ReactRef":107,"_process":17}],107:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47950,7 +47774,7 @@ ReactRef.detachRefs = function(instance, element) {
 
 module.exports = ReactRef;
 
-},{"./ReactOwner":101}],110:[function(require,module,exports){
+},{"./ReactOwner":99}],108:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47981,7 +47805,7 @@ var ReactRootIndex = {
 
 module.exports = ReactRootIndex;
 
-},{}],111:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -48063,7 +47887,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./ReactElement":84,"./ReactInstanceHandles":93,"./ReactMarkupChecksum":96,"./ReactServerRenderingTransaction":112,"./emptyObject":142,"./instantiateReactComponent":161,"./invariant":162,"_process":19}],112:[function(require,module,exports){
+},{"./ReactElement":82,"./ReactInstanceHandles":91,"./ReactMarkupChecksum":94,"./ReactServerRenderingTransaction":110,"./emptyObject":140,"./instantiateReactComponent":159,"./invariant":160,"_process":17}],110:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -48176,7 +48000,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
 
-},{"./CallbackQueue":32,"./Object.assign":53,"./PooledClass":54,"./ReactPutListenerQueue":106,"./Transaction":130,"./emptyFunction":141}],113:[function(require,module,exports){
+},{"./CallbackQueue":30,"./Object.assign":51,"./PooledClass":52,"./ReactPutListenerQueue":104,"./Transaction":128,"./emptyFunction":139}],111:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -48475,7 +48299,7 @@ var ReactUpdateQueue = {
 module.exports = ReactUpdateQueue;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./ReactCurrentOwner":66,"./ReactElement":84,"./ReactInstanceMap":94,"./ReactLifeCycle":95,"./ReactUpdates":114,"./invariant":162,"./warning":181,"_process":19}],114:[function(require,module,exports){
+},{"./Object.assign":51,"./ReactCurrentOwner":64,"./ReactElement":82,"./ReactInstanceMap":92,"./ReactLifeCycle":93,"./ReactUpdates":112,"./invariant":160,"./warning":179,"_process":17}],112:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -48757,7 +48581,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 }).call(this,require('_process'))
-},{"./CallbackQueue":32,"./Object.assign":53,"./PooledClass":54,"./ReactCurrentOwner":66,"./ReactPerf":102,"./ReactReconciler":108,"./Transaction":130,"./invariant":162,"./warning":181,"_process":19}],115:[function(require,module,exports){
+},{"./CallbackQueue":30,"./Object.assign":51,"./PooledClass":52,"./ReactCurrentOwner":64,"./ReactPerf":100,"./ReactReconciler":106,"./Transaction":128,"./invariant":160,"./warning":179,"_process":17}],113:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -48851,7 +48675,7 @@ var SVGDOMPropertyConfig = {
 
 module.exports = SVGDOMPropertyConfig;
 
-},{"./DOMProperty":36}],116:[function(require,module,exports){
+},{"./DOMProperty":34}],114:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49046,7 +48870,7 @@ var SelectEventPlugin = {
 
 module.exports = SelectEventPlugin;
 
-},{"./EventConstants":41,"./EventPropagators":46,"./ReactInputSelection":92,"./SyntheticEvent":122,"./getActiveElement":148,"./isTextInputElement":165,"./keyOf":168,"./shallowEqual":177}],117:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPropagators":44,"./ReactInputSelection":90,"./SyntheticEvent":120,"./getActiveElement":146,"./isTextInputElement":163,"./keyOf":166,"./shallowEqual":175}],115:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49077,7 +48901,7 @@ var ServerReactRootIndex = {
 
 module.exports = ServerReactRootIndex;
 
-},{}],118:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -49505,7 +49329,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 }).call(this,require('_process'))
-},{"./EventConstants":41,"./EventPluginUtils":45,"./EventPropagators":46,"./SyntheticClipboardEvent":119,"./SyntheticDragEvent":121,"./SyntheticEvent":122,"./SyntheticFocusEvent":123,"./SyntheticKeyboardEvent":125,"./SyntheticMouseEvent":126,"./SyntheticTouchEvent":127,"./SyntheticUIEvent":128,"./SyntheticWheelEvent":129,"./getEventCharCode":149,"./invariant":162,"./keyOf":168,"./warning":181,"_process":19}],119:[function(require,module,exports){
+},{"./EventConstants":39,"./EventPluginUtils":43,"./EventPropagators":44,"./SyntheticClipboardEvent":117,"./SyntheticDragEvent":119,"./SyntheticEvent":120,"./SyntheticFocusEvent":121,"./SyntheticKeyboardEvent":123,"./SyntheticMouseEvent":124,"./SyntheticTouchEvent":125,"./SyntheticUIEvent":126,"./SyntheticWheelEvent":127,"./getEventCharCode":147,"./invariant":160,"./keyOf":166,"./warning":179,"_process":17}],117:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49550,7 +49374,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 
 module.exports = SyntheticClipboardEvent;
 
-},{"./SyntheticEvent":122}],120:[function(require,module,exports){
+},{"./SyntheticEvent":120}],118:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49595,7 +49419,7 @@ SyntheticEvent.augmentClass(
 
 module.exports = SyntheticCompositionEvent;
 
-},{"./SyntheticEvent":122}],121:[function(require,module,exports){
+},{"./SyntheticEvent":120}],119:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49634,7 +49458,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
 
-},{"./SyntheticMouseEvent":126}],122:[function(require,module,exports){
+},{"./SyntheticMouseEvent":124}],120:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49800,7 +49624,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.threeArgumentPooler);
 
 module.exports = SyntheticEvent;
 
-},{"./Object.assign":53,"./PooledClass":54,"./emptyFunction":141,"./getEventTarget":152}],123:[function(require,module,exports){
+},{"./Object.assign":51,"./PooledClass":52,"./emptyFunction":139,"./getEventTarget":150}],121:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49839,7 +49663,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
 
-},{"./SyntheticUIEvent":128}],124:[function(require,module,exports){
+},{"./SyntheticUIEvent":126}],122:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49885,7 +49709,7 @@ SyntheticEvent.augmentClass(
 
 module.exports = SyntheticInputEvent;
 
-},{"./SyntheticEvent":122}],125:[function(require,module,exports){
+},{"./SyntheticEvent":120}],123:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -49972,7 +49796,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
 
-},{"./SyntheticUIEvent":128,"./getEventCharCode":149,"./getEventKey":150,"./getEventModifierState":151}],126:[function(require,module,exports){
+},{"./SyntheticUIEvent":126,"./getEventCharCode":147,"./getEventKey":148,"./getEventModifierState":149}],124:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50053,7 +49877,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
 
-},{"./SyntheticUIEvent":128,"./ViewportMetrics":131,"./getEventModifierState":151}],127:[function(require,module,exports){
+},{"./SyntheticUIEvent":126,"./ViewportMetrics":129,"./getEventModifierState":149}],125:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50101,7 +49925,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
 
-},{"./SyntheticUIEvent":128,"./getEventModifierState":151}],128:[function(require,module,exports){
+},{"./SyntheticUIEvent":126,"./getEventModifierState":149}],126:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50163,7 +49987,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
 
-},{"./SyntheticEvent":122,"./getEventTarget":152}],129:[function(require,module,exports){
+},{"./SyntheticEvent":120,"./getEventTarget":150}],127:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50224,7 +50048,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
 
-},{"./SyntheticMouseEvent":126}],130:[function(require,module,exports){
+},{"./SyntheticMouseEvent":124}],128:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -50465,7 +50289,7 @@ var Transaction = {
 module.exports = Transaction;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],131:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],129:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50494,7 +50318,7 @@ var ViewportMetrics = {
 
 module.exports = ViewportMetrics;
 
-},{}],132:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -50560,7 +50384,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],133:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],131:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50594,7 +50418,7 @@ function adler32(data) {
 
 module.exports = adler32;
 
-},{}],134:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50626,7 +50450,7 @@ function camelize(string) {
 
 module.exports = camelize;
 
-},{}],135:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -50668,7 +50492,7 @@ function camelizeStyleName(string) {
 
 module.exports = camelizeStyleName;
 
-},{"./camelize":134}],136:[function(require,module,exports){
+},{"./camelize":132}],134:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50712,7 +50536,7 @@ function containsNode(outerNode, innerNode) {
 
 module.exports = containsNode;
 
-},{"./isTextNode":166}],137:[function(require,module,exports){
+},{"./isTextNode":164}],135:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -50798,7 +50622,7 @@ function createArrayFromMixed(obj) {
 
 module.exports = createArrayFromMixed;
 
-},{"./toArray":179}],138:[function(require,module,exports){
+},{"./toArray":177}],136:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -50860,7 +50684,7 @@ function createFullPageComponent(tag) {
 module.exports = createFullPageComponent;
 
 }).call(this,require('_process'))
-},{"./ReactClass":60,"./ReactElement":84,"./invariant":162,"_process":19}],139:[function(require,module,exports){
+},{"./ReactClass":58,"./ReactElement":82,"./invariant":160,"_process":17}],137:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -50950,7 +50774,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":47,"./createArrayFromMixed":137,"./getMarkupWrap":154,"./invariant":162,"_process":19}],140:[function(require,module,exports){
+},{"./ExecutionEnvironment":45,"./createArrayFromMixed":135,"./getMarkupWrap":152,"./invariant":160,"_process":17}],138:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51008,7 +50832,7 @@ function dangerousStyleValue(name, value) {
 
 module.exports = dangerousStyleValue;
 
-},{"./CSSProperty":30}],141:[function(require,module,exports){
+},{"./CSSProperty":28}],139:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51042,7 +50866,7 @@ emptyFunction.thatReturnsArgument = function(arg) { return arg; };
 
 module.exports = emptyFunction;
 
-},{}],142:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -51066,7 +50890,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = emptyObject;
 
 }).call(this,require('_process'))
-},{"_process":19}],143:[function(require,module,exports){
+},{"_process":17}],141:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51106,7 +50930,7 @@ function escapeTextContentForBrowser(text) {
 
 module.exports = escapeTextContentForBrowser;
 
-},{}],144:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -51179,7 +51003,7 @@ function findDOMNode(componentOrElement) {
 module.exports = findDOMNode;
 
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":66,"./ReactInstanceMap":94,"./ReactMount":97,"./invariant":162,"./isNode":164,"./warning":181,"_process":19}],145:[function(require,module,exports){
+},{"./ReactCurrentOwner":64,"./ReactInstanceMap":92,"./ReactMount":95,"./invariant":160,"./isNode":162,"./warning":179,"_process":17}],143:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -51237,7 +51061,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 
 }).call(this,require('_process'))
-},{"./traverseAllChildren":180,"./warning":181,"_process":19}],146:[function(require,module,exports){
+},{"./traverseAllChildren":178,"./warning":179,"_process":17}],144:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -51266,7 +51090,7 @@ function focusNode(node) {
 
 module.exports = focusNode;
 
-},{}],147:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51297,7 +51121,7 @@ var forEachAccumulated = function(arr, cb, scope) {
 
 module.exports = forEachAccumulated;
 
-},{}],148:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51326,7 +51150,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-},{}],149:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51378,7 +51202,7 @@ function getEventCharCode(nativeEvent) {
 
 module.exports = getEventCharCode;
 
-},{}],150:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51483,7 +51307,7 @@ function getEventKey(nativeEvent) {
 
 module.exports = getEventKey;
 
-},{"./getEventCharCode":149}],151:[function(require,module,exports){
+},{"./getEventCharCode":147}],149:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51530,7 +51354,7 @@ function getEventModifierState(nativeEvent) {
 
 module.exports = getEventModifierState;
 
-},{}],152:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51561,7 +51385,7 @@ function getEventTarget(nativeEvent) {
 
 module.exports = getEventTarget;
 
-},{}],153:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51605,7 +51429,7 @@ function getIteratorFn(maybeIterable) {
 
 module.exports = getIteratorFn;
 
-},{}],154:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -51724,7 +51548,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":47,"./invariant":162,"_process":19}],155:[function(require,module,exports){
+},{"./ExecutionEnvironment":45,"./invariant":160,"_process":17}],153:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51799,7 +51623,7 @@ function getNodeForCharacterOffset(root, offset) {
 
 module.exports = getNodeForCharacterOffset;
 
-},{}],156:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51834,7 +51658,7 @@ function getReactRootElementInContainer(container) {
 
 module.exports = getReactRootElementInContainer;
 
-},{}],157:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51871,7 +51695,7 @@ function getTextContentAccessor() {
 
 module.exports = getTextContentAccessor;
 
-},{"./ExecutionEnvironment":47}],158:[function(require,module,exports){
+},{"./ExecutionEnvironment":45}],156:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51911,7 +51735,7 @@ function getUnboundedScrollPosition(scrollable) {
 
 module.exports = getUnboundedScrollPosition;
 
-},{}],159:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51944,7 +51768,7 @@ function hyphenate(string) {
 
 module.exports = hyphenate;
 
-},{}],160:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -51985,7 +51809,7 @@ function hyphenateStyleName(string) {
 
 module.exports = hyphenateStyleName;
 
-},{"./hyphenate":159}],161:[function(require,module,exports){
+},{"./hyphenate":157}],159:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52123,7 +51947,7 @@ function instantiateReactComponent(node, parentCompositeType) {
 module.exports = instantiateReactComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":53,"./ReactCompositeComponent":64,"./ReactEmptyComponent":86,"./ReactNativeComponent":100,"./invariant":162,"./warning":181,"_process":19}],162:[function(require,module,exports){
+},{"./Object.assign":51,"./ReactCompositeComponent":62,"./ReactEmptyComponent":84,"./ReactNativeComponent":98,"./invariant":160,"./warning":179,"_process":17}],160:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52180,7 +52004,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":19}],163:[function(require,module,exports){
+},{"_process":17}],161:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52245,7 +52069,7 @@ function isEventSupported(eventNameSuffix, capture) {
 
 module.exports = isEventSupported;
 
-},{"./ExecutionEnvironment":47}],164:[function(require,module,exports){
+},{"./ExecutionEnvironment":45}],162:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52272,7 +52096,7 @@ function isNode(object) {
 
 module.exports = isNode;
 
-},{}],165:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52315,7 +52139,7 @@ function isTextInputElement(elem) {
 
 module.exports = isTextInputElement;
 
-},{}],166:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52340,7 +52164,7 @@ function isTextNode(object) {
 
 module.exports = isTextNode;
 
-},{"./isNode":164}],167:[function(require,module,exports){
+},{"./isNode":162}],165:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52395,7 +52219,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],168:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],166:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52431,7 +52255,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-},{}],169:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52484,7 +52308,7 @@ function mapObject(object, callback, context) {
 
 module.exports = mapObject;
 
-},{}],170:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52517,7 +52341,7 @@ function memoizeStringOnly(callback) {
 
 module.exports = memoizeStringOnly;
 
-},{}],171:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52557,7 +52381,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 }).call(this,require('_process'))
-},{"./ReactElement":84,"./invariant":162,"_process":19}],172:[function(require,module,exports){
+},{"./ReactElement":82,"./invariant":160,"_process":17}],170:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52585,7 +52409,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = performance || {};
 
-},{"./ExecutionEnvironment":47}],173:[function(require,module,exports){
+},{"./ExecutionEnvironment":45}],171:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52613,7 +52437,7 @@ var performanceNow = performance.now.bind(performance);
 
 module.exports = performanceNow;
 
-},{"./performance":172}],174:[function(require,module,exports){
+},{"./performance":170}],172:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52641,7 +52465,7 @@ function quoteAttributeValueForBrowser(value) {
 
 module.exports = quoteAttributeValueForBrowser;
 
-},{"./escapeTextContentForBrowser":143}],175:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":141}],173:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52730,7 +52554,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setInnerHTML;
 
-},{"./ExecutionEnvironment":47}],176:[function(require,module,exports){
+},{"./ExecutionEnvironment":45}],174:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52772,7 +52596,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setTextContent;
 
-},{"./ExecutionEnvironment":47,"./escapeTextContentForBrowser":143,"./setInnerHTML":175}],177:[function(require,module,exports){
+},{"./ExecutionEnvironment":45,"./escapeTextContentForBrowser":141,"./setInnerHTML":173}],175:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -52816,7 +52640,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-},{}],178:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -52920,7 +52744,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 module.exports = shouldUpdateReactComponent;
 
 }).call(this,require('_process'))
-},{"./warning":181,"_process":19}],179:[function(require,module,exports){
+},{"./warning":179,"_process":17}],177:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -52992,7 +52816,7 @@ function toArray(obj) {
 module.exports = toArray;
 
 }).call(this,require('_process'))
-},{"./invariant":162,"_process":19}],180:[function(require,module,exports){
+},{"./invariant":160,"_process":17}],178:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -53245,7 +53069,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 }).call(this,require('_process'))
-},{"./ReactElement":84,"./ReactFragment":90,"./ReactInstanceHandles":93,"./getIteratorFn":153,"./invariant":162,"./warning":181,"_process":19}],181:[function(require,module,exports){
+},{"./ReactElement":82,"./ReactFragment":88,"./ReactInstanceHandles":91,"./getIteratorFn":151,"./invariant":160,"./warning":179,"_process":17}],179:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -53308,2377 +53132,10 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":141,"_process":19}],182:[function(require,module,exports){
+},{"./emptyFunction":139,"_process":17}],180:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":55}],183:[function(require,module,exports){
-/*
-     _ _      _       _
- ___| (_) ___| | __  (_)___
-/ __| | |/ __| |/ /  | / __|
-\__ \ | | (__|   < _ | \__ \
-|___/_|_|\___|_|\_(_)/ |___/
-                   |__/
-
- Version: 1.5.5
-  Author: Ken Wheeler
- Website: http://kenwheeler.github.io
-    Docs: http://kenwheeler.github.io/slick
-    Repo: http://github.com/kenwheeler/slick
-  Issues: http://github.com/kenwheeler/slick/issues
-
- */
-/* global window, document, define, jQuery, setInterval, clearInterval */
-(function(factory) {
-    'use strict';
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else if (typeof exports !== 'undefined') {
-        module.exports = factory(require('jquery'));
-    } else {
-        factory(jQuery);
-    }
-
-}(function($) {
-    'use strict';
-    var Slick = window.Slick || {};
-
-    Slick = (function() {
-
-        var instanceUid = 0;
-
-        function Slick(element, settings) {
-
-            var _ = this,
-                dataSettings, responsiveSettings, breakpoint;
-
-            _.defaults = {
-                accessibility: true,
-                adaptiveHeight: false,
-                appendArrows: $(element),
-                appendDots: $(element),
-                arrows: true,
-                asNavFor: null,
-                prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="previous">Previous</button>',
-                nextArrow: '<button type="button" data-role="none" class="slick-next" aria-label="next">Next</button>',
-                autoplay: false,
-                autoplaySpeed: 3000,
-                centerMode: false,
-                centerPadding: '50px',
-                cssEase: 'ease',
-                customPaging: function(slider, i) {
-                    return '<button type="button" data-role="none">' + (i + 1) + '</button>';
-                },
-                dots: false,
-                dotsClass: 'slick-dots',
-                draggable: true,
-                easing: 'linear',
-                edgeFriction: 0.35,
-                fade: false,
-                focusOnSelect: false,
-                infinite: true,
-                initialSlide: 0,
-                lazyLoad: 'ondemand',
-                mobileFirst: false,
-                pauseOnHover: true,
-                pauseOnDotsHover: false,
-                respondTo: 'window',
-                responsive: null,
-                rows: 1,
-                rtl: false,
-                slide: '',
-                slidesPerRow: 1,
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                speed: 500,
-                swipe: true,
-                swipeToSlide: false,
-                touchMove: true,
-                touchThreshold: 5,
-                useCSS: true,
-                variableWidth: false,
-                vertical: false,
-                verticalSwiping: false,
-                waitForAnimate: true
-            };
-
-            _.initials = {
-                animating: false,
-                dragging: false,
-                autoPlayTimer: null,
-                currentDirection: 0,
-                currentLeft: null,
-                currentSlide: 0,
-                direction: 1,
-                $dots: null,
-                listWidth: null,
-                listHeight: null,
-                loadIndex: 0,
-                $nextArrow: null,
-                $prevArrow: null,
-                slideCount: null,
-                slideWidth: null,
-                $slideTrack: null,
-                $slides: null,
-                sliding: false,
-                slideOffset: 0,
-                swipeLeft: null,
-                $list: null,
-                touchObject: {},
-                transformsEnabled: false,
-                unslicked: false
-            };
-
-            $.extend(_, _.initials);
-
-            _.activeBreakpoint = null;
-            _.animType = null;
-            _.animProp = null;
-            _.breakpoints = [];
-            _.breakpointSettings = [];
-            _.cssTransitions = false;
-            _.hidden = 'hidden';
-            _.paused = false;
-            _.positionProp = null;
-            _.respondTo = null;
-            _.rowCount = 1;
-            _.shouldClick = true;
-            _.$slider = $(element);
-            _.$slidesCache = null;
-            _.transformType = null;
-            _.transitionType = null;
-            _.visibilityChange = 'visibilitychange';
-            _.windowWidth = 0;
-            _.windowTimer = null;
-
-            dataSettings = $(element).data('slick') || {};
-
-            _.options = $.extend({}, _.defaults, dataSettings, settings);
-
-            _.currentSlide = _.options.initialSlide;
-
-            _.originalSettings = _.options;
-            responsiveSettings = _.options.responsive || null;
-
-            if (responsiveSettings && responsiveSettings.length > -1) {
-                _.respondTo = _.options.respondTo || 'window';
-                for (breakpoint in responsiveSettings) {
-                    if (responsiveSettings.hasOwnProperty(breakpoint)) {
-                        _.breakpoints.push(responsiveSettings[
-                            breakpoint].breakpoint);
-                        _.breakpointSettings[responsiveSettings[
-                                breakpoint].breakpoint] =
-                            responsiveSettings[breakpoint].settings;
-                    }
-                }
-                _.breakpoints.sort(function(a, b) {
-                    if (_.options.mobileFirst === true) {
-                        return a - b;
-                    } else {
-                        return b - a;
-                    }
-                });
-            }
-
-            if (typeof document.mozHidden !== 'undefined') {
-                _.hidden = 'mozHidden';
-                _.visibilityChange = 'mozvisibilitychange';
-            } else if (typeof document.webkitHidden !== 'undefined') {
-                _.hidden = 'webkitHidden';
-                _.visibilityChange = 'webkitvisibilitychange';
-            }
-
-            _.autoPlay = $.proxy(_.autoPlay, _);
-            _.autoPlayClear = $.proxy(_.autoPlayClear, _);
-            _.changeSlide = $.proxy(_.changeSlide, _);
-            _.clickHandler = $.proxy(_.clickHandler, _);
-            _.selectHandler = $.proxy(_.selectHandler, _);
-            _.setPosition = $.proxy(_.setPosition, _);
-            _.swipeHandler = $.proxy(_.swipeHandler, _);
-            _.dragHandler = $.proxy(_.dragHandler, _);
-            _.keyHandler = $.proxy(_.keyHandler, _);
-            _.autoPlayIterator = $.proxy(_.autoPlayIterator, _);
-
-            _.instanceUid = instanceUid++;
-
-            // A simple way to check for HTML strings
-            // Strict HTML recognition (must start with <)
-            // Extracted from jQuery v1.11 source
-            _.htmlExpr = /^(?:\s*(<[\w\W]+>)[^>]*)$/;
-
-            _.init(true);
-
-            _.checkResponsive(true);
-
-        }
-
-        return Slick;
-
-    }());
-
-    Slick.prototype.addSlide = Slick.prototype.slickAdd = function(markup, index, addBefore) {
-
-        var _ = this;
-
-        if (typeof(index) === 'boolean') {
-            addBefore = index;
-            index = null;
-        } else if (index < 0 || (index >= _.slideCount)) {
-            return false;
-        }
-
-        _.unload();
-
-        if (typeof(index) === 'number') {
-            if (index === 0 && _.$slides.length === 0) {
-                $(markup).appendTo(_.$slideTrack);
-            } else if (addBefore) {
-                $(markup).insertBefore(_.$slides.eq(index));
-            } else {
-                $(markup).insertAfter(_.$slides.eq(index));
-            }
-        } else {
-            if (addBefore === true) {
-                $(markup).prependTo(_.$slideTrack);
-            } else {
-                $(markup).appendTo(_.$slideTrack);
-            }
-        }
-
-        _.$slides = _.$slideTrack.children(this.options.slide);
-
-        _.$slideTrack.children(this.options.slide).detach();
-
-        _.$slideTrack.append(_.$slides);
-
-        _.$slides.each(function(index, element) {
-            $(element).attr('data-slick-index', index);
-        });
-
-        _.$slidesCache = _.$slides;
-
-        _.reinit();
-
-    };
-
-    Slick.prototype.animateHeight = function() {
-        var _ = this;
-        if (_.options.slidesToShow === 1 && _.options.adaptiveHeight === true && _.options.vertical === false) {
-            var targetHeight = _.$slides.eq(_.currentSlide).outerHeight(true);
-            _.$list.animate({
-                height: targetHeight
-            }, _.options.speed);
-        }
-    };
-
-    Slick.prototype.animateSlide = function(targetLeft, callback) {
-
-        var animProps = {},
-            _ = this;
-
-        _.animateHeight();
-
-        if (_.options.rtl === true && _.options.vertical === false) {
-            targetLeft = -targetLeft;
-        }
-        if (_.transformsEnabled === false) {
-            if (_.options.vertical === false) {
-                _.$slideTrack.animate({
-                    left: targetLeft
-                }, _.options.speed, _.options.easing, callback);
-            } else {
-                _.$slideTrack.animate({
-                    top: targetLeft
-                }, _.options.speed, _.options.easing, callback);
-            }
-
-        } else {
-
-            if (_.cssTransitions === false) {
-                if (_.options.rtl === true) {
-                    _.currentLeft = -(_.currentLeft);
-                }
-                $({
-                    animStart: _.currentLeft
-                }).animate({
-                    animStart: targetLeft
-                }, {
-                    duration: _.options.speed,
-                    easing: _.options.easing,
-                    step: function(now) {
-                        now = Math.ceil(now);
-                        if (_.options.vertical === false) {
-                            animProps[_.animType] = 'translate(' +
-                                now + 'px, 0px)';
-                            _.$slideTrack.css(animProps);
-                        } else {
-                            animProps[_.animType] = 'translate(0px,' +
-                                now + 'px)';
-                            _.$slideTrack.css(animProps);
-                        }
-                    },
-                    complete: function() {
-                        if (callback) {
-                            callback.call();
-                        }
-                    }
-                });
-
-            } else {
-
-                _.applyTransition();
-                targetLeft = Math.ceil(targetLeft);
-
-                if (_.options.vertical === false) {
-                    animProps[_.animType] = 'translate3d(' + targetLeft + 'px, 0px, 0px)';
-                } else {
-                    animProps[_.animType] = 'translate3d(0px,' + targetLeft + 'px, 0px)';
-                }
-                _.$slideTrack.css(animProps);
-
-                if (callback) {
-                    setTimeout(function() {
-
-                        _.disableTransition();
-
-                        callback.call();
-                    }, _.options.speed);
-                }
-
-            }
-
-        }
-
-    };
-
-    Slick.prototype.asNavFor = function(index) {
-
-        var _ = this,
-            asNavFor = _.options.asNavFor;
-
-        if ( asNavFor && asNavFor !== null ) {
-            asNavFor = $(asNavFor).not(_.$slider);
-        }
-
-        if ( asNavFor !== null && typeof asNavFor === "object" ) {
-            asNavFor.each(function() {
-                var target = $(this).slick('getSlick');
-                if(!target.unslicked) {
-                    target.slideHandler(index, true);
-                }
-            });
-        }
-
-    };
-
-    Slick.prototype.applyTransition = function(slide) {
-
-        var _ = this,
-            transition = {};
-
-        if (_.options.fade === false) {
-            transition[_.transitionType] = _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
-        } else {
-            transition[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
-        }
-
-        if (_.options.fade === false) {
-            _.$slideTrack.css(transition);
-        } else {
-            _.$slides.eq(slide).css(transition);
-        }
-
-    };
-
-    Slick.prototype.autoPlay = function() {
-
-        var _ = this;
-
-        if (_.autoPlayTimer) {
-            clearInterval(_.autoPlayTimer);
-        }
-
-        if (_.slideCount > _.options.slidesToShow && _.paused !== true) {
-            _.autoPlayTimer = setInterval(_.autoPlayIterator,
-                _.options.autoplaySpeed);
-        }
-
-    };
-
-    Slick.prototype.autoPlayClear = function() {
-
-        var _ = this;
-        if (_.autoPlayTimer) {
-            clearInterval(_.autoPlayTimer);
-        }
-
-    };
-
-    Slick.prototype.autoPlayIterator = function() {
-
-        var _ = this;
-
-        if (_.options.infinite === false) {
-
-            if (_.direction === 1) {
-
-                if ((_.currentSlide + 1) === _.slideCount -
-                    1) {
-                    _.direction = 0;
-                }
-
-                _.slideHandler(_.currentSlide + _.options.slidesToScroll);
-
-            } else {
-
-                if ((_.currentSlide - 1 === 0)) {
-
-                    _.direction = 1;
-
-                }
-
-                _.slideHandler(_.currentSlide - _.options.slidesToScroll);
-
-            }
-
-        } else {
-
-            _.slideHandler(_.currentSlide + _.options.slidesToScroll);
-
-        }
-
-    };
-
-    Slick.prototype.buildArrows = function() {
-
-        var _ = this;
-
-        if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
-
-            _.$prevArrow = $(_.options.prevArrow);
-            _.$nextArrow = $(_.options.nextArrow);
-
-            if (_.htmlExpr.test(_.options.prevArrow)) {
-                _.$prevArrow.appendTo(_.options.appendArrows);
-            }
-
-            if (_.htmlExpr.test(_.options.nextArrow)) {
-                _.$nextArrow.appendTo(_.options.appendArrows);
-            }
-
-            if (_.options.infinite !== true) {
-                _.$prevArrow.addClass('slick-disabled');
-            }
-
-        }
-
-    };
-
-    Slick.prototype.buildDots = function() {
-
-        var _ = this,
-            i, dotString;
-
-        if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-
-            dotString = '<ul class="' + _.options.dotsClass + '">';
-
-            for (i = 0; i <= _.getDotCount(); i += 1) {
-                dotString += '<li>' + _.options.customPaging.call(this, _, i) + '</li>';
-            }
-
-            dotString += '</ul>';
-
-            _.$dots = $(dotString).appendTo(
-                _.options.appendDots);
-
-            _.$dots.find('li').first().addClass('slick-active').attr('aria-hidden', 'false');
-
-        }
-
-    };
-
-    Slick.prototype.buildOut = function() {
-
-        var _ = this;
-
-        _.$slides = _.$slider.children(
-            ':not(.slick-cloned)').addClass(
-            'slick-slide');
-        _.slideCount = _.$slides.length;
-
-        _.$slides.each(function(index, element) {
-            $(element)
-                .attr('data-slick-index', index)
-                .data('originalStyling', $(element).attr('style') || '');
-        });
-
-        _.$slidesCache = _.$slides;
-
-        _.$slider.addClass('slick-slider');
-
-        _.$slideTrack = (_.slideCount === 0) ?
-            $('<div class="slick-track"/>').appendTo(_.$slider) :
-            _.$slides.wrapAll('<div class="slick-track"/>').parent();
-
-        _.$list = _.$slideTrack.wrap(
-            '<div aria-live="polite" class="slick-list"/>').parent();
-        _.$slideTrack.css('opacity', 0);
-
-        if (_.options.centerMode === true || _.options.swipeToSlide === true) {
-            _.options.slidesToScroll = 1;
-        }
-
-        $('img[data-lazy]', _.$slider).not('[src]').addClass('slick-loading');
-
-        _.setupInfinite();
-
-        _.buildArrows();
-
-        _.buildDots();
-
-        _.updateDots();
-
-        if (_.options.accessibility === true) {
-            _.$list.prop('tabIndex', 0);
-        }
-
-        _.setSlideClasses(typeof this.currentSlide === 'number' ? this.currentSlide : 0);
-
-        if (_.options.draggable === true) {
-            _.$list.addClass('draggable');
-        }
-
-    };
-
-    Slick.prototype.buildRows = function() {
-
-        var _ = this, a, b, c, newSlides, numOfSlides, originalSlides,slidesPerSection;
-
-        newSlides = document.createDocumentFragment();
-        originalSlides = _.$slider.children();
-
-        if(_.options.rows > 1) {
-            slidesPerSection = _.options.slidesPerRow * _.options.rows;
-            numOfSlides = Math.ceil(
-                originalSlides.length / slidesPerSection
-            );
-
-            for(a = 0; a < numOfSlides; a++){
-                var slide = document.createElement('div');
-                for(b = 0; b < _.options.rows; b++) {
-                    var row = document.createElement('div');
-                    for(c = 0; c < _.options.slidesPerRow; c++) {
-                        var target = (a * slidesPerSection + ((b * _.options.slidesPerRow) + c));
-                        if (originalSlides.get(target)) {
-                            row.appendChild(originalSlides.get(target));
-                        }
-                    }
-                    slide.appendChild(row);
-                }
-                newSlides.appendChild(slide);
-            };
-            _.$slider.html(newSlides);
-            _.$slider.children().children().children()
-                .css({
-                    'width':(100 / _.options.slidesPerRow) + "%",
-                    'display': 'inline-block'
-                });
-        };
-
-    };
-
-    Slick.prototype.checkResponsive = function(initial) {
-
-        var _ = this,
-            breakpoint, targetBreakpoint, respondToWidth, triggerBreakpoint = false;
-        var sliderWidth = _.$slider.width();
-        var windowWidth = window.innerWidth || $(window).width();
-
-        if (_.respondTo === 'window') {
-            respondToWidth = windowWidth;
-        } else if (_.respondTo === 'slider') {
-            respondToWidth = sliderWidth;
-        } else if (_.respondTo === 'min') {
-            respondToWidth = Math.min(windowWidth, sliderWidth);
-        }
-
-        if (_.originalSettings.responsive && _.originalSettings
-            .responsive.length > -1 && _.originalSettings.responsive !== null) {
-
-            targetBreakpoint = null;
-
-            for (breakpoint in _.breakpoints) {
-                if (_.breakpoints.hasOwnProperty(breakpoint)) {
-                    if (_.originalSettings.mobileFirst === false) {
-                        if (respondToWidth < _.breakpoints[breakpoint]) {
-                            targetBreakpoint = _.breakpoints[breakpoint];
-                        }
-                    } else {
-                        if (respondToWidth > _.breakpoints[breakpoint]) {
-                            targetBreakpoint = _.breakpoints[breakpoint];
-                        }
-                    }
-                }
-            }
-
-            if (targetBreakpoint !== null) {
-                if (_.activeBreakpoint !== null) {
-                    if (targetBreakpoint !== _.activeBreakpoint) {
-                        _.activeBreakpoint =
-                            targetBreakpoint;
-                        if (_.breakpointSettings[targetBreakpoint] === 'unslick') {
-                            _.unslick(targetBreakpoint);
-                        } else {
-                            _.options = $.extend({}, _.originalSettings,
-                                _.breakpointSettings[
-                                    targetBreakpoint]);
-                            if (initial === true) {
-                                _.currentSlide = _.options.initialSlide;
-                            }
-                            _.refresh(initial);
-                        }
-                        triggerBreakpoint = targetBreakpoint;
-                    }
-                } else {
-                    _.activeBreakpoint = targetBreakpoint;
-                    if (_.breakpointSettings[targetBreakpoint] === 'unslick') {
-                        _.unslick(targetBreakpoint);
-                    } else {
-                        _.options = $.extend({}, _.originalSettings,
-                            _.breakpointSettings[
-                                targetBreakpoint]);
-                        if (initial === true) {
-                            _.currentSlide = _.options.initialSlide;
-                        }
-                        _.refresh(initial);
-                    }
-                    triggerBreakpoint = targetBreakpoint;
-                }
-            } else {
-                if (_.activeBreakpoint !== null) {
-                    _.activeBreakpoint = null;
-                    _.options = _.originalSettings;
-                    if (initial === true) {
-                        _.currentSlide = _.options.initialSlide;
-                    }
-                    _.refresh(initial);
-                    triggerBreakpoint = targetBreakpoint;
-                }
-            }
-
-            // only trigger breakpoints during an actual break. not on initialize.
-            if( !initial && triggerBreakpoint !== false ) {
-                _.$slider.trigger('breakpoint', [_, triggerBreakpoint]);
-            }
-        }
-
-    };
-
-    Slick.prototype.changeSlide = function(event, dontAnimate) {
-
-        var _ = this,
-            $target = $(event.target),
-            indexOffset, slideOffset, unevenOffset;
-
-        // If target is a link, prevent default action.
-        if($target.is('a')) {
-            event.preventDefault();
-        }
-
-        // If target is not the <li> element (ie: a child), find the <li>.
-        if(!$target.is('li')) {
-            $target = $target.closest('li');
-        }
-
-        unevenOffset = (_.slideCount % _.options.slidesToScroll !== 0);
-        indexOffset = unevenOffset ? 0 : (_.slideCount - _.currentSlide) % _.options.slidesToScroll;
-
-        switch (event.data.message) {
-
-            case 'previous':
-                slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
-                if (_.slideCount > _.options.slidesToShow) {
-                    _.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
-                }
-                break;
-
-            case 'next':
-                slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
-                if (_.slideCount > _.options.slidesToShow) {
-                    _.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
-                }
-                break;
-
-            case 'index':
-                var index = event.data.index === 0 ? 0 :
-                    event.data.index || $target.index() * _.options.slidesToScroll;
-
-                _.slideHandler(_.checkNavigable(index), false, dontAnimate);
-                $target.children().trigger("focus");
-                break;
-
-            default:
-                return;
-        }
-
-    };
-
-    Slick.prototype.checkNavigable = function(index) {
-
-        var _ = this,
-            navigables, prevNavigable;
-
-        navigables = _.getNavigableIndexes();
-        prevNavigable = 0;
-        if (index > navigables[navigables.length - 1]) {
-            index = navigables[navigables.length - 1];
-        } else {
-            for (var n in navigables) {
-                if (index < navigables[n]) {
-                    index = prevNavigable;
-                    break;
-                }
-                prevNavigable = navigables[n];
-            }
-        }
-
-        return index;
-    };
-
-    Slick.prototype.cleanUpEvents = function() {
-
-        var _ = this;
-
-        if (_.options.dots && _.$dots !== null) {
-
-            $('li', _.$dots).off('click.slick', _.changeSlide);
-
-            if (_.options.pauseOnDotsHover === true && _.options.autoplay === true) {
-
-                $('li', _.$dots)
-                    .off('mouseenter.slick', $.proxy(_.setPaused, _, true))
-                    .off('mouseleave.slick', $.proxy(_.setPaused, _, false));
-
-            }
-
-        }
-
-        if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
-            _.$prevArrow && _.$prevArrow.off('click.slick', _.changeSlide);
-            _.$nextArrow && _.$nextArrow.off('click.slick', _.changeSlide);
-        }
-
-        _.$list.off('touchstart.slick mousedown.slick', _.swipeHandler);
-        _.$list.off('touchmove.slick mousemove.slick', _.swipeHandler);
-        _.$list.off('touchend.slick mouseup.slick', _.swipeHandler);
-        _.$list.off('touchcancel.slick mouseleave.slick', _.swipeHandler);
-
-        _.$list.off('click.slick', _.clickHandler);
-
-        $(document).off(_.visibilityChange, _.visibility);
-
-        _.$list.off('mouseenter.slick', $.proxy(_.setPaused, _, true));
-        _.$list.off('mouseleave.slick', $.proxy(_.setPaused, _, false));
-
-        if (_.options.accessibility === true) {
-            _.$list.off('keydown.slick', _.keyHandler);
-        }
-
-        if (_.options.focusOnSelect === true) {
-            $(_.$slideTrack).children().off('click.slick', _.selectHandler);
-        }
-
-        $(window).off('orientationchange.slick.slick-' + _.instanceUid, _.orientationChange);
-
-        $(window).off('resize.slick.slick-' + _.instanceUid, _.resize);
-
-        $('[draggable!=true]', _.$slideTrack).off('dragstart', _.preventDefault);
-
-        $(window).off('load.slick.slick-' + _.instanceUid, _.setPosition);
-        $(document).off('ready.slick.slick-' + _.instanceUid, _.setPosition);
-    };
-
-    Slick.prototype.cleanUpRows = function() {
-
-        var _ = this, originalSlides;
-
-        if(_.options.rows > 1) {
-            originalSlides = _.$slides.children().children();
-            originalSlides.removeAttr('style');
-            _.$slider.html(originalSlides);
-        }
-
-    };
-
-    Slick.prototype.clickHandler = function(event) {
-
-        var _ = this;
-
-        if (_.shouldClick === false) {
-            event.stopImmediatePropagation();
-            event.stopPropagation();
-            event.preventDefault();
-        }
-
-    };
-
-    Slick.prototype.destroy = function(refresh) {
-
-        var _ = this;
-
-        _.autoPlayClear();
-
-        _.touchObject = {};
-
-        _.cleanUpEvents();
-
-        $('.slick-cloned', _.$slider).detach();
-
-        if (_.$dots) {
-            _.$dots.remove();
-        }
-        if (_.$prevArrow && (typeof _.options.prevArrow !== 'object')) {
-            _.$prevArrow.remove();
-        }
-        if (_.$nextArrow && (typeof _.options.nextArrow !== 'object')) {
-            _.$nextArrow.remove();
-        }
-
-        if (_.$slides) {
-
-            _.$slides
-                .removeClass('slick-slide slick-active slick-center slick-visible')
-                .removeAttr('aria-hidden')
-                .removeAttr('data-slick-index')
-                .each(function(){
-                    $(this).attr('style', $(this).data('originalStyling'));
-                });
-
-            _.$slideTrack.children(this.options.slide).detach();
-
-            _.$slideTrack.detach();
-
-            _.$list.detach();
-
-            _.$slider.append(_.$slides);
-        }
-
-        _.cleanUpRows();
-
-        _.$slider.removeClass('slick-slider');
-        _.$slider.removeClass('slick-initialized');
-
-        _.unslicked = true;
-
-        if(!refresh) {
-            _.$slider.trigger('destroy', [_]);
-        }
-
-    };
-
-    Slick.prototype.disableTransition = function(slide) {
-
-        var _ = this,
-            transition = {};
-
-        transition[_.transitionType] = '';
-
-        if (_.options.fade === false) {
-            _.$slideTrack.css(transition);
-        } else {
-            _.$slides.eq(slide).css(transition);
-        }
-
-    };
-
-    Slick.prototype.fadeSlide = function(slideIndex, callback) {
-
-        var _ = this;
-
-        if (_.cssTransitions === false) {
-
-            _.$slides.eq(slideIndex).css({
-                zIndex: 1000
-            });
-
-            _.$slides.eq(slideIndex).animate({
-                opacity: 1
-            }, _.options.speed, _.options.easing, callback);
-
-        } else {
-
-            _.applyTransition(slideIndex);
-
-            _.$slides.eq(slideIndex).css({
-                opacity: 1,
-                zIndex: 1000
-            });
-
-            if (callback) {
-                setTimeout(function() {
-
-                    _.disableTransition(slideIndex);
-
-                    callback.call();
-                }, _.options.speed);
-            }
-
-        }
-
-    };
-
-    Slick.prototype.filterSlides = Slick.prototype.slickFilter = function(filter) {
-
-        var _ = this;
-
-        if (filter !== null) {
-
-            _.unload();
-
-            _.$slideTrack.children(this.options.slide).detach();
-
-            _.$slidesCache.filter(filter).appendTo(_.$slideTrack);
-
-            _.reinit();
-
-        }
-
-    };
-
-    Slick.prototype.getCurrent = Slick.prototype.slickCurrentSlide = function() {
-
-        var _ = this;
-        return _.currentSlide;
-
-    };
-
-    Slick.prototype.getDotCount = function() {
-
-        var _ = this;
-
-        var breakPoint = 0;
-        var counter = 0;
-        var pagerQty = 0;
-
-        if (_.options.infinite === true) {
-            while (breakPoint < _.slideCount) {
-                ++pagerQty;
-                breakPoint = counter + _.options.slidesToShow;
-                counter += _.options.slidesToScroll <= _.options.slidesToShow ? _.options.slidesToScroll : _.options.slidesToShow;
-            }
-        } else if (_.options.centerMode === true) {
-            pagerQty = _.slideCount;
-        } else {
-            while (breakPoint < _.slideCount) {
-                ++pagerQty;
-                breakPoint = counter + _.options.slidesToShow;
-                counter += _.options.slidesToScroll <= _.options.slidesToShow ? _.options.slidesToScroll : _.options.slidesToShow;
-            }
-        }
-
-        return pagerQty - 1;
-
-    };
-
-    Slick.prototype.getLeft = function(slideIndex) {
-
-        var _ = this,
-            targetLeft,
-            verticalHeight,
-            verticalOffset = 0,
-            targetSlide;
-
-        _.slideOffset = 0;
-        verticalHeight = _.$slides.first().outerHeight();
-
-        if (_.options.infinite === true) {
-            if (_.slideCount > _.options.slidesToShow) {
-                _.slideOffset = (_.slideWidth * _.options.slidesToShow) * -1;
-                verticalOffset = (verticalHeight * _.options.slidesToShow) * -1;
-            }
-            if (_.slideCount % _.options.slidesToScroll !== 0) {
-                if (slideIndex + _.options.slidesToScroll > _.slideCount && _.slideCount > _.options.slidesToShow) {
-                    if (slideIndex > _.slideCount) {
-                        _.slideOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * _.slideWidth) * -1;
-                        verticalOffset = ((_.options.slidesToShow - (slideIndex - _.slideCount)) * verticalHeight) * -1;
-                    } else {
-                        _.slideOffset = ((_.slideCount % _.options.slidesToScroll) * _.slideWidth) * -1;
-                        verticalOffset = ((_.slideCount % _.options.slidesToScroll) * verticalHeight) * -1;
-                    }
-                }
-            }
-        } else {
-            if (slideIndex + _.options.slidesToShow > _.slideCount) {
-                _.slideOffset = ((slideIndex + _.options.slidesToShow) - _.slideCount) * _.slideWidth;
-                verticalOffset = ((slideIndex + _.options.slidesToShow) - _.slideCount) * verticalHeight;
-            }
-        }
-
-        if (_.slideCount <= _.options.slidesToShow) {
-            _.slideOffset = 0;
-            verticalOffset = 0;
-        }
-
-        if (_.options.centerMode === true && _.options.infinite === true) {
-            _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2) - _.slideWidth;
-        } else if (_.options.centerMode === true) {
-            _.slideOffset = 0;
-            _.slideOffset += _.slideWidth * Math.floor(_.options.slidesToShow / 2);
-        }
-
-        if (_.options.vertical === false) {
-            targetLeft = ((slideIndex * _.slideWidth) * -1) + _.slideOffset;
-        } else {
-            targetLeft = ((slideIndex * verticalHeight) * -1) + verticalOffset;
-        }
-
-        if (_.options.variableWidth === true) {
-
-            if (_.slideCount <= _.options.slidesToShow || _.options.infinite === false) {
-                targetSlide = _.$slideTrack.children('.slick-slide').eq(slideIndex);
-            } else {
-                targetSlide = _.$slideTrack.children('.slick-slide').eq(slideIndex + _.options.slidesToShow);
-            }
-
-            targetLeft = targetSlide[0] ? targetSlide[0].offsetLeft * -1 : 0;
-
-            if (_.options.centerMode === true) {
-                if (_.options.infinite === false) {
-                    targetSlide = _.$slideTrack.children('.slick-slide').eq(slideIndex);
-                } else {
-                    targetSlide = _.$slideTrack.children('.slick-slide').eq(slideIndex + _.options.slidesToShow + 1);
-                }
-                targetLeft = targetSlide[0] ? targetSlide[0].offsetLeft * -1 : 0;
-                targetLeft += (_.$list.width() - targetSlide.outerWidth()) / 2;
-            }
-        }
-
-        return targetLeft;
-
-    };
-
-    Slick.prototype.getOption = Slick.prototype.slickGetOption = function(option) {
-
-        var _ = this;
-
-        return _.options[option];
-
-    };
-
-    Slick.prototype.getNavigableIndexes = function() {
-
-        var _ = this,
-            breakPoint = 0,
-            counter = 0,
-            indexes = [],
-            max;
-
-        if (_.options.infinite === false) {
-            max = _.slideCount;
-        } else {
-            breakPoint = _.options.slidesToScroll * -1;
-            counter = _.options.slidesToScroll * -1;
-            max = _.slideCount * 2;
-        }
-
-        while (breakPoint < max) {
-            indexes.push(breakPoint);
-            breakPoint = counter + _.options.slidesToScroll;
-            counter += _.options.slidesToScroll <= _.options.slidesToShow ? _.options.slidesToScroll : _.options.slidesToShow;
-        }
-
-        return indexes;
-
-    };
-
-    Slick.prototype.getSlick = function() {
-
-        return this;
-
-    };
-
-    Slick.prototype.getSlideCount = function() {
-
-        var _ = this,
-            slidesTraversed, swipedSlide, centerOffset;
-
-        centerOffset = _.options.centerMode === true ? _.slideWidth * Math.floor(_.options.slidesToShow / 2) : 0;
-
-        if (_.options.swipeToSlide === true) {
-            _.$slideTrack.find('.slick-slide').each(function(index, slide) {
-                if (slide.offsetLeft - centerOffset + ($(slide).outerWidth() / 2) > (_.swipeLeft * -1)) {
-                    swipedSlide = slide;
-                    return false;
-                }
-            });
-
-            slidesTraversed = Math.abs($(swipedSlide).attr('data-slick-index') - _.currentSlide) || 1;
-
-            return slidesTraversed;
-
-        } else {
-            return _.options.slidesToScroll;
-        }
-
-    };
-
-    Slick.prototype.goTo = Slick.prototype.slickGoTo = function(slide, dontAnimate) {
-
-        var _ = this;
-
-        _.changeSlide({
-            data: {
-                message: 'index',
-                index: parseInt(slide)
-            }
-        }, dontAnimate);
-
-    };
-
-    Slick.prototype.init = function(creation) {
-
-        var _ = this;
-
-        if (!$(_.$slider).hasClass('slick-initialized')) {
-
-            $(_.$slider).addClass('slick-initialized');
-            _.buildRows();
-            _.buildOut();
-            _.setProps();
-            _.startLoad();
-            _.loadSlider();
-            _.initializeEvents();
-            _.updateArrows();
-            _.updateDots();
-        }
-
-        if (creation) {
-            _.$slider.trigger('init', [_]);
-        }
-
-    };
-
-    Slick.prototype.initArrowEvents = function() {
-
-        var _ = this;
-
-        if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
-            _.$prevArrow.on('click.slick', {
-                message: 'previous'
-            }, _.changeSlide);
-            _.$nextArrow.on('click.slick', {
-                message: 'next'
-            }, _.changeSlide);
-        }
-
-    };
-
-    Slick.prototype.initDotEvents = function() {
-
-        var _ = this;
-
-        if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-            $('li', _.$dots).on('click.slick', {
-                message: 'index'
-            }, _.changeSlide);
-        }
-
-        if (_.options.dots === true && _.options.pauseOnDotsHover === true && _.options.autoplay === true) {
-            $('li', _.$dots)
-                .on('mouseenter.slick', $.proxy(_.setPaused, _, true))
-                .on('mouseleave.slick', $.proxy(_.setPaused, _, false));
-        }
-
-    };
-
-    Slick.prototype.initializeEvents = function() {
-
-        var _ = this;
-
-        _.initArrowEvents();
-
-        _.initDotEvents();
-
-        _.$list.on('touchstart.slick mousedown.slick', {
-            action: 'start'
-        }, _.swipeHandler);
-        _.$list.on('touchmove.slick mousemove.slick', {
-            action: 'move'
-        }, _.swipeHandler);
-        _.$list.on('touchend.slick mouseup.slick', {
-            action: 'end'
-        }, _.swipeHandler);
-        _.$list.on('touchcancel.slick mouseleave.slick', {
-            action: 'end'
-        }, _.swipeHandler);
-
-        _.$list.on('click.slick', _.clickHandler);
-
-        $(document).on(_.visibilityChange, $.proxy(_.visibility, _));
-
-        _.$list.on('mouseenter.slick', $.proxy(_.setPaused, _, true));
-        _.$list.on('mouseleave.slick', $.proxy(_.setPaused, _, false));
-
-        if (_.options.accessibility === true) {
-            _.$list.on('keydown.slick', _.keyHandler);
-        }
-
-        if (_.options.focusOnSelect === true) {
-            $(_.$slideTrack).children().on('click.slick', _.selectHandler);
-        }
-
-        $(window).on('orientationchange.slick.slick-' + _.instanceUid, $.proxy(_.orientationChange, _));
-
-        $(window).on('resize.slick.slick-' + _.instanceUid, $.proxy(_.resize, _));
-
-        $('[draggable!=true]', _.$slideTrack).on('dragstart', _.preventDefault);
-
-        $(window).on('load.slick.slick-' + _.instanceUid, _.setPosition);
-        $(document).on('ready.slick.slick-' + _.instanceUid, _.setPosition);
-
-    };
-
-    Slick.prototype.initUI = function() {
-
-        var _ = this;
-
-        if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
-
-            _.$prevArrow.show();
-            _.$nextArrow.show();
-
-        }
-
-        if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-
-            _.$dots.show();
-
-        }
-
-        if (_.options.autoplay === true) {
-
-            _.autoPlay();
-
-        }
-
-    };
-
-    Slick.prototype.keyHandler = function(event) {
-
-        var _ = this;
-
-        if (event.keyCode === 37 && _.options.accessibility === true) {
-            _.changeSlide({
-                data: {
-                    message: 'previous'
-                }
-            });
-        } else if (event.keyCode === 39 && _.options.accessibility === true) {
-            _.changeSlide({
-                data: {
-                    message: 'next'
-                }
-            });
-        }
-
-    };
-
-    Slick.prototype.lazyLoad = function() {
-
-        var _ = this,
-            loadRange, cloneRange, rangeStart, rangeEnd;
-
-        function loadImages(imagesScope) {
-            $('img[data-lazy]', imagesScope).each(function() {
-                var image = $(this),
-                    imageSource = $(this).attr('data-lazy'),
-                    imageToLoad = document.createElement('img');
-
-                imageToLoad.onload = function() {
-                    image.animate({
-                        opacity: 1
-                    }, 200);
-                };
-                imageToLoad.src = imageSource;
-
-                image
-                    .css({
-                        opacity: 0
-                    })
-                    .attr('src', imageSource)
-                    .removeAttr('data-lazy')
-                    .removeClass('slick-loading');
-            });
-        }
-
-        if (_.options.centerMode === true) {
-            if (_.options.infinite === true) {
-                rangeStart = _.currentSlide + (_.options.slidesToShow / 2 + 1);
-                rangeEnd = rangeStart + _.options.slidesToShow + 2;
-            } else {
-                rangeStart = Math.max(0, _.currentSlide - (_.options.slidesToShow / 2 + 1));
-                rangeEnd = 2 + (_.options.slidesToShow / 2 + 1) + _.currentSlide;
-            }
-        } else {
-            rangeStart = _.options.infinite ? _.options.slidesToShow + _.currentSlide : _.currentSlide;
-            rangeEnd = rangeStart + _.options.slidesToShow;
-            if (_.options.fade === true) {
-                if (rangeStart > 0) rangeStart--;
-                if (rangeEnd <= _.slideCount) rangeEnd++;
-            }
-        }
-
-        loadRange = _.$slider.find('.slick-slide').slice(rangeStart, rangeEnd);
-        loadImages(loadRange);
-
-        if (_.slideCount <= _.options.slidesToShow) {
-            cloneRange = _.$slider.find('.slick-slide');
-            loadImages(cloneRange);
-        } else
-        if (_.currentSlide >= _.slideCount - _.options.slidesToShow) {
-            cloneRange = _.$slider.find('.slick-cloned').slice(0, _.options.slidesToShow);
-            loadImages(cloneRange);
-        } else if (_.currentSlide === 0) {
-            cloneRange = _.$slider.find('.slick-cloned').slice(_.options.slidesToShow * -1);
-            loadImages(cloneRange);
-        }
-
-    };
-
-    Slick.prototype.loadSlider = function() {
-
-        var _ = this;
-
-        _.setPosition();
-
-        _.$slideTrack.css({
-            opacity: 1
-        });
-
-        _.$slider.removeClass('slick-loading');
-
-        _.initUI();
-
-        if (_.options.lazyLoad === 'progressive') {
-            _.progressiveLazyLoad();
-        }
-
-    };
-
-    Slick.prototype.next = Slick.prototype.slickNext = function() {
-
-        var _ = this;
-
-        _.changeSlide({
-            data: {
-                message: 'next'
-            }
-        });
-
-    };
-
-    Slick.prototype.orientationChange = function() {
-
-        var _ = this;
-
-        _.checkResponsive();
-        _.setPosition();
-
-    };
-
-    Slick.prototype.pause = Slick.prototype.slickPause = function() {
-
-        var _ = this;
-
-        _.autoPlayClear();
-        _.paused = true;
-
-    };
-
-    Slick.prototype.play = Slick.prototype.slickPlay = function() {
-
-        var _ = this;
-
-        _.paused = false;
-        _.autoPlay();
-
-    };
-
-    Slick.prototype.postSlide = function(index) {
-
-        var _ = this;
-
-        _.$slider.trigger('afterChange', [_, index]);
-
-        _.animating = false;
-
-        _.setPosition();
-
-        _.swipeLeft = null;
-
-        if (_.options.autoplay === true && _.paused === false) {
-            _.autoPlay();
-        }
-
-    };
-
-    Slick.prototype.prev = Slick.prototype.slickPrev = function() {
-
-        var _ = this;
-
-        _.changeSlide({
-            data: {
-                message: 'previous'
-            }
-        });
-
-    };
-
-    Slick.prototype.preventDefault = function(e) {
-        e.preventDefault();
-    };
-
-    Slick.prototype.progressiveLazyLoad = function() {
-
-        var _ = this,
-            imgCount, targetImage;
-
-        imgCount = $('img[data-lazy]', _.$slider).length;
-
-        if (imgCount > 0) {
-            targetImage = $('img[data-lazy]', _.$slider).first();
-            targetImage.attr('src', targetImage.attr('data-lazy')).removeClass('slick-loading').load(function() {
-                    targetImage.removeAttr('data-lazy');
-                    _.progressiveLazyLoad();
-
-                    if (_.options.adaptiveHeight === true) {
-                        _.setPosition();
-                    }
-                })
-                .error(function() {
-                    targetImage.removeAttr('data-lazy');
-                    _.progressiveLazyLoad();
-                });
-        }
-
-    };
-
-    Slick.prototype.refresh = function( initializing ) {
-
-        var _ = this,
-            currentSlide = _.currentSlide;
-
-        _.destroy(true);
-
-        $.extend(_, _.initials);
-
-        _.init();
-
-        if( !initializing ) {
-
-            _.changeSlide({
-                data: {
-                    message: 'index',
-                    index: currentSlide
-                }
-            }, false);
-
-        }
-
-    };
-
-    Slick.prototype.reinit = function() {
-
-        var _ = this;
-
-        _.$slides = _.$slideTrack.children(_.options.slide).addClass(
-            'slick-slide');
-
-        _.slideCount = _.$slides.length;
-
-        if (_.currentSlide >= _.slideCount && _.currentSlide !== 0) {
-            _.currentSlide = _.currentSlide - _.options.slidesToScroll;
-        }
-
-        if (_.slideCount <= _.options.slidesToShow) {
-            _.currentSlide = 0;
-        }
-
-        _.setProps();
-
-        _.setupInfinite();
-
-        _.buildArrows();
-
-        _.updateArrows();
-
-        _.initArrowEvents();
-
-        _.buildDots();
-
-        _.updateDots();
-
-        _.initDotEvents();
-
-        if (_.options.focusOnSelect === true) {
-            $(_.$slideTrack).children().on('click.slick', _.selectHandler);
-        }
-
-        _.setSlideClasses(0);
-
-        _.setPosition();
-
-        _.$slider.trigger('reInit', [_]);
-
-    };
-
-    Slick.prototype.resize = function() {
-
-        var _ = this;
-
-        if ($(window).width() !== _.windowWidth) {
-            clearTimeout(_.windowDelay);
-            _.windowDelay = window.setTimeout(function() {
-                _.windowWidth = $(window).width();
-                _.checkResponsive();
-                if( !_.unslicked ) { _.setPosition(); }
-            }, 50);
-        }
-    };
-
-    Slick.prototype.removeSlide = Slick.prototype.slickRemove = function(index, removeBefore, removeAll) {
-
-        var _ = this;
-
-        if (typeof(index) === 'boolean') {
-            removeBefore = index;
-            index = removeBefore === true ? 0 : _.slideCount - 1;
-        } else {
-            index = removeBefore === true ? --index : index;
-        }
-
-        if (_.slideCount < 1 || index < 0 || index > _.slideCount - 1) {
-            return false;
-        }
-
-        _.unload();
-
-        if (removeAll === true) {
-            _.$slideTrack.children().remove();
-        } else {
-            _.$slideTrack.children(this.options.slide).eq(index).remove();
-        }
-
-        _.$slides = _.$slideTrack.children(this.options.slide);
-
-        _.$slideTrack.children(this.options.slide).detach();
-
-        _.$slideTrack.append(_.$slides);
-
-        _.$slidesCache = _.$slides;
-
-        _.reinit();
-
-    };
-
-    Slick.prototype.setCSS = function(position) {
-
-        var _ = this,
-            positionProps = {},
-            x, y;
-
-        if (_.options.rtl === true) {
-            position = -position;
-        }
-        x = _.positionProp == 'left' ? Math.ceil(position) + 'px' : '0px';
-        y = _.positionProp == 'top' ? Math.ceil(position) + 'px' : '0px';
-
-        positionProps[_.positionProp] = position;
-
-        if (_.transformsEnabled === false) {
-            _.$slideTrack.css(positionProps);
-        } else {
-            positionProps = {};
-            if (_.cssTransitions === false) {
-                positionProps[_.animType] = 'translate(' + x + ', ' + y + ')';
-                _.$slideTrack.css(positionProps);
-            } else {
-                positionProps[_.animType] = 'translate3d(' + x + ', ' + y + ', 0px)';
-                _.$slideTrack.css(positionProps);
-            }
-        }
-
-    };
-
-    Slick.prototype.setDimensions = function() {
-
-        var _ = this;
-
-        if (_.options.vertical === false) {
-            if (_.options.centerMode === true) {
-                _.$list.css({
-                    padding: ('0px ' + _.options.centerPadding)
-                });
-            }
-        } else {
-            _.$list.height(_.$slides.first().outerHeight(true) * _.options.slidesToShow);
-            if (_.options.centerMode === true) {
-                _.$list.css({
-                    padding: (_.options.centerPadding + ' 0px')
-                });
-            }
-        }
-
-        _.listWidth = _.$list.width();
-        _.listHeight = _.$list.height();
-
-
-        if (_.options.vertical === false && _.options.variableWidth === false) {
-            _.slideWidth = Math.ceil(_.listWidth / _.options.slidesToShow);
-            _.$slideTrack.width(Math.ceil((_.slideWidth * _.$slideTrack.children('.slick-slide').length)));
-
-        } else if (_.options.variableWidth === true) {
-            _.$slideTrack.width(5000 * _.slideCount);
-        } else {
-            _.slideWidth = Math.ceil(_.listWidth);
-            _.$slideTrack.height(Math.ceil((_.$slides.first().outerHeight(true) * _.$slideTrack.children('.slick-slide').length)));
-        }
-
-        var offset = _.$slides.first().outerWidth(true) - _.$slides.first().width();
-        if (_.options.variableWidth === false) _.$slideTrack.children('.slick-slide').width(_.slideWidth - offset);
-
-    };
-
-    Slick.prototype.setFade = function() {
-
-        var _ = this,
-            targetLeft;
-
-        _.$slides.each(function(index, element) {
-            targetLeft = (_.slideWidth * index) * -1;
-            if (_.options.rtl === true) {
-                $(element).css({
-                    position: 'relative',
-                    right: targetLeft,
-                    top: 0,
-                    zIndex: 800,
-                    opacity: 0
-                });
-            } else {
-                $(element).css({
-                    position: 'relative',
-                    left: targetLeft,
-                    top: 0,
-                    zIndex: 800,
-                    opacity: 0
-                });
-            }
-        });
-
-        _.$slides.eq(_.currentSlide).css({
-            zIndex: 900,
-            opacity: 1
-        });
-
-    };
-
-    Slick.prototype.setHeight = function() {
-
-        var _ = this;
-
-        if (_.options.slidesToShow === 1 && _.options.adaptiveHeight === true && _.options.vertical === false) {
-            var targetHeight = _.$slides.eq(_.currentSlide).outerHeight(true);
-            _.$list.css('height', targetHeight);
-        }
-
-    };
-
-    Slick.prototype.setOption = Slick.prototype.slickSetOption = function(option, value, refresh) {
-
-        var _ = this;
-        _.options[option] = value;
-
-        if (refresh === true) {
-            _.unload();
-            _.reinit();
-        }
-
-    };
-
-    Slick.prototype.setPosition = function() {
-
-        var _ = this;
-
-        _.setDimensions();
-
-        _.setHeight();
-
-        if (_.options.fade === false) {
-            _.setCSS(_.getLeft(_.currentSlide));
-        } else {
-            _.setFade();
-        }
-
-        _.$slider.trigger('setPosition', [_]);
-
-    };
-
-    Slick.prototype.setProps = function() {
-
-        var _ = this,
-            bodyStyle = document.body.style;
-
-        _.positionProp = _.options.vertical === true ? 'top' : 'left';
-
-        if (_.positionProp === 'top') {
-            _.$slider.addClass('slick-vertical');
-        } else {
-            _.$slider.removeClass('slick-vertical');
-        }
-
-        if (bodyStyle.WebkitTransition !== undefined ||
-            bodyStyle.MozTransition !== undefined ||
-            bodyStyle.msTransition !== undefined) {
-            if (_.options.useCSS === true) {
-                _.cssTransitions = true;
-            }
-        }
-
-        if (bodyStyle.OTransform !== undefined) {
-            _.animType = 'OTransform';
-            _.transformType = '-o-transform';
-            _.transitionType = 'OTransition';
-            if (bodyStyle.perspectiveProperty === undefined && bodyStyle.webkitPerspective === undefined) _.animType = false;
-        }
-        if (bodyStyle.MozTransform !== undefined) {
-            _.animType = 'MozTransform';
-            _.transformType = '-moz-transform';
-            _.transitionType = 'MozTransition';
-            if (bodyStyle.perspectiveProperty === undefined && bodyStyle.MozPerspective === undefined) _.animType = false;
-        }
-        if (bodyStyle.webkitTransform !== undefined) {
-            _.animType = 'webkitTransform';
-            _.transformType = '-webkit-transform';
-            _.transitionType = 'webkitTransition';
-            if (bodyStyle.perspectiveProperty === undefined && bodyStyle.webkitPerspective === undefined) _.animType = false;
-        }
-        if (bodyStyle.msTransform !== undefined) {
-            _.animType = 'msTransform';
-            _.transformType = '-ms-transform';
-            _.transitionType = 'msTransition';
-            if (bodyStyle.msTransform === undefined) _.animType = false;
-        }
-        if (bodyStyle.transform !== undefined && _.animType !== false) {
-            _.animType = 'transform';
-            _.transformType = 'transform';
-            _.transitionType = 'transition';
-        }
-        _.transformsEnabled = (_.animType !== null && _.animType !== false);
-
-    };
-
-
-    Slick.prototype.setSlideClasses = function(index) {
-
-        var _ = this,
-            centerOffset, allSlides, indexOffset, remainder;
-
-        _.$slider.find('.slick-slide').removeClass('slick-active').attr('aria-hidden', 'true').removeClass('slick-center');
-        allSlides = _.$slider.find('.slick-slide');
-
-        if (_.options.centerMode === true) {
-
-            centerOffset = Math.floor(_.options.slidesToShow / 2);
-
-            if (_.options.infinite === true) {
-
-                if (index >= centerOffset && index <= (_.slideCount - 1) - centerOffset) {
-                    _.$slides.slice(index - centerOffset, index + centerOffset + 1).addClass('slick-active').attr('aria-hidden', 'false');
-                } else {
-                    indexOffset = _.options.slidesToShow + index;
-                    allSlides.slice(indexOffset - centerOffset + 1, indexOffset + centerOffset + 2).addClass('slick-active').attr('aria-hidden', 'false');
-                }
-
-                if (index === 0) {
-                    allSlides.eq(allSlides.length - 1 - _.options.slidesToShow).addClass('slick-center');
-                } else if (index === _.slideCount - 1) {
-                    allSlides.eq(_.options.slidesToShow).addClass('slick-center');
-                }
-
-            }
-
-            _.$slides.eq(index).addClass('slick-center');
-
-        } else {
-
-            if (index >= 0 && index <= (_.slideCount - _.options.slidesToShow)) {
-                _.$slides.slice(index, index + _.options.slidesToShow).addClass('slick-active').attr('aria-hidden', 'false');
-            } else if (allSlides.length <= _.options.slidesToShow) {
-                allSlides.addClass('slick-active').attr('aria-hidden', 'false');
-            } else {
-                remainder = _.slideCount % _.options.slidesToShow;
-                indexOffset = _.options.infinite === true ? _.options.slidesToShow + index : index;
-                if (_.options.slidesToShow == _.options.slidesToScroll && (_.slideCount - index) < _.options.slidesToShow) {
-                    allSlides.slice(indexOffset - (_.options.slidesToShow - remainder), indexOffset + remainder).addClass('slick-active').attr('aria-hidden', 'false');
-                } else {
-                    allSlides.slice(indexOffset, indexOffset + _.options.slidesToShow).addClass('slick-active').attr('aria-hidden', 'false');
-                }
-            }
-
-        }
-
-        if (_.options.lazyLoad === 'ondemand') {
-            _.lazyLoad();
-        }
-
-    };
-
-    Slick.prototype.setupInfinite = function() {
-
-        var _ = this,
-            i, slideIndex, infiniteCount;
-
-        if (_.options.fade === true) {
-            _.options.centerMode = false;
-        }
-
-        if (_.options.infinite === true && _.options.fade === false) {
-
-            slideIndex = null;
-
-            if (_.slideCount > _.options.slidesToShow) {
-
-                if (_.options.centerMode === true) {
-                    infiniteCount = _.options.slidesToShow + 1;
-                } else {
-                    infiniteCount = _.options.slidesToShow;
-                }
-
-                for (i = _.slideCount; i > (_.slideCount -
-                        infiniteCount); i -= 1) {
-                    slideIndex = i - 1;
-                    $(_.$slides[slideIndex]).clone(true).attr('id', '')
-                        .attr('data-slick-index', slideIndex - _.slideCount)
-                        .prependTo(_.$slideTrack).addClass('slick-cloned');
-                }
-                for (i = 0; i < infiniteCount; i += 1) {
-                    slideIndex = i;
-                    $(_.$slides[slideIndex]).clone(true).attr('id', '')
-                        .attr('data-slick-index', slideIndex + _.slideCount)
-                        .appendTo(_.$slideTrack).addClass('slick-cloned');
-                }
-                _.$slideTrack.find('.slick-cloned').find('[id]').each(function() {
-                    $(this).attr('id', '');
-                });
-
-            }
-
-        }
-
-    };
-
-    Slick.prototype.setPaused = function(paused) {
-
-        var _ = this;
-
-        if (_.options.autoplay === true && _.options.pauseOnHover === true) {
-            _.paused = paused;
-            if (!paused) {
-                _.autoPlay();
-            } else {
-                _.autoPlayClear();
-            }
-        }
-    };
-
-    Slick.prototype.selectHandler = function(event) {
-
-        var _ = this;
-
-        var targetElement = $(event.target).is('.slick-slide') ?
-            $(event.target) :
-            $(event.target).parents('.slick-slide');
-
-        var index = parseInt(targetElement.attr('data-slick-index'));
-
-        if (!index) index = 0;
-
-        if (_.slideCount <= _.options.slidesToShow) {
-            _.$slider.find('.slick-slide').removeClass('slick-active').attr('aria-hidden', 'true');
-            _.$slides.eq(index).addClass('slick-active').attr("aria-hidden", "false");
-            if (_.options.centerMode === true) {
-                _.$slider.find('.slick-slide').removeClass('slick-center');
-                _.$slides.eq(index).addClass('slick-center');
-            }
-            _.asNavFor(index);
-            return;
-        }
-        _.slideHandler(index);
-
-    };
-
-    Slick.prototype.slideHandler = function(index, sync, dontAnimate) {
-
-        var targetSlide, animSlide, oldSlide, slideLeft, targetLeft = null,
-            _ = this;
-
-        sync = sync || false;
-
-        if (_.animating === true && _.options.waitForAnimate === true) {
-            return;
-        }
-
-        if (_.options.fade === true && _.currentSlide === index) {
-            return;
-        }
-
-        if (_.slideCount <= _.options.slidesToShow) {
-            return;
-        }
-
-        if (sync === false) {
-            _.asNavFor(index);
-        }
-
-        targetSlide = index;
-        targetLeft = _.getLeft(targetSlide);
-        slideLeft = _.getLeft(_.currentSlide);
-
-        _.currentLeft = _.swipeLeft === null ? slideLeft : _.swipeLeft;
-
-        if (_.options.infinite === false && _.options.centerMode === false && (index < 0 || index > _.getDotCount() * _.options.slidesToScroll)) {
-            if (_.options.fade === false) {
-                targetSlide = _.currentSlide;
-                if (dontAnimate !== true) {
-                    _.animateSlide(slideLeft, function() {
-                        _.postSlide(targetSlide);
-                    });
-                } else {
-                    _.postSlide(targetSlide);
-                }
-            }
-            return;
-        } else if (_.options.infinite === false && _.options.centerMode === true && (index < 0 || index > (_.slideCount - _.options.slidesToScroll))) {
-            if (_.options.fade === false) {
-                targetSlide = _.currentSlide;
-                if (dontAnimate !== true) {
-                    _.animateSlide(slideLeft, function() {
-                        _.postSlide(targetSlide);
-                    });
-                } else {
-                    _.postSlide(targetSlide);
-                }
-            }
-            return;
-        }
-
-        if (_.options.autoplay === true) {
-            clearInterval(_.autoPlayTimer);
-        }
-
-        if (targetSlide < 0) {
-            if (_.slideCount % _.options.slidesToScroll !== 0) {
-                animSlide = _.slideCount - (_.slideCount % _.options.slidesToScroll);
-            } else {
-                animSlide = _.slideCount + targetSlide;
-            }
-        } else if (targetSlide >= _.slideCount) {
-            if (_.slideCount % _.options.slidesToScroll !== 0) {
-                animSlide = 0;
-            } else {
-                animSlide = targetSlide - _.slideCount;
-            }
-        } else {
-            animSlide = targetSlide;
-        }
-
-        _.animating = true;
-
-        _.$slider.trigger("beforeChange", [_, _.currentSlide, animSlide]);
-
-        oldSlide = _.currentSlide;
-        _.currentSlide = animSlide;
-
-        _.setSlideClasses(_.currentSlide);
-
-        _.updateDots();
-        _.updateArrows();
-
-        if (_.options.fade === true) {
-            if (dontAnimate !== true) {
-                _.fadeSlide(animSlide, function() {
-                    _.postSlide(animSlide);
-                });
-            } else {
-                _.postSlide(animSlide);
-            }
-            _.animateHeight();
-            return;
-        }
-
-        if (dontAnimate !== true) {
-            _.animateSlide(targetLeft, function() {
-                _.postSlide(animSlide);
-            });
-        } else {
-            _.postSlide(animSlide);
-        }
-
-    };
-
-    Slick.prototype.startLoad = function() {
-
-        var _ = this;
-
-        if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
-
-            _.$prevArrow.hide();
-            _.$nextArrow.hide();
-
-        }
-
-        if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-
-            _.$dots.hide();
-
-        }
-
-        _.$slider.addClass('slick-loading');
-
-    };
-
-    Slick.prototype.swipeDirection = function() {
-
-        var xDist, yDist, r, swipeAngle, _ = this;
-
-        xDist = _.touchObject.startX - _.touchObject.curX;
-        yDist = _.touchObject.startY - _.touchObject.curY;
-        r = Math.atan2(yDist, xDist);
-
-        swipeAngle = Math.round(r * 180 / Math.PI);
-        if (swipeAngle < 0) {
-            swipeAngle = 360 - Math.abs(swipeAngle);
-        }
-
-        if ((swipeAngle <= 45) && (swipeAngle >= 0)) {
-            return (_.options.rtl === false ? 'left' : 'right');
-        }
-        if ((swipeAngle <= 360) && (swipeAngle >= 315)) {
-            return (_.options.rtl === false ? 'left' : 'right');
-        }
-        if ((swipeAngle >= 135) && (swipeAngle <= 225)) {
-            return (_.options.rtl === false ? 'right' : 'left');
-        }
-        if (_.options.verticalSwiping === true) {
-            if ((swipeAngle >= 35) && (swipeAngle <= 135)) {
-                return 'left';
-            } else {
-                return 'right';
-            }
-        }
-
-        return 'vertical';
-
-    };
-
-    Slick.prototype.swipeEnd = function(event) {
-
-        var _ = this,
-            slideCount;
-
-        _.dragging = false;
-
-        _.shouldClick = (_.touchObject.swipeLength > 10) ? false : true;
-
-        if (_.touchObject.curX === undefined) {
-            return false;
-        }
-
-        if (_.touchObject.edgeHit === true) {
-            _.$slider.trigger("edge", [_, _.swipeDirection()]);
-        }
-
-        if (_.touchObject.swipeLength >= _.touchObject.minSwipe) {
-
-            switch (_.swipeDirection()) {
-                case 'left':
-                    slideCount = _.options.swipeToSlide ? _.checkNavigable(_.currentSlide + _.getSlideCount()) : _.currentSlide + _.getSlideCount();
-                    _.slideHandler(slideCount);
-                    _.currentDirection = 0;
-                    _.touchObject = {};
-                    _.$slider.trigger("swipe", [_, "left"]);
-                    break;
-
-                case 'right':
-                    slideCount = _.options.swipeToSlide ? _.checkNavigable(_.currentSlide - _.getSlideCount()) : _.currentSlide - _.getSlideCount();
-                    _.slideHandler(slideCount);
-                    _.currentDirection = 1;
-                    _.touchObject = {};
-                    _.$slider.trigger("swipe", [_, "right"]);
-                    break;
-            }
-        } else {
-            if (_.touchObject.startX !== _.touchObject.curX) {
-                _.slideHandler(_.currentSlide);
-                _.touchObject = {};
-            }
-        }
-
-    };
-
-    Slick.prototype.swipeHandler = function(event) {
-
-        var _ = this;
-
-        if ((_.options.swipe === false) || ('ontouchend' in document && _.options.swipe === false)) {
-            return;
-        } else if (_.options.draggable === false && event.type.indexOf('mouse') !== -1) {
-            return;
-        }
-
-        _.touchObject.fingerCount = event.originalEvent && event.originalEvent.touches !== undefined ?
-            event.originalEvent.touches.length : 1;
-
-        _.touchObject.minSwipe = _.listWidth / _.options
-            .touchThreshold;
-
-        if (_.options.verticalSwiping === true) {
-            _.touchObject.minSwipe = _.listHeight / _.options
-                .touchThreshold;
-        }
-
-        switch (event.data.action) {
-
-            case 'start':
-                _.swipeStart(event);
-                break;
-
-            case 'move':
-                _.swipeMove(event);
-                break;
-
-            case 'end':
-                _.swipeEnd(event);
-                break;
-
-        }
-
-    };
-
-    Slick.prototype.swipeMove = function(event) {
-
-        var _ = this,
-            edgeWasHit = false,
-            curLeft, swipeDirection, swipeLength, positionOffset, touches;
-
-        touches = event.originalEvent !== undefined ? event.originalEvent.touches : null;
-
-        if (!_.dragging || touches && touches.length !== 1) {
-            return false;
-        }
-
-        curLeft = _.getLeft(_.currentSlide);
-
-        _.touchObject.curX = touches !== undefined ? touches[0].pageX : event.clientX;
-        _.touchObject.curY = touches !== undefined ? touches[0].pageY : event.clientY;
-
-        _.touchObject.swipeLength = Math.round(Math.sqrt(
-            Math.pow(_.touchObject.curX - _.touchObject.startX, 2)));
-
-        if (_.options.verticalSwiping === true) {
-            _.touchObject.swipeLength = Math.round(Math.sqrt(
-                Math.pow(_.touchObject.curY - _.touchObject.startY, 2)));
-        }
-
-        swipeDirection = _.swipeDirection();
-
-        if (swipeDirection === 'vertical') {
-            return;
-        }
-
-        if (event.originalEvent !== undefined && _.touchObject.swipeLength > 4) {
-            event.preventDefault();
-        }
-
-        positionOffset = (_.options.rtl === false ? 1 : -1) * (_.touchObject.curX > _.touchObject.startX ? 1 : -1);
-        if (_.options.verticalSwiping === true) {
-            positionOffset = _.touchObject.curY > _.touchObject.startY ? 1 : -1;
-        }
-
-
-        swipeLength = _.touchObject.swipeLength;
-
-        _.touchObject.edgeHit = false;
-
-        if (_.options.infinite === false) {
-            if ((_.currentSlide === 0 && swipeDirection === "right") || (_.currentSlide >= _.getDotCount() && swipeDirection === "left")) {
-                swipeLength = _.touchObject.swipeLength * _.options.edgeFriction;
-                _.touchObject.edgeHit = true;
-            }
-        }
-
-        if (_.options.vertical === false) {
-            _.swipeLeft = curLeft + swipeLength * positionOffset;
-        } else {
-            _.swipeLeft = curLeft + (swipeLength * (_.$list.height() / _.listWidth)) * positionOffset;
-        }
-        if (_.options.verticalSwiping === true) {
-            _.swipeLeft = curLeft + swipeLength * positionOffset;
-        }
-
-        if (_.options.fade === true || _.options.touchMove === false) {
-            return false;
-        }
-
-        if (_.animating === true) {
-            _.swipeLeft = null;
-            return false;
-        }
-
-        _.setCSS(_.swipeLeft);
-
-    };
-
-    Slick.prototype.swipeStart = function(event) {
-
-        var _ = this,
-            touches;
-
-        if (_.touchObject.fingerCount !== 1 || _.slideCount <= _.options.slidesToShow) {
-            _.touchObject = {};
-            return false;
-        }
-
-        if (event.originalEvent !== undefined && event.originalEvent.touches !== undefined) {
-            touches = event.originalEvent.touches[0];
-        }
-
-        _.touchObject.startX = _.touchObject.curX = touches !== undefined ? touches.pageX : event.clientX;
-        _.touchObject.startY = _.touchObject.curY = touches !== undefined ? touches.pageY : event.clientY;
-
-        _.dragging = true;
-
-    };
-
-    Slick.prototype.unfilterSlides = Slick.prototype.slickUnfilter = function() {
-
-        var _ = this;
-
-        if (_.$slidesCache !== null) {
-
-            _.unload();
-
-            _.$slideTrack.children(this.options.slide).detach();
-
-            _.$slidesCache.appendTo(_.$slideTrack);
-
-            _.reinit();
-
-        }
-
-    };
-
-    Slick.prototype.unload = function() {
-
-        var _ = this;
-
-        $('.slick-cloned', _.$slider).remove();
-        if (_.$dots) {
-            _.$dots.remove();
-        }
-        if (_.$prevArrow && (typeof _.options.prevArrow !== 'object')) {
-            _.$prevArrow.remove();
-        }
-        if (_.$nextArrow && (typeof _.options.nextArrow !== 'object')) {
-            _.$nextArrow.remove();
-        }
-        _.$slides.removeClass('slick-slide slick-active slick-visible').attr("aria-hidden", "true").css('width', '');
-
-    };
-
-    Slick.prototype.unslick = function(fromBreakpoint) {
-
-        var _ = this;
-        _.$slider.trigger('unslick', [_, fromBreakpoint]);
-        _.destroy();
-
-    };
-
-    Slick.prototype.updateArrows = function() {
-
-        var _ = this,
-            centerOffset;
-
-        centerOffset = Math.floor(_.options.slidesToShow / 2);
-
-        if (_.options.arrows === true && _.options.infinite !==
-            true && _.slideCount > _.options.slidesToShow) {
-            _.$prevArrow.removeClass('slick-disabled');
-            _.$nextArrow.removeClass('slick-disabled');
-            if (_.currentSlide === 0) {
-                _.$prevArrow.addClass('slick-disabled');
-                _.$nextArrow.removeClass('slick-disabled');
-            } else if (_.currentSlide >= _.slideCount - _.options.slidesToShow && _.options.centerMode === false) {
-                _.$nextArrow.addClass('slick-disabled');
-                _.$prevArrow.removeClass('slick-disabled');
-            } else if (_.currentSlide >= _.slideCount - 1 && _.options.centerMode === true) {
-                _.$nextArrow.addClass('slick-disabled');
-                _.$prevArrow.removeClass('slick-disabled');
-            }
-        }
-
-    };
-
-    Slick.prototype.updateDots = function() {
-
-        var _ = this;
-
-        if (_.$dots !== null) {
-
-            _.$dots.find('li').removeClass('slick-active').attr("aria-hidden", "true");
-            _.$dots.find('li').eq(Math.floor(_.currentSlide / _.options.slidesToScroll)).addClass('slick-active').attr("aria-hidden", "false");
-
-        }
-
-    };
-
-    Slick.prototype.visibility = function() {
-
-        var _ = this;
-
-        if (document[_.hidden]) {
-            _.paused = true;
-            _.autoPlayClear();
-        } else {
-            if (_.options.autoplay === true) {
-                _.paused = false;
-                _.autoPlay();
-            }
-        }
-
-    };
-
-    $.fn.slick = function() {
-        var _ = this,
-            opt = arguments[0],
-            args = Array.prototype.slice.call(arguments, 1),
-            l = _.length,
-            i = 0,
-            ret;
-        for (i; i < l; i++) {
-            if (typeof opt == 'object' || typeof opt == 'undefined')
-                _[i].slick = new Slick(_[i], opt);
-            else
-                ret = _[i].slick[opt].apply(_[i].slick, args);
-            if (typeof ret != 'undefined') return ret;
-        }
-        return _;
-    };
-
-}));
-
-},{"jquery":25}],184:[function(require,module,exports){
+},{"./lib/React":53}],181:[function(require,module,exports){
 (function (global){
 var torque = require('./');
 
@@ -55823,7 +53280,7 @@ var cancelAnimationFrame = global.cancelAnimationFrame
 module.exports = Animator;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./":193}],185:[function(require,module,exports){
+},{"./":190}],182:[function(require,module,exports){
 var _torque_reference_latest = {
     "version": "1.0.0",
     "style": {
@@ -56241,7 +53698,7 @@ module.exports = {
   }
 };
 
-},{}],186:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 (function (global){
 //
 // common functionallity for torque layers
@@ -56284,7 +53741,7 @@ TorqueLayer.optionsFromCartoCSS = function(cartocss) {
 module.exports.TorqueLayer = TorqueLayer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"carto":212}],187:[function(require,module,exports){
+},{"carto":209}],184:[function(require,module,exports){
 (function (global){
   var Event = {};
   Event.on = function(evt, callback) {
@@ -56378,7 +53835,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],188:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 /**
  * @license
  * Copyright 2013 Google Inc. All Rights Reserved.
@@ -56885,7 +54342,7 @@ CanvasLayer.prototype.scheduleUpdate = function() {
 
 module.exports = CanvasLayer;
 
-},{}],189:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 /*
  ====================
  canvas setup for drawing tiles
@@ -56983,7 +54440,7 @@ CanvasTileLayer.prototype.releaseTile = function (tile) {
 
 module.exports = CanvasTileLayer;
 
-},{}],190:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 function GMapsTileLoader() {
 }
 
@@ -57190,7 +54647,7 @@ GMapsTileLoader.prototype = {
 
 module.exports = GMapsTileLoader;
 
-},{}],191:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 var gmaps = {};
 if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
     gmaps = require('./torque');
@@ -57198,7 +54655,7 @@ if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
 }
 module.exports = gmaps;
 
-},{"./gmaps_tileloader_mixin":190,"./torque":192}],192:[function(require,module,exports){
+},{"./gmaps_tileloader_mixin":187,"./torque":189}],189:[function(require,module,exports){
 (function (global){
 var carto = global.carto || require('carto');
 var torque = require('../');
@@ -57585,7 +55042,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../":193,"./CanvasLayer":188,"./canvas_tile_layer":189,"./gmaps_tileloader_mixin":190,"carto":212}],193:[function(require,module,exports){
+},{"../":190,"./CanvasLayer":185,"./canvas_tile_layer":186,"./gmaps_tileloader_mixin":187,"carto":209}],190:[function(require,module,exports){
 module.exports = require('./core');
 
 module.exports.Animator = require('./animator');
@@ -57604,7 +55061,7 @@ module.exports.GMapsTileLoader = gmaps.GMapsTileLoader;
 module.exports.GMapsTorqueLayer = gmaps.GMapsTorqueLayer;
 module.exports.GMapsTiledTorqueLayer = gmaps.GMapsTiledTorqueLayer;
 
-},{"./animator":184,"./cartocss_reference":185,"./common":186,"./core":187,"./gmaps":191,"./leaflet":195,"./math":198,"./mercator":199,"./provider":201,"./renderer":206,"./request":210}],194:[function(require,module,exports){
+},{"./animator":181,"./cartocss_reference":182,"./common":183,"./core":184,"./gmaps":188,"./leaflet":192,"./math":195,"./mercator":196,"./provider":198,"./renderer":203,"./request":207}],191:[function(require,module,exports){
 require('./leaflet_tileloader_mixin');
 
 /**
@@ -57850,12 +55307,12 @@ L.CanvasLayer = L.Class.extend({
 
 });
 
-},{"./leaflet_tileloader_mixin":196}],195:[function(require,module,exports){
+},{"./leaflet_tileloader_mixin":193}],192:[function(require,module,exports){
 if (typeof L !== 'undefined') {
     require('./torque');
 }
 
-},{"./torque":197}],196:[function(require,module,exports){
+},{"./torque":194}],193:[function(require,module,exports){
 L.Mixin.TileLoader = {
 
   _initTileLoader: function() {
@@ -58005,7 +55462,7 @@ L.Mixin.TileLoader = {
 
 }
 
-},{}],197:[function(require,module,exports){
+},{}],194:[function(require,module,exports){
 (function (global){
 var carto = global.carto || require('carto');
 var torque = require('../');
@@ -58399,7 +55856,7 @@ L.TorqueLayer = L.CanvasLayer.extend({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../":193,"./canvas_layer":194,"carto":212}],198:[function(require,module,exports){
+},{"../":190,"./canvas_layer":191,"carto":209}],195:[function(require,module,exports){
   function clamp(a, b) {
     return function(t) {
       return Math.max(Math.min(t, b), a);
@@ -58432,7 +55889,7 @@ module.exports = {
     invLinear: invLinear
 };
 
-},{}],199:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 var Point = function(x, y) {
   this.x = x || 0;
   this.y = y || 0;
@@ -58525,7 +55982,7 @@ MercatorProjection.prototype.latLonToTilePoint = function(lat, lon, tileX, tileY
 
 module.exports = MercatorProjection;
 
-},{}],200:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 /*
 # metrics profiler
 
@@ -58669,14 +56126,14 @@ Profiler.metric = function(name) {
 
 module.exports = Profiler;
 
-},{}],201:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 module.exports = {
     json: require('./json'),
     JsonArray: require('./jsonarray'),
     windshaft: require('./windshaft')
 };
 
-},{"./json":202,"./jsonarray":203,"./windshaft":204}],202:[function(require,module,exports){
+},{"./json":199,"./jsonarray":200,"./windshaft":201}],199:[function(require,module,exports){
 var torque = require('../');
 var Profiler = require('../profiler');
 
@@ -59255,7 +56712,7 @@ var Profiler = require('../profiler');
 
 module.exports = json;
 
-},{"../":193,"../profiler":200}],203:[function(require,module,exports){
+},{"../":190,"../profiler":197}],200:[function(require,module,exports){
 var torque = require('../');
 var Profiler = require('../profiler');
 
@@ -59485,7 +56942,7 @@ var Profiler = require('../profiler');
 
   module.exports = json;
 
-},{"../":193,"../profiler":200}],204:[function(require,module,exports){
+},{"../":190,"../profiler":197}],201:[function(require,module,exports){
   var torque = require('../');
   var Profiler = require('../profiler');
 
@@ -59941,7 +57398,7 @@ var Profiler = require('../profiler');
 
   module.exports = json;
 
-},{"../":193,"../profiler":200}],205:[function(require,module,exports){
+},{"../":190,"../profiler":197}],202:[function(require,module,exports){
   var TAU = Math.PI*2;
   // min value to render a line. 
   // it does not make sense to render a line of a width is not even visible
@@ -60031,13 +57488,13 @@ module.exports = {
     renderRectangle: renderRectangle
 };
 
-},{}],206:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 module.exports = {
     cartocss: require('./cartocss_render'),
     Point: require('./point'),
     Rectangle: require('./rectangle')
 };
-},{"./cartocss_render":205,"./point":207,"./rectangle":208}],207:[function(require,module,exports){
+},{"./cartocss_render":202,"./point":204,"./rectangle":205}],204:[function(require,module,exports){
 (function (global){
 var torque = require('../');
 var cartocss = require('./cartocss_render');
@@ -60488,7 +57945,7 @@ var Filters = require('./torque_filters');
 module.exports = PointRenderer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../":193,"../profiler":200,"./cartocss_render":205,"./torque_filters":209,"carto":212}],208:[function(require,module,exports){
+},{"../":190,"../profiler":197,"./cartocss_render":202,"./torque_filters":206,"carto":209}],205:[function(require,module,exports){
 (function (global){
 var carto = global.carto || require('carto');
 
@@ -60652,7 +58109,7 @@ var carto = global.carto || require('carto');
 module.exports = RectanbleRenderer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"carto":212}],209:[function(require,module,exports){
+},{"carto":209}],206:[function(require,module,exports){
 /*
  Based on simpleheat, a tiny JavaScript library for drawing heatmaps with Canvas, 
  by Vladimir Agafonkin
@@ -60744,7 +58201,7 @@ torque_filters.prototype = {
 
 module.exports = torque_filters;
 
-},{}],210:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 (function (global){
 var torque = require('./core');
 
@@ -60848,7 +58305,7 @@ module.exports = {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./core":187}],211:[function(require,module,exports){
+},{"./core":184}],208:[function(require,module,exports){
 (function (tree) {
 
 tree.functions = {
@@ -61061,7 +58518,7 @@ function clamp(val) {
 
 })(require('./tree'));
 
-},{"./tree":217}],212:[function(require,module,exports){
+},{"./tree":214}],209:[function(require,module,exports){
 (function (process,__dirname){
 var util = require('util'),
     fs = require('fs'),
@@ -61181,7 +58638,7 @@ function stylize(str, style) {
 }
 
 }).call(this,require('_process'),"/node_modules/torque.js/node_modules/carto/lib/carto")
-},{"../../package.json":248,"./functions":211,"./parser":213,"./renderer":214,"./renderer_js":215,"./torque-reference":216,"./tree":217,"./tree/call":218,"./tree/color":219,"./tree/comment":220,"./tree/definition":221,"./tree/dimension":222,"./tree/element":223,"./tree/expression":224,"./tree/field":225,"./tree/filter":226,"./tree/filterset":227,"./tree/fontset":228,"./tree/frame_offset":229,"./tree/imagefilter":230,"./tree/invalid":231,"./tree/keyword":232,"./tree/layer":233,"./tree/literal":234,"./tree/operation":235,"./tree/quoted":236,"./tree/reference":237,"./tree/rule":238,"./tree/ruleset":239,"./tree/selector":240,"./tree/style":241,"./tree/url":242,"./tree/value":243,"./tree/variable":244,"./tree/zoom":245,"_process":19,"fs":15,"path":18,"util":21}],213:[function(require,module,exports){
+},{"../../package.json":245,"./functions":208,"./parser":210,"./renderer":211,"./renderer_js":212,"./torque-reference":213,"./tree":214,"./tree/call":215,"./tree/color":216,"./tree/comment":217,"./tree/definition":218,"./tree/dimension":219,"./tree/element":220,"./tree/expression":221,"./tree/field":222,"./tree/filter":223,"./tree/filterset":224,"./tree/fontset":225,"./tree/frame_offset":226,"./tree/imagefilter":227,"./tree/invalid":228,"./tree/keyword":229,"./tree/layer":230,"./tree/literal":231,"./tree/operation":232,"./tree/quoted":233,"./tree/reference":234,"./tree/rule":235,"./tree/ruleset":236,"./tree/selector":237,"./tree/style":238,"./tree/url":239,"./tree/value":240,"./tree/variable":241,"./tree/zoom":242,"_process":17,"fs":13,"path":16,"util":19}],210:[function(require,module,exports){
 (function (global){
 var carto = exports,
     tree = require('./tree'),
@@ -61966,7 +59423,7 @@ carto.Parser = function Parser(env) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./tree":217,"underscore":247}],214:[function(require,module,exports){
+},{"./tree":214,"underscore":244}],211:[function(require,module,exports){
 (function (global){
 var _ = global._ || require('underscore');
 var carto = require('./index');
@@ -62372,7 +59829,7 @@ module.exports.inheritDefinitions = inheritDefinitions;
 module.exports.sortStyles = sortStyles;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./index":212,"underscore":247}],215:[function(require,module,exports){
+},{"./index":209,"underscore":244}],212:[function(require,module,exports){
 (function (global){
 (function(carto) {
 var tree = require('./tree');
@@ -62664,7 +60121,7 @@ if(typeof(module) !== 'undefined') {
 })(require('../carto'));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../carto":212,"./torque-reference":216,"./tree":217,"underscore":247}],216:[function(require,module,exports){
+},{"../carto":209,"./torque-reference":213,"./tree":214,"underscore":244}],213:[function(require,module,exports){
 var _mapnik_reference_latest = {
     "version": "2.1.1",
     "style": {
@@ -64578,7 +62035,7 @@ module.exports = {
   }
 };
 
-},{}],217:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 /**
  * TODO: document this. What does this do?
  */
@@ -64591,7 +62048,7 @@ if(typeof(module) !== "undefined") {
   };
 }
 
-},{}],218:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 (function (global){
 (function(tree) {
 var _ = global._ || require('underscore');
@@ -64707,7 +62164,7 @@ tree.Call.prototype = {
 })(require('../tree'));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../tree":217,"underscore":247}],219:[function(require,module,exports){
+},{"../tree":214,"underscore":244}],216:[function(require,module,exports){
 (function(tree) {
 // RGB Colors - #ff0014, #eee
 // can be initialized with a 3 or 6 char string or a 3 or 4 element
@@ -64804,7 +62261,7 @@ tree.Color.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],220:[function(require,module,exports){
+},{"../tree":214}],217:[function(require,module,exports){
 (function(tree) {
 
 tree.Comment = function Comment(value, silent) {
@@ -64821,7 +62278,7 @@ tree.Comment.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],221:[function(require,module,exports){
+},{"../tree":214}],218:[function(require,module,exports){
 (function (global){
 (function(tree) {
 var assert = require('assert'),
@@ -65084,7 +62541,7 @@ tree.Definition.prototype.toJS = function(env) {
 })(require('../tree'));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../tree":217,"assert":16,"underscore":247}],222:[function(require,module,exports){
+},{"../tree":214,"assert":14,"underscore":244}],219:[function(require,module,exports){
 (function (global){
 (function(tree) {
 var _ = global._ || require('underscore');
@@ -65187,7 +62644,7 @@ tree.Dimension.prototype = {
 })(require('../tree'));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../tree":217,"underscore":247}],223:[function(require,module,exports){
+},{"../tree":214,"underscore":244}],220:[function(require,module,exports){
 (function(tree) {
 
 // An element is an id or class selector
@@ -65219,7 +62676,7 @@ tree.Element.prototype.toString = function() { return this.value; };
 
 })(require('../tree'));
 
-},{"../tree":217}],224:[function(require,module,exports){
+},{"../tree":214}],221:[function(require,module,exports){
 (function(tree) {
 
 tree.Expression = function Expression(value) {
@@ -65247,7 +62704,7 @@ tree.Expression.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],225:[function(require,module,exports){
+},{"../tree":214}],222:[function(require,module,exports){
 (function(tree) {
 
 tree.Field = function Field(content) {
@@ -65266,7 +62723,7 @@ tree.Field.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],226:[function(require,module,exports){
+},{"../tree":214}],223:[function(require,module,exports){
 (function(tree) {
 
 tree.Filter = function Filter(key, op, val, index, filename) {
@@ -65336,7 +62793,7 @@ tree.Filter.prototype.toString = function() {
 
 })(require('../tree'));
 
-},{"../tree":217}],227:[function(require,module,exports){
+},{"../tree":214}],224:[function(require,module,exports){
 (function (global){
 var tree = require('../tree');
 var _ = global._ || require('underscore');
@@ -65607,7 +63064,7 @@ tree.Filterset.prototype.add = function(filter, env) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../tree":217,"underscore":247}],228:[function(require,module,exports){
+},{"../tree":214,"underscore":244}],225:[function(require,module,exports){
 (function(tree) {
 
 tree._getFontSet = function(env, fonts) {
@@ -65640,7 +63097,7 @@ tree.FontSet.prototype.toXML = function(env) {
 
 })(require('../tree'));
 
-},{"../tree":217}],229:[function(require,module,exports){
+},{"../tree":214}],226:[function(require,module,exports){
 var tree = require('../tree');
 
 // Storage for Frame offset value
@@ -65669,7 +63126,7 @@ tree.FrameOffset.max = 32;
 tree.FrameOffset.none = 0;
 
 
-},{"../tree":217}],230:[function(require,module,exports){
+},{"../tree":214}],227:[function(require,module,exports){
 (function(tree) {
 
 tree.ImageFilter = function ImageFilter(filter, args) {
@@ -65693,7 +63150,7 @@ tree.ImageFilter.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],231:[function(require,module,exports){
+},{"../tree":214}],228:[function(require,module,exports){
 (function (tree) {
 tree.Invalid = function Invalid(chunk, index, message) {
     this.chunk = chunk;
@@ -65717,7 +63174,7 @@ tree.Invalid.prototype.ev = function(env) {
 };
 })(require('../tree'));
 
-},{"../tree":217}],232:[function(require,module,exports){
+},{"../tree":214}],229:[function(require,module,exports){
 (function(tree) {
 
 tree.Keyword = function Keyword(value) {
@@ -65736,7 +63193,7 @@ tree.Keyword.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],233:[function(require,module,exports){
+},{"../tree":214}],230:[function(require,module,exports){
 (function(tree) {
 
 tree.LayerXML = function(obj, styles) {
@@ -65775,7 +63232,7 @@ tree.LayerXML = function(obj, styles) {
 
 })(require('../tree'));
 
-},{"../tree":217}],234:[function(require,module,exports){
+},{"../tree":214}],231:[function(require,module,exports){
 // A literal is a literal string for Mapnik - the
 // result of the combination of a `tree.Field` with any
 // other type.
@@ -65797,7 +63254,7 @@ tree.Literal.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],235:[function(require,module,exports){
+},{"../tree":214}],232:[function(require,module,exports){
 // An operation is an expression with an op in between two operands,
 // like 2 + 1.
 (function(tree) {
@@ -65896,7 +63353,7 @@ tree.operate = function(op, a, b) {
 
 })(require('../tree'));
 
-},{"../tree":217}],236:[function(require,module,exports){
+},{"../tree":214}],233:[function(require,module,exports){
 (function(tree) {
 
 tree.Quoted = function Quoted(content) {
@@ -65928,7 +63385,7 @@ tree.Quoted.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],237:[function(require,module,exports){
+},{"../tree":214}],234:[function(require,module,exports){
 (function (global){
 // Carto pulls in a reference from the `mapnik-reference`
 // module. This file builds indexes from that file for its various
@@ -66151,7 +63608,7 @@ tree.Reference = ref;
 })(require('../tree'));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../tree":217,"mapnik-reference":246,"underscore":247}],238:[function(require,module,exports){
+},{"../tree":214,"mapnik-reference":243,"underscore":244}],235:[function(require,module,exports){
 (function(tree) {
 // a rule is a single property and value combination, or variable
 // name and value combination, like
@@ -66273,7 +63730,7 @@ tree.Rule.prototype.ev = function(context) {
 
 })(require('../tree'));
 
-},{"../tree":217}],239:[function(require,module,exports){
+},{"../tree":214}],236:[function(require,module,exports){
 (function(tree) {
 
 tree.Ruleset = function Ruleset(selectors, rules) {
@@ -66452,7 +63909,7 @@ tree.Ruleset.prototype = {
 };
 })(require('../tree'));
 
-},{"../tree":217}],240:[function(require,module,exports){
+},{"../tree":214}],237:[function(require,module,exports){
 (function(tree) {
 
 tree.Selector = function Selector(filters, zoom, frame_offset, elements, attachment, conditions, index) {
@@ -66481,7 +63938,7 @@ tree.Selector.prototype.specificity = function() {
 
 })(require('../tree'));
 
-},{"../tree":217}],241:[function(require,module,exports){
+},{"../tree":214}],238:[function(require,module,exports){
 (function (global){
 (function(tree) {
 var _ = global._ || require('underscore');
@@ -66553,7 +64010,7 @@ tree.StyleXML = function(name, attachment, definitions, env) {
 })(require('../tree'));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../tree":217,"underscore":247}],242:[function(require,module,exports){
+},{"../tree":214,"underscore":244}],239:[function(require,module,exports){
 (function(tree) {
 
 tree.URL = function URL(val, paths) {
@@ -66573,7 +64030,7 @@ tree.URL.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],243:[function(require,module,exports){
+},{"../tree":214}],240:[function(require,module,exports){
 (function(tree) {
 
 tree.Value = function Value(value) {
@@ -66626,7 +64083,7 @@ tree.Value.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],244:[function(require,module,exports){
+},{"../tree":214}],241:[function(require,module,exports){
 (function(tree) {
 
 tree.Variable = function Variable(name, index, filename) {
@@ -66669,7 +64126,7 @@ tree.Variable.prototype = {
 
 })(require('../tree'));
 
-},{"../tree":217}],245:[function(require,module,exports){
+},{"../tree":214}],242:[function(require,module,exports){
 var tree = require('../tree');
 
 // Storage for zoom ranges. Only supports continuous ranges,
@@ -66789,7 +64246,7 @@ tree.Zoom.prototype.toString = function() {
     return str;
 };
 
-},{"../tree":217}],246:[function(require,module,exports){
+},{"../tree":214}],243:[function(require,module,exports){
 (function (__dirname){
 var fs = require('fs'),
     path = require('path'),
@@ -66818,7 +64275,7 @@ refs.map(function(version) {
 });
 
 }).call(this,"/node_modules/torque.js/node_modules/carto/node_modules/mapnik-reference")
-},{"fs":15,"path":18}],247:[function(require,module,exports){
+},{"fs":13,"path":16}],244:[function(require,module,exports){
 //     Underscore.js 1.6.0
 //     http://underscorejs.org
 //     (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -68163,7 +65620,7 @@ refs.map(function(version) {
   }
 }).call(this);
 
-},{}],248:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 module.exports={
   "name": "carto",
   "version": "0.15.1-cdb1",
@@ -68249,7 +65706,7 @@ module.exports={
   "_from": "https://github.com/CartoDB/carto/archive/master.tar.gz"
 }
 
-},{}],249:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors

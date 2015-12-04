@@ -33,6 +33,10 @@ body {
   font-weight: 300;
 }
 
+svg {
+  overflow: visible;
+}
+
 .map {
   position: absolute;
   top: 0;
@@ -147,10 +151,6 @@ path {
   width: 750px;
 }
 
-.timeline--chart svg {
-  overflow: visible;
-}
-
 .timeline--toggle {
   margin-right: 25px;
 }
@@ -233,6 +233,13 @@ path {
   margin-right: 15px;
   top: 2px;
   position: relative;
+}
+
+.info--solarimpulse-logo {
+  width: 115px;
+
+  position: relative;
+  top: 3px;
 }
 
 .info--cartodb-logo {
@@ -319,4 +326,14 @@ path {
 
 .modal--btn-continue:hover {
   cursor: pointer;
+}
+
+#mainCanvas,
+#fireworkCanvas {
+  -webkit-transform: translateZ(0);
+}
+
+#mainCanvas,
+#fireworkCanvas {
+  display: none;
 }

@@ -77,6 +77,7 @@ var App = React.createClass({
 
             powered by
             <a href="http://cartodb.com"><img src="images/logo-cartodb.png" className="info--cartodb-logo" /></a>
+            <a href="http://solarimpulse.com"><img src="images/solarimpulse.png" className="info--solarimpulse-logo" /></a>
           </div>
         </div>
       </div>

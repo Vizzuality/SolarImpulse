@@ -59,7 +59,7 @@ var App = React.createClass({ displayName: "App",
       leafletTorqueLayer: torqueLayer,
       currentTime: this.state.currentTime,
       startTime: STARTING_DATE,
-      endTime: END_DATE }), React.createElement("div", { className: "info" }, React.createElement("h1", null, "Solar Impulse"), React.createElement("div", { className: "info--left" }, React.createElement("a", { href: "#", onClick: this._showModal }, "What is this?")), React.createElement("div", { className: "info--right" }, "created by", React.createElement("a", { href: "http://vizzuality.com" }, React.createElement("img", { src: "images/logo-vizzuality.png", className: "info--vizzuality-logo" })), "powered by", React.createElement("a", { href: "http://cartodb.com" }, React.createElement("img", { src: "images/logo-cartodb.png", className: "info--cartodb-logo" })))));
+      endTime: END_DATE }), React.createElement("div", { className: "info" }, React.createElement("h1", null, "Solar Impulse"), React.createElement("div", { className: "info--left" }, React.createElement("a", { href: "#", onClick: this._showModal }, "What is this?")), React.createElement("div", { className: "info--right" }, "created by", React.createElement("a", { href: "http://vizzuality.com" }, React.createElement("img", { src: "images/logo-vizzuality.png", className: "info--vizzuality-logo" })), "powered by", React.createElement("a", { href: "http://cartodb.com" }, React.createElement("img", { src: "images/logo-cartodb.png", className: "info--cartodb-logo" })), React.createElement("a", { href: "http://solarimpulse.com" }, React.createElement("img", { src: "images/solarimpulse.png", className: "info--solarimpulse-logo" })))));
   }
 });
 
@@ -412,7 +412,16 @@ var TorqueLayer = function (map, options) {
   });
 
   var svg = d3.select(map.getPanes().overlayPane).append("svg"),
-      g = svg.append("g").attr("class", "leaflet-zoom-hide");
+      g = svg.append("g").attr("class", "leaflet-zoom-hide"),
+      plane;
+
+  var gradient = svg.append("defs").append("linearGradient").attr("id", "gradient").attr("x1", "100%").attr("y1", "100%").attr("x2", "100%").attr("y2", "0%").attr("spreadMethod", "pad");
+
+  gradient.append("stop").attr("offset", "0%").attr("stop-color", "rgba(255,255,255,0)").attr("stop-opacity", 0);
+
+  gradient.append("stop").attr("offset", "50%").attr("stop-color", "#E3A820").attr("stop-opacity", 1);
+
+  gradient.append("stop").attr("offset", "100%").attr("stop-color", "rgba(255,255,255,0)").attr("stop-opacity", 0);
 
   d3.json("./tweets.json", _.bind(function (tweetCounts) {
     d3.json("./path.json", _.bind(function (collection) {
@@ -434,15 +443,64 @@ var TorqueLayer = function (map, options) {
           this.torqueLayer.setStep(0);
         }
 
-        if (changes.step === 0 || changes.step < previousStep) {
-          svg.selectAll("path").style("display", "none");
+        if (changes.step === this.torqueLayer.getTimeBounds().steps - 1) {
+          this.torqueLayer.pause();
+          Fireworks.initialize();
+          $("#mainCanvas").fadeIn();
+
+          var totalFireworks = 7,
+              currentFirework = 1;
+          var startFireworks = function () {
+            if (currentFirework <= totalFireworks) {
+              Fireworks.createParticle();
+
+              var nextTimeout = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;
+              setTimeout(startFireworks, nextTimeout);
+              currentFirework++;
+            } else {
+              setTimeout(function () {
+                $("#mainCanvas").fadeOut();
+              }, 3000);
+            }
+          };
+
+          setTimeout(startFireworks, 500);
         }
 
         var timestamp = Math.round(changes.time.getTime() / 1000);
         var availablePaths = _.filter(paths, function (v, k) {
           return parseInt(k, 10) <= timestamp;
         });
-        d3.selectAll(availablePaths).style("display", "block");
+
+        var finalPoint = _.last(availablePaths);
+
+        var gradients = [];
+        var i = 1;
+        for (; i <= 20; i++) {
+          var previousPoint = availablePaths[availablePaths.length - (i + 1)];
+          if (previousPoint !== undefined) {
+            var gradient = (finalPoint.centroid[1] - previousPoint.centroid[1]) / (finalPoint.centroid[0] - previousPoint.centroid[0]);
+            gradients.push(gradient);
+          }
+        }
+
+        var angle = 90;
+        if (gradients.length > 0) {
+          var sum = gradients.reduce(function (a, b) {
+            return a + b;
+          });
+          var averageGradient = sum / gradients.length;
+          angle = Math.atan(averageGradient) * (180 / Math.PI);
+        }
+
+        var x = finalPoint.centroid[0],
+            y = finalPoint.centroid[1];
+        plane.transition().duration(150).attr("transform", "translate(" + (x + 35) + "," + (y - 40) + ") rotate(" + 90 + ")");
+
+        var availablePathElements = availablePaths.map(function (point) {
+          return point.path;
+        });
+        d3.selectAll(_.last(availablePathElements, 40)).style("display", "block");
 
         previousStep = changes.step;
         EventBus.dispatch("torque:time", this, changes.time);
@@ -465,12 +523,19 @@ var TorqueLayer = function (map, options) {
 
         g.attr("transform", "translate(" + -(topLeft[0] - lineWidth) + "," + -(topLeft[1] - lineWidth) + ")");
 
-        var points = LineUtils.sample(line(flightPath), 3);
+        var firstFlightPath = flightPath.slice(0, 2128),
+            secondFlightPath = flightPath.slice(2128, flightPath.length);
+
+        var times = [[1425870720, 1433170140], [1433170140, 1434083266]];
+
+        var firstPoints = LineUtils.sample(line(firstFlightPath), 2);
+        var firstLineData = LineUtils.quad(firstPoints);
+        var secondPoints = LineUtils.sample(line(secondFlightPath), 2);
+        var secondLineData = LineUtils.quad(secondPoints);
+
+        var points = LineUtils.sample(line(flightPath), 2);
         var lineData = LineUtils.quad(points);
 
-        var start_time = 1425870720;
-        var end_time = 1433170140;
-        var delta = (end_time - start_time) / points.length;
         paths = {};
 
         var getCenterForPath = function (path) {
@@ -487,32 +552,36 @@ var TorqueLayer = function (map, options) {
           return getCenter(polygon);
         };
 
-        var d = lineData[0];
-        var startingPath = getCenterForPath(LineUtils.lineJoin(d[0], d[1], d[2], d[3], lineWidth));
-        d = lineData[lineData.length - 1];
-        var finalPath = getCenterForPath(LineUtils.lineJoin(d[0], d[1], d[2], d[3], lineWidth));
-        var lineLength = finalPath[0] - startingPath[0];
-
         var centerPoints = [];
         g.selectAll("path").remove();
         g.selectAll("path").data(lineData).enter().append("path").style("fill", function (d, i) {
-          var colors = [colorScale(tweetCounts[zoom][i]), colorScale(tweetCounts[zoom][i + 1])];
-          var color = d3.interpolateLab(colors[0], colors[1]);
-          return color(d.t);
+          return "#E3A820";
         }).style("stroke", function (d, i) {
-          var colors = [colorScale(tweetCounts[zoom][i]), colorScale(tweetCounts[zoom][i + 1])];
-          var color = d3.interpolateLab(colors[0], colors[1]);
-          return color(d.t);
+          return "#E3A820";
         }).attr("d", function (d, i) {
+          var timeFromStart, timestamp;
+          if (i <= firstLineData.length - 1) {
+            timeFromStart = i * ((times[0][1] - times[0][0]) / firstLineData.length);
+            timestamp = Math.round(times[0][0] + timeFromStart);
+          } else {
+            timeFromStart = (i - firstLineData.length) * ((times[1][1] - times[1][0]) / secondLineData.length);
+            timestamp = Math.round(times[1][0] + timeFromStart);
+          }
+
           var path = LineUtils.lineJoin(d[0], d[1], d[2], d[3], lineWidth),
               centroid = getCenterForPath(path),
-              centroidAsCoords = map.containerPointToLatLng(centroid),
-              timeFromStart = i * ((end_time - start_time) / lineData.length),
-              timestamp = Math.round(start_time + timeFromStart);
-          paths[timestamp] = this;
+              centroidAsCoords = map.containerPointToLatLng(centroid);
+
+          paths[timestamp] = {
+            path: this,
+            centroid: centroid,
+            coords: centroidAsCoords
+          };
 
           return path;
         });
+
+        plane = g.append("svg:image").attr("xlink:href", "images/plane.png").attr("width", 75).attr("height", 75);
       }
     }, this));
   }, this));

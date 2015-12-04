@@ -4,13 +4,19 @@
   <meta charset="UTF-8">
   <title>Solar Impulse</title>
   <link rel="stylesheet" href="css/vendor/leaflet.css">
-  <link rel="stylesheet" href="css/slick.css">
-
   <link rel='stylesheet' href='css/main.css'>
 </head>
 <body>
   <div id="container"></div>
+  <canvas id="mainCanvas"></canvas>
+  <canvas id="fireworkCanvas"></canvas>
 
+  <aside id="library" style="display:none;">
+    <img src="images/big-glow.png" id="big-glow" />
+    <img src="images/small-glow.png" id="small-glow" />
+  </aside>
+
+  <script src="js/lib/fireworks.js"></script>
   <script src="js/dist/bundle.js"></script>
 
   <script>

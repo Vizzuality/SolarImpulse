@@ -89,6 +89,10 @@ var TorqueLayer = function(map, options) {
         this.torqueLayer.setStep(0);
       }
 
+      if (changes.step === 0 || changes.step < previousStep) {
+        svg.selectAll('path').style('display', 'none');
+      }
+
       if (changes.step === (this.torqueLayer.getTimeBounds().steps-1)) {
         this.torqueLayer.pause();
         Fireworks.initialize();

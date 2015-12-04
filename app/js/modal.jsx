@@ -11,12 +11,12 @@ var Modal = React.createClass({
 
   show() {
     var node = this.getDOMNode();
-    $(node).show();
+    $(node).fadeIn();
   },
 
   hide() {
     var node = this.getDOMNode();
-    $(node).hide();
+    $(node).fadeOut();
   },
 
   updateVisibility() {

@@ -450,26 +450,6 @@ var TorqueLayer = function (map, options) {
         if (changes.step === this.torqueLayer.getTimeBounds().steps - 1) {
           EventBus.dispatch("torque:pause");
           this.torqueLayer.pause();
-          Fireworks.initialize();
-          $("#mainCanvas").fadeIn();
-
-          var totalFireworks = 7,
-              currentFirework = 1;
-          var startFireworks = function () {
-            if (currentFirework <= totalFireworks) {
-              Fireworks.createParticle();
-
-              var nextTimeout = Math.floor(Math.random() * (1000 - 500 + 1)) + 500;
-              setTimeout(startFireworks, nextTimeout);
-              currentFirework++;
-            } else {
-              setTimeout(function () {
-                $("#mainCanvas").fadeOut();
-              }, 3000);
-            }
-          };
-
-          setTimeout(startFireworks, 500);
         }
 
         var timestamp = Math.round(changes.time.getTime() / 1000);
@@ -661,12 +641,12 @@ var Modal = React.createClass({ displayName: "Modal",
 
   show: function show() {
     var node = this.getDOMNode();
-    $(node).show();
+    $(node).fadeIn();
   },
 
   hide: function hide() {
     var node = this.getDOMNode();
-    $(node).hide();
+    $(node).fadeOut();
   },
 
   updateVisibility: function updateVisibility() {

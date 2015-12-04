@@ -68,7 +68,7 @@ var App = React.createClass({
           <h1>Solar Impulse</h1>
 
           <div className="info--left">
-            <a href="#" onClick={this._showModal}>What is this?</a>
+            <a href="#" onClick={this._showModal}>What's this? Each dot is a tweet of goodwill heading to the plane.</a>
           </div>
 
           <div className="info--right">

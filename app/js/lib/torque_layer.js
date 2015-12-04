@@ -94,6 +94,7 @@ var TorqueLayer = function(map, options) {
       }
 
       if (changes.step === (this.torqueLayer.getTimeBounds().steps-1)) {
+        EventBus.dispatch("torque:pause");
         this.torqueLayer.pause();
         Fireworks.initialize();
         $('#mainCanvas').fadeIn();

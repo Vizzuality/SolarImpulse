@@ -447,8 +447,8 @@ var TorqueLayer = function (map, options) {
           svg.selectAll("path").style("display", "none");
         }
 
-
         if (changes.step === this.torqueLayer.getTimeBounds().steps - 1) {
+          EventBus.dispatch("torque:pause");
           this.torqueLayer.pause();
           Fireworks.initialize();
           $("#mainCanvas").fadeIn();
@@ -748,7 +748,8 @@ module.exports = TimeSlider;
 
 var React = require("react");
 
-var moment = require("moment");
+var moment = require("moment"),
+    _ = require("underscore");
 
 var TimeSlider = require("./time_slider.js"),
     TweetChart = require("./tweet_chart.js");
@@ -801,11 +802,15 @@ var CurrentTime = React.createClass({ displayName: "CurrentTime",
   },
 
   _formattedDate: function _formattedDate() {
-    var month = moment(this.state.time).format("MMMM"),
-        day = moment(this.state.time).format("D"),
-        time = moment(this.state.time).format("HH:mm");
+    var legs = [[0, "Abu Dhabi, UAE to Muscat, Oman"], [1426270590, "Muscat, Oman to Ahmedabad, India"], [1427377899, "Ahmedabad, India to Varanasi, India"], [1428208380, "Varanasi, India to Mandalay, Myanmar"], [1429223413, "Mandalay, Myanmar to Chongqing, China"], [1430438376, "Chongqing, China to Nanjing, China"], [1431161202, "Nanjing, China to Nagoya, Japan"], [1432960578, "Nagoya, Japan to Kalaeloa, Hawaii"]];
 
-    return React.createElement("div", null, React.createElement("span", { className: "timeline--date-month" }, month), React.createElement("span", { className: "timeline--date-day" }, day), React.createElement("span", { className: "timeline--date-time" }, time));
+    var timestamp = Math.round(this.state.time.getTime() / 1000);
+
+    var currentLeg = _.last(_.filter(legs, function (leg) {
+      return timestamp > leg[0];
+    })) || _.last(legs);
+
+    return React.createElement("div", null, React.createElement("span", null, currentLeg[1]));
   },
 
   render: function render() {
@@ -839,7 +844,7 @@ module.exports = Timeline;
 
 
 
-},{"./lib/event_bus.js":5,"./time_slider.js":10,"./tweet_chart.js":12,"moment":25,"react":180}],12:[function(require,module,exports){
+},{"./lib/event_bus.js":5,"./time_slider.js":10,"./tweet_chart.js":12,"moment":25,"react":180,"underscore":246}],12:[function(require,module,exports){
 "use strict";
 
 var React = require("react"),

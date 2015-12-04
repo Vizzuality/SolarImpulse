@@ -1,6 +1,7 @@
 var React = require("react");
 
-var moment = require('moment');
+var moment = require('moment'),
+    _      = require('underscore');
 
 var TimeSlider = require('./time_slider.js'),
     TweetChart = require('./tweet_chart.js');
@@ -61,15 +62,26 @@ var CurrentTime = React.createClass({
   },
 
   _formattedDate() {
-    var month = moment(this.state.time).format("MMMM"),
-        day   = moment(this.state.time).format("D"),
-        time  = moment(this.state.time).format("HH:mm");
+    var legs = [
+      [0, "Abu Dhabi, UAE to Muscat, Oman"],
+      [1426270590, "Muscat, Oman to Ahmedabad, India"],
+      [1427377899, "Ahmedabad, India to Varanasi, India"],
+      [1428208380, "Varanasi, India to Mandalay, Myanmar"],
+      [1429223413, "Mandalay, Myanmar to Chongqing, China"],
+      [1430438376, "Chongqing, China to Nanjing, China"],
+      [1431161202, "Nanjing, China to Nagoya, Japan"],
+      [1432960578, "Nagoya, Japan to Kalaeloa, Hawaii"]
+    ];
+
+    var timestamp = Math.round(this.state.time.getTime() / 1000);
+
+    var currentLeg = _.last(_.filter(legs, function(leg) {
+      return timestamp > leg[0];
+    })) || _.last(legs);
 
     return (
       <div>
-        <span className="timeline--date-month">{month}</span>
-        <span className="timeline--date-day">{day}</span>
-        <span className="timeline--date-time">{time}</span>
+        <span>{currentLeg[1]}</span>
       </div>
     );
   },

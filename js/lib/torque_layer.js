@@ -45,10 +45,7 @@ var TorqueLayer = function(map, options) {
 
   var svg = d3.select(map.getPanes().overlayPane).append("svg"),
       g = svg.append("g").attr("class", "leaflet-zoom-hide"),
-      plane = g.append("svg:image")
-        .attr("xlink:href", "images/plane.png")
-        .attr("width", 75)
-        .attr("height", 75);
+      plane;
 
   var gradient = svg.append("defs")
     .append("linearGradient")
@@ -222,6 +219,11 @@ var TorqueLayer = function(map, options) {
 
             return path;
           });
+
+      plane = g.append("svg:image")
+        .attr("xlink:href", "images/plane.png")
+        .attr("width", 75)
+        .attr("height", 75);
     }
 
   },this))
